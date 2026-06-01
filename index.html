@@ -23,6 +23,7 @@
   --c-fixed: #7B9EC4;
   --c-var: #C9906A;
   --c-invest: #9B7DC4;
+  --c-anger: #D97B7B;
   --green: #2D6A4F;
   --amber: #B5621A;
   --red: #B03030;
@@ -173,6 +174,7 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
 .insight-quote .insight-section-label { color: var(--accent); }
 .insight-quote .insight-section-body { font-style: italic; color: var(--text); font-size: 14px; border-left: 3px solid var(--accent-light); padding-left: 12px; }
 .insight-empty { font-size: 13px; color: var(--text3); padding: 0.5rem 0; }
+.insight-notice { font-size: 12px; color: var(--amber); background: #FDF5E8; border: 1px solid #F0DDB0; border-radius: var(--radius); padding: 8px 12px; margin-top: 10px; }
 
 /* 캘린더 */
 .cal-nav { display: flex; align-items: center; margin-bottom: 1.5rem; }
@@ -214,6 +216,18 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
 .cal-popup-desc { font-size: 13px; font-weight: 500; color: var(--text); }
 .cal-popup-sub  { font-size: 11px; color: var(--text3); margin-top: 1px; }
 .cal-popup-amt  { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; }
+
+/* 수정 모달 */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1000; align-items:center; justify-content:center; }
+.modal-overlay.open { display:flex; }
+.modal { background:var(--surface); border-radius:var(--radius-lg); padding:1.5rem; width:90%; max-width:500px; max-height:90vh; overflow-y:auto; }
+.modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; }
+.modal-header h3 { font-size:15px; font-weight:600; }
+.modal-close { background:none; border:none; font-size:20px; cursor:pointer; color:var(--text3); line-height:1; }
+.modal-footer { display:flex; gap:8px; margin-top:1.25rem; }
+.btn-save { flex:1; padding:10px; font-family:var(--sans); font-size:14px; font-weight:500; background:var(--accent); color:#fff; border:none; border-radius:var(--radius); cursor:pointer; }
+.btn-save:hover { background:var(--accent2); }
+.btn-cancel { padding:10px 18px; font-family:var(--sans); font-size:14px; background:none; color:var(--text2); border:1px solid var(--border); border-radius:var(--radius); cursor:pointer; }
 </style>
 </head>
 <body>
@@ -271,6 +285,7 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
             <option value="고정비">🔵 고정비</option>
             <option value="변동비">🟠 변동비</option>
             <option value="투자">🟣 투자</option>
+            <option value="홧김소비">🔴 홧김소비</option>
           </select>
         </div>
         <div class="field">
@@ -300,6 +315,7 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
             <option value="고정비">🔵 고정비</option>
             <option value="변동비">🟠 변동비</option>
             <option value="투자">🟣 투자</option>
+            <option value="홧김소비">🔴 홧김소비</option>
           </select>
         </div>
         <button class="export-btn" onclick="exportCSV()">CSV 내보내기</button>
@@ -319,6 +335,42 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
       <div class="cal-legend-item"><div class="cal-dot has-entry"></div><span>기록 있음</span></div>
       <div class="cal-legend-item"><div class="cal-dot no-entry"></div><span>기록 없음</span></div>
       <div class="cal-legend-item"><div class="cal-dot today-dot"></div><span>오늘</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="edit-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>내역 수정</h3>
+      <button class="modal-close" onclick="closeEditModal()">×</button>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>날짜</label><input type="date" id="edit-date" /></div>
+      <div class="field"><label>금액 (원)</label><input type="number" id="edit-amount" min="0" /></div>
+    </div>
+    <div class="grid2 mb1" style="margin-top:1rem;">
+      <div class="field">
+        <label>대분류</label>
+        <select id="edit-cat1" onchange="updateEditCat2()">
+          <option value="">선택하세요</option>
+          <option value="고정비">🔵 고정비</option>
+          <option value="변동비">🟠 변동비</option>
+          <option value="투자">🟣 투자</option>
+          <option value="홧김소비">🔴 홧김소비</option>
+        </select>
+      </div>
+      <div class="field"><label>소분류</label><select id="edit-cat2"></select></div>
+    </div>
+    <div class="field mb1"><label>내용</label><input type="text" id="edit-desc" /></div>
+    <div class="field mb1"><label>메모 (선택)</label><textarea id="edit-memo" style="resize:none;height:64px;"></textarea></div>
+    <div class="values-row">
+      <input type="checkbox" id="edit-values" />
+      <label for="edit-values">✓ 내 가치관에 부합하는 소비였다</label>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeEditModal()">취소</button>
+      <button class="btn-save" onclick="saveEdit()">저장</button>
     </div>
   </div>
 </div>
@@ -390,19 +442,22 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
 // ─── 데이터 정의 ────────────────────────────────────────────
 const CAT_MAP = {
   "고정비": ["🏡 주거","🚗 이동","📱 통신/구독","🏥 건강/보험"],
-  "변동비": ["🍽️ 식/음료","👶 육아","🎁 경조사"],
-  "투자":   ["🛍️ 물건소비 (인적투자)","✈️ 경험소비 (인적투자)","💰 투자/저축 (금융투자)"]
+  "변동비": ["🍔 식/음료","👶 육아","🎁 경조사","🎮 취미/여가"],
+  "투자":   ["🛍️ 물건소비 (인적투자)","✈️ 경험소비 (인적투자)","💰 투자/저축 (금융투자)"],
+  "홧김소비": ["🛒 충동구매","😤 감정소비","🤦 그냥 질러버림"]
 };
 
 // 대분류: 컬러 (동그라미용)
-const CAT_COLOR  = { "고정비": "#7B9EC4", "변동비": "#C9906A", "투자": "#9B7DC4" };
+const CAT_COLOR  = { "고정비": "#7B9EC4", "변동비": "#C9906A", "투자": "#9B7DC4", "홧김소비": "#D97B7B" };
 // 대분류: 표시 레이블 (동그라미 이모지 포함)
-const CAT_LABEL  = { "고정비": "🔵 고정비", "변동비": "🟠 변동비", "투자": "🟣 투자" };
+const CAT_LABEL  = { "고정비": "🔵 고정비", "변동비": "🟠 변동비", "투자": "🟣 투자", "홧김소비": "🔴 홧김소비" };
 // 소분류: 컬러
 const SUB_COLOR = {
   "🏡 주거":"#7B9EC4","🚗 이동":"#93B2D0","📱 통신/구독":"#AAC4DC","🏥 건강/보험":"#C2D6E8",
-  "🍽️ 식/음료":"#C9906A","👶 육아":"#D9A882","🎁 경조사":"#E8C0A0",
-  "🛍️ 물건소비 (인적투자)":"#9B7DC4","✈️ 경험소비 (인적투자)":"#B09CD4","💰 투자/저축 (금융투자)":"#7A5EAF"
+  "🍔 식/음료":"#C9906A","👶 육아":"#D9A882","🎁 경조사":"#E8C0A0",
+  "🛍️ 물건소비 (인적투자)":"#9B7DC4","✈️ 경험소비 (인적투자)":"#B09CD4","💰 투자/저축 (금융투자)":"#7A5EAF",
+  "🎮 취미/여가":"#D9A882",
+  "🛒 충동구매":"#D97B7B","😤 감정소비":"#E09090","🤦 그냥 질러버림":"#E8A8A8"
 };
 
 const STORAGE_KEY = "mycashbook_v3";
@@ -490,7 +545,7 @@ function renderQuickSummary() {
   const vc = data.filter(e=>e.values).length;
   const pct = data.length ? Math.round(vc/data.length*100) : 0;
   const cats = {};
-  data.forEach(e => { cats[e.cat1]=(cats[e.cat1]||0)+e.amount; });
+  data.forEach(e => { cats[e.cat2]=(cats[e.cat2]||0)+e.amount; });
   const top = Object.entries(cats).sort((a,b)=>b[1]-a[1])[0];
   const income = getMonthIncome(mk);
   const balance = income - total;
@@ -576,10 +631,68 @@ function renderList() {
       </div>
       <div class="entry-right">
         <span class="entry-amount">${fmtMoney(e.amount)}</span>
+        <button class="btn-edit" onclick="openEditModal(${e.id})" title="수정" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px;margin-top:2px;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text3)'">✏️</button>
         <button class="btn-del" onclick="deleteEntry(${e.id})" title="삭제">×</button>
       </div>
     </div>
   `).join('');
+}
+
+
+let editingId = null;
+
+function openEditModal(id) {
+  const e = entries.find(function(e){ return e.id === id; });
+  if (!e) return;
+  editingId = id;
+  document.getElementById('edit-date').value   = e.date;
+  document.getElementById('edit-amount').value = e.amount;
+  document.getElementById('edit-cat1').value   = e.cat1;
+  updateEditCat2(e.cat2);
+  document.getElementById('edit-desc').value   = e.desc;
+  document.getElementById('edit-memo').value   = e.memo || '';
+  document.getElementById('edit-values').checked = e.values;
+  document.getElementById('edit-modal').classList.add('open');
+}
+
+function closeEditModal() {
+  document.getElementById('edit-modal').classList.remove('open');
+  editingId = null;
+}
+
+function updateEditCat2(selected) {
+  const c1 = document.getElementById('edit-cat1').value;
+  const c2 = document.getElementById('edit-cat2');
+  c2.innerHTML = '';
+  if (!c1) { c2.innerHTML = '<option>대분류 먼저 선택</option>'; return; }
+  CAT_MAP[c1].forEach(function(v) {
+    var o = document.createElement('option');
+    o.value = v; o.textContent = v;
+    if (v === selected) o.selected = true;
+    c2.appendChild(o);
+  });
+}
+
+function saveEdit() {
+  if (!editingId) return;
+  const date   = document.getElementById('edit-date').value;
+  const amount = parseFloat(document.getElementById('edit-amount').value);
+  const cat1   = document.getElementById('edit-cat1').value;
+  const cat2   = document.getElementById('edit-cat2').value;
+  const desc   = document.getElementById('edit-desc').value.trim();
+  const memo   = document.getElementById('edit-memo').value.trim();
+  const values = document.getElementById('edit-values').checked;
+  if (!date || !amount || !cat1 || !cat2 || !desc) { showToast('모든 항목을 입력해주세요.'); return; }
+  const idx = entries.findIndex(function(e){ return e.id === editingId; });
+  if (idx === -1) return;
+  entries[idx] = { id: editingId, date, amount, cat1, cat2, desc, memo, values };
+  entries.sort(function(a,b){ return b.date.localeCompare(a.date); });
+  save();
+  closeEditModal();
+  renderList();
+  renderQuickSummary();
+  populateMonthFilter();
+  showToast('수정되었어요!');
 }
 
 function deleteEntry(id) {
@@ -639,7 +752,7 @@ function renderMonthly() {
     </div>
   `;
 
-  ['고정비','변동비','투자'].forEach(cat1 => {
+  ['고정비','변동비','투자','홧김소비'].forEach(cat1 => {
     if (!byCat[cat1]) return;
     const info = byCat[cat1];
     const pBar = Math.round(info.total/maxAmt*100);
@@ -698,6 +811,7 @@ function renderMonthly() {
       <button class="btn-insight" id="btn-insight">AI 분석 요청</button>
     </div>
     <div id="insight-body"><div class="insight-empty">버튼을 누르면 이번 달 소비 패턴을 분석해드려요.</div></div>
+    <div class="insight-notice">⚠️ 현재 AI 분석 기능을 준비 중이에요. 곧 사용 가능해질 예정이에요!</div>
   `;
   document.getElementById('monthly-content').appendChild(insightCard);
   document.getElementById('btn-insight').addEventListener('click', () => requestInsight(mk));
