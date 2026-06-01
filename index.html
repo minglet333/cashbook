@@ -318,7 +318,7 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
     <button class="tab active" data-tab="principle" onclick="switchTab('principle')">원칙</button>
     <button class="tab" data-tab="monthly" onclick="switchTab('monthly')">월별 분석</button>
     <button class="tab" data-tab="input" onclick="switchTab('input')">기록</button>
-    <button class="tab" data-tab="list" onclick="switchTab('list')">내역</button>
+    <button class="tab" data-tab="list" onclick="switchTab('list')">지출 내역</button>
     <button class="tab" data-tab="calendar" onclick="switchTab('calendar')">캘린더</button>
     <button class="tab" data-tab="retro" onclick="switchTab('retro')">회고</button>
   </div>
@@ -830,10 +830,10 @@ function renderMonthly() {
   const mUsedPct = mIncome > 0 ? Math.round(total/mIncome*100) : null;
 
   let html = `
-    <div class="summary-strip" style="margin-bottom:2rem;grid-template-columns:repeat(${mIncome > 0 ? 3 : 2},1fr);">
-      ${mIncome > 0 ? `<div class="sum-block"><div class="lbl">월 수입</div><div class="val" style="color:var(--green);">${mIncome.toLocaleString('ko-KR')}원</div><div class="sub">&nbsp;</div></div>` : ''}
+    <div class="summary-strip" style="margin-bottom:2rem;grid-template-columns:repeat(4,1fr);">
+      <div class="sum-block"><div class="lbl">총 수입</div><div class="val" style="color:var(--green);">${mIncome > 0 ? mIncome.toLocaleString('ko-KR')+'원' : '-'}</div><div class="sub">&nbsp;</div></div>
       <div class="sum-block"><div class="lbl">총 지출</div><div class="val">${total.toLocaleString('ko-KR')}원</div><div class="sub">${data.length}건${mUsedPct!==null?' · 수입의 '+mUsedPct+'%':''}</div></div>
-      ${mIncome > 0 ? `<div class="sum-block"><div class="lbl">잔액</div><div class="val" style="color:${mBalance>=0?'var(--green)':'var(--red)'};">${(mBalance>=0?'+':'')+mBalance.toLocaleString('ko-KR')}원</div><div class="sub">&nbsp;</div></div>` : ''}
+      <div class="sum-block"><div class="lbl">잔액</div><div class="val" style="color:${mBalance>=0?'var(--green)':'var(--red)'};">${mIncome > 0 ? (mBalance>=0?'+':'')+mBalance.toLocaleString('ko-KR')+'원' : '-'}</div><div class="sub">&nbsp;</div></div>
       <div class="sum-block"><div class="lbl">건당 평균</div><div class="val">${avg.toLocaleString('ko-KR')}원</div></div>
     </div>
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin-bottom:2rem;">
@@ -1488,14 +1488,7 @@ function renderRetro() {
 
     <div class="pr-card">
       <h3>✍️ 이달의 회고</h3>
-      <textarea class="retro-memo" id="retro-memo-input" placeholder="이번 달 소비와 생활을 돌아보며 자유롭게 써보세요. 잘한 것, 아쉬운 것, 다음 달 다짐 등 무엇이든 좋아요." oninput="updateKeywords()">${log.memo||''}</textarea>
-      ${log.keywords && log.keywords.length ? `
-      <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.6px;margin-top:1rem;margin-bottom:6px;">핵심 키워드</div>
-      <div class="keyword-wrap" id="keyword-wrap">
-        ${log.keywords.map(k=>`<span class="keyword-tag">${k}</span>`).join('')}
-      </div>` : `
-      <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.6px;margin-top:1rem;margin-bottom:6px;">핵심 키워드</div>
-      <div class="keyword-wrap" id="keyword-wrap"></div>`}
+      <textarea class="retro-memo" id="retro-memo-input" placeholder="이번 달 소비와 생활을 돌아보며 자유롭게 써보세요. 잘한 것, 아쉬운 것, 다음 달 다짐 등 무엇이든 좋아요.">${log.memo||''}</textarea>
       <button class="btn-primary" style="margin-top:1.25rem;" onclick="saveRetroMemo('${mk}')">회고 저장</button>
     </div>
 
@@ -1508,7 +1501,7 @@ function renderRetro() {
           const [y,m] = k.split('-');
           return `<div class="retro-history-item">
             <div class="retro-history-month">${y}년 ${parseInt(m)}월</div>
-            ${r.keywords&&r.keywords.length?`<div class="retro-history-keywords">${r.keywords.map(kw=>`<span class="keyword-tag">${kw}</span>`).join('')}</div>`:''}
+
             <div class="retro-history-memo">${r.memo ? (r.memo.length>120 ? r.memo.slice(0,120)+'...' : r.memo) : ''}</div>
           </div>`;
         }).join('')}
@@ -1517,7 +1510,6 @@ function renderRetro() {
   `;
 
   // 텍스트 있으면 키워드 바로 반영
-  if (log.memo) setTimeout(updateKeywords, 50);
 }
 
 function updateKeywords() {
