@@ -46,9 +46,6 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
 .tab:hover { color: var(--text); }
 
 /* 탭별 컬러 */
-.tab[data-tab="principle"]        { color: var(--text2); }
-.tab[data-tab="principle"]:hover  { color: #7C3AED; }
-.tab[data-tab="principle"].active { color: #7C3AED; border-bottom-color: #7C3AED; border-bottom-width: 3px; font-weight: 600; }
 
 .tab[data-tab="monthly"]        { color: var(--text2); }
 .tab[data-tab="monthly"]:hover  { color: #16A34A; }
@@ -315,16 +312,15 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
   </header>
 
   <div class="tabs">
-    <button class="tab active" data-tab="principle" onclick="switchTab('principle')">원칙</button>
-    <button class="tab" data-tab="monthly" onclick="switchTab('monthly')">월별 분석</button>
+    <button class="tab active" data-tab="monthly" onclick="switchTab('monthly')">월별 분석</button>
     <button class="tab" data-tab="input" onclick="switchTab('input')">기록</button>
     <button class="tab" data-tab="list" onclick="switchTab('list')">지출 내역</button>
     <button class="tab" data-tab="calendar" onclick="switchTab('calendar')">캘린더</button>
-    <button class="tab" data-tab="retro" onclick="switchTab('retro')">회고</button>
+    <button class="tab" data-tab="retro" onclick="switchTab('retro')">시뮬레이션 &amp; 회고</button>
   </div>
 
   <!-- 월별 분석 -->
-  <div class="section" id="sec-monthly">
+  <div class="section active" id="sec-monthly">
     <div class="month-nav">
       <button onclick="changeMonth(-1)">&#8249;</button>
       <span class="month-title" id="month-title"></span>
@@ -414,10 +410,6 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
     </div>
   </div>
 
-  <!-- 원칙 -->
-  <div class="section active" id="sec-principle">
-    <div id="principle-content"></div>
-  </div>
 
   <!-- 회고 -->
   <div class="section" id="sec-retro">
@@ -606,7 +598,7 @@ function switchTab(t) {
   if (t === 'list')      { populateMonthFilter(); renderList(); }
   if (t === 'monthly')   renderMonthly();
   if (t === 'calendar')  renderCalendar();
-  if (t === 'principle') renderPrinciple();
+
   if (t === 'retro')     renderRetro();
 }
 
@@ -1124,126 +1116,13 @@ function showToast(msg) {
 }
 
 
-// ─── 원칙 / 회고 데이터 ───────────────────────────────────
-const PRINCIPLE_KEY = 'mycashbook_principle_v1';
-const RETRO_KEY     = 'mycashbook_retro_v1';
-let principleText  = '';   // 투자 원칙 텍스트
-let practiceLog    = {};   // { "2026-05": { eval: "good"|"mid"|"bad", amount: 0 } }
-let retroLog       = {};   // { "2026-05": { memo: "", keywords: [] } }
 
-function loadPrinciple() {
-  try {
-    const d = localStorage.getItem(PRINCIPLE_KEY);
-    if (d) { const p = JSON.parse(d); principleText = p.text||''; practiceLog = p.practice||{}; }
-  } catch(e) {}
-}
-function savePrinciple() {
-  localStorage.setItem(PRINCIPLE_KEY, JSON.stringify({ text: principleText, practice: practiceLog }));
-}
-function loadRetro() {
-  try { const d = localStorage.getItem(RETRO_KEY); if (d) retroLog = JSON.parse(d); } catch(e) {}
-}
-function saveRetro() {
-  localStorage.setItem(RETRO_KEY, JSON.stringify(retroLog));
-}
 
-// ─── 원칙 탭 ──────────────────────────────────────────────
-let principleMonth = new Date();
-
-function changePrincipleMonth(d) {
-  principleMonth = new Date(principleMonth.getFullYear(), principleMonth.getMonth()+d, 1);
-  renderPrinciple();
-}
-
-function renderPrinciple() {
-  const mk = principleMonth.getFullYear()+'-'+String(principleMonth.getMonth()+1).padStart(2,'0');
-  const income = getMonthIncome(mk);
-  const spent  = entries.filter(e=>getMonthKey(e.date)===mk).reduce((s,e)=>s+e.amount,0);
-  const investable = income - spent;
-  const log = practiceLog[mk] || { eval: '', amount: 0 };
-
-  const investColor = investable > 0 ? 'var(--green)' : investable < 0 ? 'var(--red)' : 'var(--text)';
-
-  const el = document.getElementById('principle-content');
-  el.innerHTML = `
-    <div class="pr-month-nav">
-      <button onclick="changePrincipleMonth(-1)">&#8249;</button>
-      <span class="pr-month-title">${principleMonth.getFullYear()}년 ${principleMonth.getMonth()+1}월</span>
-      <button onclick="changePrincipleMonth(1)">&#8250;</button>
-    </div>
-
-    <!-- 투자 가능 금액 배너 -->
-    <div class="invest-banner">
-      <div class="invest-block">
-        <div class="lbl">이달 수입</div>
-        <div class="val" style="color:var(--green);">${income > 0 ? income.toLocaleString('ko-KR')+'원' : '미입력'}</div>
-      </div>
-      <div class="invest-block">
-        <div class="lbl">이달 지출</div>
-        <div class="val">${spent.toLocaleString('ko-KR')}원</div>
-      </div>
-      <div class="invest-block">
-        <div class="lbl">💰 투자 가능 금액</div>
-        <div class="val" style="color:${investColor};">${income > 0 ? (investable>=0?'':'') + investable.toLocaleString('ko-KR')+'원' : '-'}</div>
-      </div>
-    </div>
-
-    <!-- 이달 실천 카드 -->
-    <div class="practice-card">
-      <h3>이달 투자 실천</h3>
-      <div class="field mb1">
-        <label>실제 투자 금액</label>
-        <input type="number" id="inp-practice-amt" placeholder="0" min="0"
-          value="${log.amount||''}"
-          style="font-family:var(--sans);font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;color:var(--text);outline:none;width:100%;transition:border-color 0.2s;"
-          onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
-        />
-      </div>
-      <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;">이달 평가</div>
-      <div class="practice-eval">
-        <button class="eval-btn ${log.eval==='good'?'selected-good':''}" onclick="setEval('${mk}','good')">👍 잘했어요</button>
-        <button class="eval-btn ${log.eval==='mid'?'selected-mid':''}"  onclick="setEval('${mk}','mid')">😐 그럭저럭</button>
-        <button class="eval-btn ${log.eval==='bad'?'selected-bad':''}"  onclick="setEval('${mk}','bad')">😞 못했어요</button>
-      </div>
-      <button class="btn-primary" style="margin-top:1rem;" onclick="savePractice('${mk}')">저장</button>
-    </div>
-
-    <!-- 투자 원칙 -->
-    <div class="pr-card">
-      <h3>📌 나의 투자 원칙</h3>
-      <textarea class="principle-editor" id="principle-text" placeholder="예) 매달 수입의 10% 이상 투자한다. 시장이 흔들려도 팔지 않는다. 투자는 미래의 나를 위한 선물이다.">${principleText}</textarea>
-      <button class="btn-primary" style="margin-top:1rem;" onclick="savePrincipleText()">원칙 저장</button>
-    </div>
-
-    <!-- 실천 이력 -->
-    <div class="pr-card">
-      <h3>📅 실천 이력</h3>
-      ${renderPracticeHistory()}
-    </div>
-
-    <!-- 복리 시뮬레이터 -->
-    ${renderSimulator(investable, mk)}
-  `;
-  setTimeout(updateSimulator, 50);
-}
-
-function renderPracticeHistory() {
-  const keys = Object.keys(practiceLog).sort((a,b)=>b.localeCompare(a)).slice(0,24);
-  if (!keys.length) return '<div style="font-size:13px;color:var(--text3);">아직 기록이 없어요.</div>';
-  const evalEmoji = { good:'👍', mid:'😐', bad:'😞', '':'○' };
-  const evalClass = { good:'good', mid:'mid', bad:'bad', '':'' };
-  return '<div class="principle-history">' + keys.map(mk => {
-    const log = practiceLog[mk];
-    const [y,m] = mk.split('-');
-    return `<div class="ph-item">
-      <div class="ph-dot ${evalClass[log.eval||'']}" title="${mk} · ${log.amount?log.amount.toLocaleString('ko-KR')+'원 투자':'투자금액 미입력'}">${evalEmoji[log.eval||'']}</div>
-      <div class="ph-lbl">${m}월</div>
-    </div>`;
-  }).join('') + '</div>';
-}
+// ─── 복리 시뮬레이터 ──────────────────────────────────────
+let selectedScenario = 'neutral';
 
 function renderSimulator(investable, mk) {
-  const defaultAmt = investable > 0 ? Math.round(investable/10000)*10000 : 100000;
+  const defaultAmt = investable > 0 ? Math.round(investable/10000)*10000 : 5000000;
   const defaultFmt = defaultAmt.toLocaleString('ko-KR');
   return `
   <div class="sim-card">
@@ -1280,7 +1159,6 @@ function formatSimMonthly(el) {
   if (hidden) hidden.value = num;
 }
 
-let selectedScenario = 'neutral';
 function selectScenario(s) {
   selectedScenario = s;
   const activeClass = { pessimistic:'active-pessimistic', neutral:'active-neutral', optimistic:'active-optimistic' };
@@ -1289,11 +1167,9 @@ function selectScenario(s) {
     if (!btn) return;
     btn.className = 'scen-btn' + (k===s ? ' '+activeClass[k] : '');
   });
-  // 차트 라인 굵기 업데이트 (차트 재렌더 없이)
   if (window._simChart) {
-    const colorMap = { pessimistic:'#DC2626', neutral:'#94A3B8', optimistic:'#16A34A' };
     window._simChart.data.datasets.forEach((ds, i) => {
-      if (i === 0) return; // 원금 막대 skip
+      if (i === 0) return;
       const key = ['pessimistic','neutral','optimistic'][i-1];
       const isSel = key === s;
       ds.borderWidth = isSel ? 3 : 1.5;
@@ -1301,28 +1177,21 @@ function selectScenario(s) {
       ds.borderDash  = isSel ? [] : [4, 3];
     });
     window._simChart.update();
-    // 결과 카드 하이라이트 업데이트
-    const colorMap2 = { pessimistic:'#DC2626', neutral:'#94A3B8', optimistic:'#16A34A' };
+    const colorMap = { pessimistic:'#DC2626', neutral:'#94A3B8', optimistic:'#16A34A' };
     ['pessimistic','neutral','optimistic'].forEach(k => {
       const card = document.getElementById('result-card-'+k);
       if (!card) return;
       const isSel = k === s;
-      card.style.background = isSel ? colorMap2[k]+'18' : 'var(--surface)';
-      card.style.outline = isSel ? '2px solid '+colorMap2[k] : 'none';
-      card.style.outlineOffset = '-2px';
+      card.style.background = isSel ? colorMap[k]+'15' : 'var(--surface)';
+      card.style.border = isSel ? '2px solid '+colorMap[k] : '1.5px solid var(--border)';
+      card.style.boxShadow = isSel ? '0 2px 8px '+colorMap[k]+'25' : 'none';
     });
   }
 }
 
 function selectScenarioFromCard(s) {
+  selectedScenario = s;
   selectScenario(s);
-  // 상단 버튼도 동기화
-  const activeClass = { pessimistic:'active-pessimistic', neutral:'active-neutral', optimistic:'active-optimistic' };
-  ['pessimistic','neutral','optimistic'].forEach(k => {
-    const btn = document.getElementById('scen-'+k);
-    if (!btn) return;
-    btn.className = 'scen-btn' + (k===s ? ' '+activeClass[k] : '');
-  });
 }
 
 function updateSimulator() {
@@ -1339,7 +1208,6 @@ function updateSimulator() {
     { key: 'optimistic',  label: '낙관적(10%)', rate: rateMap.optimistic  / 100 / 12, color: '#16A34A' },
   ];
 
-  // 각 시나리오 연도별 계산
   const scenarioData = scenarios.map(s => {
     let accum = 0;
     const yearly = [];
@@ -1353,10 +1221,6 @@ function updateSimulator() {
   const principalData = Array.from({length: years}, (_,i) => Math.round(monthly * 12 * (i+1)));
   const labels = Array.from({length: years}, (_,i) => (startYear + i + 1) + '년');
 
-  // 선택된 시나리오 결과 카드
-  const sel = scenarioData.find(s => s.key === (selectedScenario||'neutral'));
-  const final = sel.yearly[sel.yearly.length-1] || 0;
-  const profit = final - totalIn;
   const resultEl = document.getElementById('sim-result');
   if (resultEl) {
     resultEl.innerHTML = `
@@ -1381,7 +1245,6 @@ function updateSimulator() {
       </div>`;
   }
 
-  // 차트: 원금 + 3개 시나리오 라인
   if (window._simChart) { window._simChart.destroy(); }
   const ctx = document.getElementById('sim-chart');
   if (!ctx) return;
@@ -1395,13 +1258,11 @@ function updateSimulator() {
           const isSel = s.key === (selectedScenario||'neutral');
           return {
             label: s.label, data: s.yearly, type: 'line',
-            borderColor: s.color,
-            backgroundColor: s.color+'22',
+            borderColor: s.color, backgroundColor: s.color+'22',
             borderWidth: isSel ? 3 : 1.5,
             pointRadius: isSel ? 3 : 1,
             borderDash: isSel ? [] : [4, 3],
-            tension: 0.3, order: 1, fill: false,
-            borderDashOffset: 0
+            tension: 0.3, order: 1, fill: false
           };
         })
       ]
@@ -1425,28 +1286,17 @@ function updateSimulator() {
   });
 }
 
-function setEval(mk, val) {
-  if (!practiceLog[mk]) practiceLog[mk] = { eval: '', amount: 0 };
-  practiceLog[mk].eval = val;
-  renderPrinciple();
+// ─── 회고 데이터 ───────────────────────────────────
+const RETRO_KEY = 'mycashbook_retro_v1';
+let retroLog = {};   // { "2026-05": { memo: "", keywords: [] } }
+
+function loadRetro() {
+  try { const d = localStorage.getItem(RETRO_KEY); if (d) retroLog = JSON.parse(d); } catch(e) {}
+}
+function saveRetro() {
+  localStorage.setItem(RETRO_KEY, JSON.stringify(retroLog));
 }
 
-function savePractice(mk) {
-  const amt = parseFloat(document.getElementById('inp-practice-amt')?.value) || 0;
-  if (!practiceLog[mk]) practiceLog[mk] = { eval: '', amount: 0 };
-  practiceLog[mk].amount = amt;
-  savePrinciple();
-  showToast('실천 기록이 저장되었어요!');
-  renderPrinciple();
-}
-
-function savePrincipleText() {
-  principleText = document.getElementById('principle-text')?.value || '';
-  savePrinciple();
-  showToast('원칙이 저장되었어요!');
-}
-
-// ─── 회고 탭 ──────────────────────────────────────────────
 let retroMonth = new Date();
 
 function changeRetroMonth(d) {
@@ -1476,40 +1326,79 @@ function extractKeywords(text) {
 function renderRetro() {
   const mk = retroMonth.getFullYear()+'-'+String(retroMonth.getMonth()+1).padStart(2,'0');
   const log = retroLog[mk] || { memo: '', keywords: [] };
-  const history = Object.keys(retroLog).sort((a,b)=>b.localeCompare(a)).filter(k=>k!==mk).slice(0,6);
+  const income = getMonthIncome(mk);
+  const spent  = entries.filter(e=>getMonthKey(e.date)===mk).reduce((s,e)=>s+e.amount,0);
+  const investable = income - spent;
 
   const el = document.getElementById('retro-content');
-  el.innerHTML = `
-    <div class="pr-month-nav">
-      <button onclick="changeRetroMonth(-1)">&#8249;</button>
-      <span class="pr-month-title">${retroMonth.getFullYear()}년 ${retroMonth.getMonth()+1}월 회고</span>
-      <button onclick="changeRetroMonth(1)">&#8250;</button>
-    </div>
 
+  // 시뮬레이터 + 회고 입력 영역
+  el.innerHTML = `
+    ${renderSimulator(investable, mk)}
     <div class="pr-card">
-      <h3>✍️ 이달의 회고</h3>
+      <h3>✍️ 이달의 회고 <span style="font-size:11px;color:var(--text3);font-weight:400;margin-left:4px;">${retroMonth.getFullYear()}년 ${retroMonth.getMonth()+1}월</span></h3>
       <textarea class="retro-memo" id="retro-memo-input" placeholder="이번 달 소비와 생활을 돌아보며 자유롭게 써보세요. 잘한 것, 아쉬운 것, 다음 달 다짐 등 무엇이든 좋아요.">${log.memo||''}</textarea>
       <button class="btn-primary" style="margin-top:1.25rem;" onclick="saveRetroMemo('${mk}')">회고 저장</button>
     </div>
-
-    ${history.length ? `
-    <div class="pr-card">
-      <h3>📖 지난 회고</h3>
-      <div class="retro-history">
-        ${history.map(k => {
-          const r = retroLog[k];
-          const [y,m] = k.split('-');
-          return `<div class="retro-history-item">
-            <div class="retro-history-month">${y}년 ${parseInt(m)}월</div>
-
-            <div class="retro-history-memo">${r.memo ? (r.memo.length>120 ? r.memo.slice(0,120)+'...' : r.memo) : ''}</div>
-          </div>`;
-        }).join('')}
-      </div>
-    </div>` : ''}
+    <div id="retro-history-wrap"></div>
   `;
 
-  // 텍스트 있으면 키워드 바로 반영
+  // 회고 내역은 DOM으로 별도 구성 (템플릿 중첩 변수 충돌 방지)
+  const historyKeys = Object.keys(retroLog).sort((a,b)=>b.localeCompare(a));
+  const wrap = document.getElementById('retro-history-wrap');
+  if (historyKeys.length > 0) {
+    const card = document.createElement('div');
+    card.className = 'pr-card';
+    card.innerHTML = '<h3>📖 회고 내역</h3>';
+    const list = document.createElement('div');
+    list.className = 'retro-history';
+
+    historyKeys.forEach(function(key) {
+      const r = retroLog[key];
+      const parts = key.split('-');
+      const y = parts[0], m = parts[1];
+      const isCurrent = key === mk;
+
+      const item = document.createElement('div');
+      item.className = 'retro-history-item';
+      if (isCurrent) { item.style.borderColor = 'var(--accent)'; item.style.background = 'var(--accent-light)'; }
+
+      const header = document.createElement('div');
+      header.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;';
+
+      const monthLabel = document.createElement('div');
+      monthLabel.className = 'retro-history-month';
+      monthLabel.style.marginBottom = '0';
+      monthLabel.innerHTML = y+'년 '+parseInt(m)+'월'
+        + (isCurrent ? ' <span style="font-size:10px;background:var(--accent);color:#fff;padding:1px 6px;border-radius:99px;margin-left:4px;">이번 달</span>' : '');
+
+      const delBtn = document.createElement('button');
+      delBtn.textContent = '×';
+      delBtn.title = '삭제';
+      delBtn.style.cssText = 'background:none;border:none;cursor:pointer;color:var(--text3);font-size:15px;line-height:1;padding:0;transition:color 0.2s;';
+      delBtn.onmouseover = function(){ this.style.color='var(--red)'; };
+      delBtn.onmouseout  = function(){ this.style.color='var(--text3)'; };
+      delBtn.onclick = function(){ deleteRetroMemo(key); };
+
+      header.appendChild(monthLabel);
+      header.appendChild(delBtn);
+
+      const memo = document.createElement('div');
+      memo.className = 'retro-history-memo';
+      memo.innerHTML = r.memo
+        ? r.memo
+        : '<span style="color:var(--text3);font-style:italic;">작성된 회고가 없어요.</span>';
+
+      item.appendChild(header);
+      item.appendChild(memo);
+      list.appendChild(item);
+    });
+
+    card.appendChild(list);
+    wrap.appendChild(card);
+  }
+
+  setTimeout(updateSimulator, 50);
 }
 
 function updateKeywords() {
@@ -1530,10 +1419,17 @@ function saveRetroMemo(mk) {
   renderRetro();
 }
 
+function deleteRetroMemo(mk) {
+  if (!confirm('이 회고를 삭제할까요?')) return;
+  delete retroLog[mk];
+  saveRetro();
+  showToast('회고가 삭제되었어요.');
+  renderRetro();
+}
+
 
 // ─── 초기화 ──────────────────────────────────────────────────
 load();
-loadPrinciple();
 loadRetro();
 const now = new Date();
 document.getElementById('inp-date').value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
@@ -1544,7 +1440,7 @@ if (window._incomes !== undefined) incomes = window._incomes;
 
 window._appReady = true;
 renderQuickSummary();
-renderPrinciple();
+renderMonthly();
 </script>
 </body>
 </html>
