@@ -279,6 +279,13 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
 .sim-result .sr-sub  { font-size: 12px; color: var(--text2); }
 .sim-chart-wrap { overflow-x: auto; }
 
+/* 시나리오 버튼 */
+.scen-btn { flex:1; padding:12px 8px; font-family:var(--sans); font-size:13px; border:1.5px solid var(--border); border-radius:var(--radius-lg); background:var(--surface); cursor:pointer; transition:all 0.2s; color:var(--text3); text-align:center; line-height:1.6; }
+.scen-btn:hover { border-color: var(--border2); color: var(--text); background: var(--bg2); }
+.scen-btn.active-pessimistic { background:#FEF3F2; border-color:#F87171; color:#DC2626; font-weight:600; box-shadow:0 2px 8px #DC262620; }
+.scen-btn.active-neutral     { background:#F8FAFC; border-color:#CBD5E1; color:#94A3B8; font-weight:600; box-shadow:0 2px 8px #94A3B820; }
+.scen-btn.active-optimistic  { background:#F0FDF4; border-color:#4ADE80; color:#16A34A; font-weight:600; box-shadow:0 2px 8px #16A34A20; }
+
 /* 회고 */
 .retro-memo { width: 100%; font-family: var(--sans); font-size: 14px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; color: var(--text); outline: none; resize: none; min-height: 140px; line-height: 1.8; transition: border-color 0.2s; }
 .retro-memo:focus { border-color: var(--accent); }
@@ -1049,9 +1056,19 @@ function renderCalendar() {
   var calBody = document.getElementById('cal-body');
   calBody.innerHTML = html;
 
-  // 기존 팝업 제거
-  var old = document.getElementById('cal-popup');
-  if (old) old.remove();
+  // 오늘 날짜(또는 이번 달 가장 최근 기록 날짜) 팝업 자동 표시
+  var autoDate = null;
+  if (getMonthKey(todayStr) === mk) {
+    // 이번 달이면 오늘 기준으로 가장 최근 기록 날짜
+    var datesThisMonth = Object.keys(dayMap).sort((a,b)=>b.localeCompare(a));
+    var todayOrBefore = datesThisMonth.filter(d => d <= todayStr);
+    autoDate = todayOrBefore[0] || null;
+  } else {
+    // 다른 달이면 해당 달 마지막 기록 날짜
+    var datesThisMonth = Object.keys(dayMap).sort((a,b)=>b.localeCompare(a));
+    autoDate = datesThisMonth[0] || null;
+  }
+  if (autoDate) showCalPopup(autoDate);
 }
 
 function showCalPopup(dateStr) {
@@ -1207,6 +1224,7 @@ function renderPrinciple() {
     <!-- 복리 시뮬레이터 -->
     ${renderSimulator(investable, mk)}
   `;
+  setTimeout(updateSimulator, 50);
 }
 
 function renderPracticeHistory() {
@@ -1226,81 +1244,166 @@ function renderPracticeHistory() {
 
 function renderSimulator(investable, mk) {
   const defaultAmt = investable > 0 ? Math.round(investable/10000)*10000 : 100000;
+  const defaultFmt = defaultAmt.toLocaleString('ko-KR');
   return `
   <div class="sim-card">
     <h3>📈 복리 시뮬레이터</h3>
     <div class="sim-inputs">
       <div class="field">
         <label>월 투자 금액 (원)</label>
-        <input type="number" id="sim-monthly" value="${defaultAmt}" min="0" step="10000"
+        <input type="text" id="sim-monthly-display" value="${defaultFmt}"
           style="font-family:var(--sans);font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;color:var(--text);outline:none;width:100%;"
-          oninput="updateSimulator()" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
+          onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
+          oninput="formatSimMonthly(this); updateSimulator()"
         />
-      </div>
-      <div class="field">
-        <label>연 수익률 (%)</label>
-        <input type="number" id="sim-rate" value="7" min="0" max="50" step="0.5"
-          style="font-family:var(--sans);font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;color:var(--text);outline:none;width:100%;"
-          oninput="updateSimulator()" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
-        />
+        <input type="hidden" id="sim-monthly" value="${defaultAmt}" />
       </div>
       <div class="field">
         <label>투자 기간 (년)</label>
         <input type="number" id="sim-years" value="20" min="1" max="50"
           style="font-family:var(--sans);font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;color:var(--text);outline:none;width:100%;"
-          oninput="updateSimulator()" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
+          onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
+          onchange="updateSimulator()"
         />
       </div>
     </div>
     <div id="sim-result"></div>
-    <div class="sim-chart-wrap"><canvas id="sim-chart" style="max-height:220px;"></canvas></div>
+    <div class="sim-chart-wrap"><canvas id="sim-chart" style="max-height:240px;"></canvas></div>
   </div>`;
+}
+
+function formatSimMonthly(el) {
+  const raw = el.value.replace(/[^0-9]/g, '');
+  const num = parseInt(raw) || 0;
+  el.value = num.toLocaleString('ko-KR');
+  const hidden = document.getElementById('sim-monthly');
+  if (hidden) hidden.value = num;
+}
+
+let selectedScenario = 'neutral';
+function selectScenario(s) {
+  selectedScenario = s;
+  const activeClass = { pessimistic:'active-pessimistic', neutral:'active-neutral', optimistic:'active-optimistic' };
+  ['pessimistic','neutral','optimistic'].forEach(k => {
+    const btn = document.getElementById('scen-'+k);
+    if (!btn) return;
+    btn.className = 'scen-btn' + (k===s ? ' '+activeClass[k] : '');
+  });
+  // 차트 라인 굵기 업데이트 (차트 재렌더 없이)
+  if (window._simChart) {
+    const colorMap = { pessimistic:'#DC2626', neutral:'#94A3B8', optimistic:'#16A34A' };
+    window._simChart.data.datasets.forEach((ds, i) => {
+      if (i === 0) return; // 원금 막대 skip
+      const key = ['pessimistic','neutral','optimistic'][i-1];
+      const isSel = key === s;
+      ds.borderWidth = isSel ? 3 : 1.5;
+      ds.pointRadius = isSel ? 3 : 1;
+      ds.borderDash  = isSel ? [] : [4, 3];
+    });
+    window._simChart.update();
+    // 결과 카드 하이라이트 업데이트
+    const colorMap2 = { pessimistic:'#DC2626', neutral:'#94A3B8', optimistic:'#16A34A' };
+    ['pessimistic','neutral','optimistic'].forEach(k => {
+      const card = document.getElementById('result-card-'+k);
+      if (!card) return;
+      const isSel = k === s;
+      card.style.background = isSel ? colorMap2[k]+'18' : 'var(--surface)';
+      card.style.outline = isSel ? '2px solid '+colorMap2[k] : 'none';
+      card.style.outlineOffset = '-2px';
+    });
+  }
+}
+
+function selectScenarioFromCard(s) {
+  selectScenario(s);
+  // 상단 버튼도 동기화
+  const activeClass = { pessimistic:'active-pessimistic', neutral:'active-neutral', optimistic:'active-optimistic' };
+  ['pessimistic','neutral','optimistic'].forEach(k => {
+    const btn = document.getElementById('scen-'+k);
+    if (!btn) return;
+    btn.className = 'scen-btn' + (k===s ? ' '+activeClass[k] : '');
+  });
 }
 
 function updateSimulator() {
   const monthly = parseFloat(document.getElementById('sim-monthly')?.value) || 0;
-  const rate    = parseFloat(document.getElementById('sim-rate')?.value) / 100 / 12 || 0;
   const years   = parseInt(document.getElementById('sim-years')?.value) || 1;
   const months  = years * 12;
   const totalIn = monthly * months;
+  const startYear = new Date().getFullYear();
 
-  // 월복리 계산
-  let accum = 0;
-  const yearData = [];
-  for (let i = 1; i <= months; i++) {
-    accum = (accum + monthly) * (1 + rate);
-    if (i % 12 === 0) yearData.push(Math.round(accum));
-  }
-  const final = yearData[yearData.length-1] || 0;
+  const rateMap = { pessimistic: 4, neutral: 7, optimistic: 10 };
+  const scenarios = [
+    { key: 'pessimistic', label: '비관적(4%)',  rate: rateMap.pessimistic / 100 / 12, color: '#DC2626' },
+    { key: 'neutral',     label: '보통(7%)',    rate: rateMap.neutral     / 100 / 12, color: '#94A3B8' },
+    { key: 'optimistic',  label: '낙관적(10%)', rate: rateMap.optimistic  / 100 / 12, color: '#16A34A' },
+  ];
+
+  // 각 시나리오 연도별 계산
+  const scenarioData = scenarios.map(s => {
+    let accum = 0;
+    const yearly = [];
+    for (let i = 1; i <= months; i++) {
+      accum = (accum + monthly) * (1 + s.rate);
+      if (i % 12 === 0) yearly.push(Math.round(accum));
+    }
+    return { ...s, yearly };
+  });
+
+  const principalData = Array.from({length: years}, (_,i) => Math.round(monthly * 12 * (i+1)));
+  const labels = Array.from({length: years}, (_,i) => (startYear + i + 1) + '년');
+
+  // 선택된 시나리오 결과 카드
+  const sel = scenarioData.find(s => s.key === (selectedScenario||'neutral'));
+  const final = sel.yearly[sel.yearly.length-1] || 0;
   const profit = final - totalIn;
-
   const resultEl = document.getElementById('sim-result');
   if (resultEl) {
     resultEl.innerHTML = `
-      <div class="sim-result">
-        <div class="sr-main">${final.toLocaleString('ko-KR')}원</div>
-        <div class="sr-sub">
-          ${years}년 후 예상 자산 &nbsp;·&nbsp;
-          원금 ${totalIn.toLocaleString('ko-KR')}원 &nbsp;+&nbsp;
-          수익 <span style="color:var(--green);font-weight:500;">+${profit.toLocaleString('ko-KR')}원</span>
-          (${Math.round(profit/totalIn*100)}% 수익)
-        </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.25rem;">
+        ${scenarioData.map(s => {
+          const f = s.yearly[s.yearly.length-1]||0;
+          const p = f - totalIn;
+          const isSel = s.key === (selectedScenario||'neutral');
+          const emojiMap = { pessimistic:'😟', neutral:'😐', optimistic:'😊' };
+          const bgColor = isSel ? s.color+'15' : 'var(--surface)';
+          const borderStyle = isSel ? '2px solid '+s.color : '1.5px solid var(--border)';
+          const shadow = isSel ? '0 2px 8px '+s.color+'25' : 'none';
+          return `<div id="result-card-${s.key}" onclick="selectScenarioFromCard('${s.key}')"
+            style="background:${bgColor};padding:14px 12px;border:${borderStyle};border-radius:var(--radius-lg);cursor:pointer;transition:all 0.2s;box-shadow:${shadow};text-align:center;">
+            <div style="font-size:18px;margin-bottom:4px;">${emojiMap[s.key]}</div>
+            <div style="font-size:11px;color:${s.color};font-weight:600;margin-bottom:6px;">${s.label}</div>
+            <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:2px;">${f.toLocaleString('ko-KR')}원</div>
+            <div style="font-size:11px;color:var(--text3);">+${p.toLocaleString('ko-KR')}원</div>
+            <div style="font-size:11px;color:${s.color};font-weight:600;">${Math.round(p/totalIn*100)}% 수익</div>
+          </div>`;
+        }).join('')}
       </div>`;
   }
 
-  // 차트 업데이트
+  // 차트: 원금 + 3개 시나리오 라인
   if (window._simChart) { window._simChart.destroy(); }
   const ctx = document.getElementById('sim-chart');
   if (!ctx) return;
-  const labels = yearData.map((_,i)=>(i+1)+'년');
-  const principalData = yearData.map((_,i)=>Math.round(monthly*12*(i+1)));
   window._simChart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels,
       datasets: [
-        { label: '원금', data: principalData, backgroundColor: '#D8D4C8', borderRadius: 3 },
-        { label: '수익', data: yearData.map((v,i)=>v-principalData[i]), backgroundColor: '#3D6B5A', borderRadius: 3 }
+        { label: '원금', data: principalData, backgroundColor: '#D8D4C8', borderRadius: 3, order: 2 },
+        ...scenarioData.map(s => {
+          const isSel = s.key === (selectedScenario||'neutral');
+          return {
+            label: s.label, data: s.yearly, type: 'line',
+            borderColor: s.color,
+            backgroundColor: s.color+'22',
+            borderWidth: isSel ? 3 : 1.5,
+            pointRadius: isSel ? 3 : 1,
+            borderDash: isSel ? [] : [4, 3],
+            tension: 0.3, order: 1, fill: false,
+            borderDashOffset: 0
+          };
+        })
       ]
     },
     options: {
@@ -1308,12 +1411,15 @@ function updateSimulator() {
       plugins: {
         legend: { labels: { font: { family: "'Noto Sans KR'" }, boxWidth: 12 } },
         tooltip: { callbacks: {
-          label: c => ` ${c.dataset.label}: ${c.raw.toLocaleString('ko-KR')}원`
+          label: c => ` ${c.dataset.label}: ${Number(c.raw).toLocaleString('ko-KR')}원`
         }}
       },
       scales: {
-        x: { stacked: true, grid: { display: false }, ticks: { font: { family: "'Noto Sans KR'", size: 11 } } },
-        y: { stacked: true, ticks: { font: { family: "'Noto Sans KR'", size: 11 }, callback: v => (v/10000).toFixed(0)+'만' } }
+        x: { grid: { display: false }, ticks: { font: { family: "'Noto Sans KR'", size: 11 } } },
+        y: { ticks: { font: { family: "'Noto Sans KR'", size: 11 }, callback: v => {
+          if (v >= 100000000) return (v/100000000).toFixed(1)+'억';
+          return (v/10000).toFixed(0)+'만';
+        }}}
       }
     }
   });
