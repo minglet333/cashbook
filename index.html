@@ -788,7 +788,7 @@ async function requestInsight(mk) {
     + '{"good":"잘하고 있는 점 (2~3가지, 구체적 수치 포함, 100자 내외)","improve":"개선이 필요한 점 (2~3가지, 구체적 근거 포함, 100자 내외)","quote":"이달 소비를 보고 느낀 한마디 (따뜻하고 솔직하게, 50자 내외)"}';
 
   try {
-    var res = await fetch('https://api.anthropic.com/v1/messages', {
+    var res = await fetch('https://cashbook-proxy.roldeng-454.workers.dev', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
