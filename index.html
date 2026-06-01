@@ -41,10 +41,34 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
 .logo span { color: var(--accent); }
 .today-lbl { font-size: 12px; color: var(--text3); }
 
-.tabs { display: flex; margin-bottom: 2rem; border-bottom: 1px solid var(--border); }
-.tab { padding: 10px 20px; font-family: var(--sans); font-size: 14px; cursor: pointer; border: none; background: none; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.2s; }
+.tabs { display: flex; margin-bottom: 2rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.tab { padding: 10px 16px; font-family: var(--sans); font-size: 14px; cursor: pointer; border: none; background: none; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.2s; }
 .tab:hover { color: var(--text); }
-.tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
+
+/* 탭별 컬러 */
+.tab[data-tab="principle"]        { color: var(--text2); }
+.tab[data-tab="principle"]:hover  { color: #7C3AED; }
+.tab[data-tab="principle"].active { color: #7C3AED; border-bottom-color: #7C3AED; border-bottom-width: 3px; font-weight: 600; }
+
+.tab[data-tab="monthly"]        { color: var(--text2); }
+.tab[data-tab="monthly"]:hover  { color: #16A34A; }
+.tab[data-tab="monthly"].active { color: #16A34A; border-bottom-color: #16A34A; border-bottom-width: 3px; font-weight: 600; }
+
+.tab[data-tab="input"]        { color: var(--text2); }
+.tab[data-tab="input"]:hover  { color: #0284C7; }
+.tab[data-tab="input"].active { color: #0284C7; border-bottom-color: #0284C7; border-bottom-width: 3px; font-weight: 600; }
+
+.tab[data-tab="list"]        { color: var(--text2); }
+.tab[data-tab="list"]:hover  { color: #D97706; }
+.tab[data-tab="list"].active { color: #D97706; border-bottom-color: #D97706; border-bottom-width: 3px; font-weight: 600; }
+
+.tab[data-tab="calendar"]        { color: var(--text2); }
+.tab[data-tab="calendar"]:hover  { color: #0891B2; }
+.tab[data-tab="calendar"].active { color: #0891B2; border-bottom-color: #0891B2; border-bottom-width: 3px; font-weight: 600; }
+
+.tab[data-tab="retro"]        { color: var(--text2); }
+.tab[data-tab="retro"]:hover  { color: #E11D48; }
+.tab[data-tab="retro"].active { color: #E11D48; border-bottom-color: #E11D48; border-bottom-width: 3px; font-weight: 600; }
 
 .section { display: none; }
 .section.active { display: block; }
@@ -207,6 +231,70 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
 .btn-save { flex:1; padding:10px; font-family:var(--sans); font-size:14px; font-weight:500; background:var(--accent); color:#fff; border:none; border-radius:var(--radius); cursor:pointer; }
 .btn-save:hover { background:var(--accent2); }
 .btn-cancel { padding:10px 18px; font-family:var(--sans); font-size:14px; background:none; color:var(--text2); border:1px solid var(--border); border-radius:var(--radius); cursor:pointer; }
+
+/* ── 원칙 / 회고 공통 ── */
+.pr-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; }
+.pr-card h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 1.25rem; }
+.pr-month-nav { display: flex; align-items: center; margin-bottom: 2rem; }
+.pr-month-nav button { background: var(--surface); border: 1px solid var(--border); padding: 7px 14px; cursor: pointer; font-size: 16px; color: var(--text2); transition: background 0.2s; }
+.pr-month-nav button:first-child { border-radius: var(--radius) 0 0 var(--radius); border-right: none; }
+.pr-month-nav button:last-child  { border-radius: 0 var(--radius) var(--radius) 0; border-left: none; }
+.pr-month-nav button:hover { background: var(--bg2); }
+.pr-month-title { flex: 1; text-align: center; font-size: 17px; font-weight: 500; color: var(--text); border: 1px solid var(--border); padding: 7px 0; background: var(--surface); }
+
+/* 투자 가능 금액 배너 */
+.invest-banner { display: flex; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 1.5rem; }
+.invest-block { background: var(--surface); padding: 14px 18px; flex: 1; }
+.invest-block .lbl { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+.invest-block .val { font-size: 16px; font-weight: 600; }
+
+/* 실천 카드 */
+.practice-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; }
+.practice-card h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 1.25rem; }
+.practice-eval { display: flex; gap: 8px; margin-bottom: 1rem; }
+.eval-btn { flex: 1; padding: 10px; font-family: var(--sans); font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); cursor: pointer; transition: all 0.2s; color: var(--text2); }
+.eval-btn.selected-good { background: #E8F0EC; border-color: var(--green); color: var(--green); font-weight: 600; }
+.eval-btn.selected-bad  { background: #F5E8E8; border-color: var(--red);   color: var(--red);   font-weight: 600; }
+.eval-btn.selected-mid  { background: #F8F0E4; border-color: var(--amber); color: var(--amber); font-weight: 600; }
+
+/* 원칙 텍스트 에디터 */
+.principle-editor { width: 100%; font-family: var(--sans); font-size: 14px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; color: var(--text); outline: none; resize: none; min-height: 160px; line-height: 1.8; transition: border-color 0.2s; }
+.principle-editor:focus { border-color: var(--accent); }
+
+/* 원칙 이력 달력 */
+.principle-history { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+.ph-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.ph-dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 1px solid var(--border); background: var(--bg); cursor: default; }
+.ph-dot.good { background: #E8F0EC; border-color: var(--green); }
+.ph-dot.bad  { background: #F5E8E8; border-color: var(--red); }
+.ph-dot.mid  { background: #F8F0E4; border-color: var(--amber); }
+.ph-lbl { font-size: 10px; color: var(--text3); }
+
+/* 시뮬레이터 */
+.sim-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; }
+.sim-card h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 1.25rem; }
+.sim-inputs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.25rem; }
+.sim-result { background: var(--accent-light); border: 1px solid #C8DDD4; border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1rem; }
+.sim-result .sr-main { font-size: 22px; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+.sim-result .sr-sub  { font-size: 12px; color: var(--text2); }
+.sim-chart-wrap { overflow-x: auto; }
+
+/* 회고 */
+.retro-memo { width: 100%; font-family: var(--sans); font-size: 14px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; color: var(--text); outline: none; resize: none; min-height: 140px; line-height: 1.8; transition: border-color 0.2s; }
+.retro-memo:focus { border-color: var(--accent); }
+.keyword-wrap { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; min-height: 28px; }
+.keyword-tag { font-size: 12px; padding: 3px 10px; border-radius: 99px; background: var(--accent-light); color: var(--accent); border: 1px solid #C8DDD4; }
+.retro-history { display: flex; flex-direction: column; gap: 10px; margin-top: 0.5rem; }
+.retro-history-item { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
+.retro-history-month { font-size: 12px; font-weight: 600; color: var(--accent); margin-bottom: 6px; }
+.retro-history-keywords { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
+.retro-history-memo { font-size: 13px; color: var(--text2); line-height: 1.7; white-space: pre-wrap; }
+
+@media (max-width: 560px) {
+  .sim-inputs { grid-template-columns: 1fr; }
+  .invest-banner { flex-direction: column; }
+}
+
 </style>
 </head>
 <body>
@@ -220,14 +308,16 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
   </header>
 
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('monthly')">월별 분석</button>
-    <button class="tab" onclick="switchTab('input')">기록</button>
-    <button class="tab" onclick="switchTab('list')">내역</button>
-    <button class="tab" onclick="switchTab('calendar')">캘린더</button>
+    <button class="tab active" data-tab="principle" onclick="switchTab('principle')">원칙</button>
+    <button class="tab" data-tab="monthly" onclick="switchTab('monthly')">월별 분석</button>
+    <button class="tab" data-tab="input" onclick="switchTab('input')">기록</button>
+    <button class="tab" data-tab="list" onclick="switchTab('list')">내역</button>
+    <button class="tab" data-tab="calendar" onclick="switchTab('calendar')">캘린더</button>
+    <button class="tab" data-tab="retro" onclick="switchTab('retro')">회고</button>
   </div>
 
   <!-- 월별 분석 -->
-  <div class="section active" id="sec-monthly">
+  <div class="section" id="sec-monthly">
     <div class="month-nav">
       <button onclick="changeMonth(-1)">&#8249;</button>
       <span class="month-title" id="month-title"></span>
@@ -315,6 +405,16 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
       <div class="cal-legend-item"><div class="cal-dot no-entry"></div><span>기록 없음</span></div>
       <div class="cal-legend-item"><div class="cal-dot today-dot"></div><span>오늘</span></div>
     </div>
+  </div>
+
+  <!-- 원칙 -->
+  <div class="section active" id="sec-principle">
+    <div id="principle-content"></div>
+  </div>
+
+  <!-- 회고 -->
+  <div class="section" id="sec-retro">
+    <div id="retro-content"></div>
   </div>
 </div>
 
@@ -494,12 +594,13 @@ function updateCat2() {
 function switchTab(t) {
   document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  const idx = ['monthly','input','list','calendar'].indexOf(t);
-  document.querySelectorAll('.tab')[idx].classList.add('active');
+  document.querySelector('.tab[data-tab="'+t+'"]').classList.add('active');
   document.getElementById('sec-'+t).classList.add('active');
-  if (t === 'list')    { populateMonthFilter(); renderList(); }
-  if (t === 'monthly') renderMonthly();
-  if (t === 'calendar') renderCalendar();
+  if (t === 'list')      { populateMonthFilter(); renderList(); }
+  if (t === 'monthly')   renderMonthly();
+  if (t === 'calendar')  renderCalendar();
+  if (t === 'principle') renderPrinciple();
+  if (t === 'retro')     renderRetro();
 }
 
 function addEntry() {
@@ -1005,8 +1106,337 @@ function showToast(msg) {
   toastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
 }
 
+
+// ─── 원칙 / 회고 데이터 ───────────────────────────────────
+const PRINCIPLE_KEY = 'mycashbook_principle_v1';
+const RETRO_KEY     = 'mycashbook_retro_v1';
+let principleText  = '';   // 투자 원칙 텍스트
+let practiceLog    = {};   // { "2026-05": { eval: "good"|"mid"|"bad", amount: 0 } }
+let retroLog       = {};   // { "2026-05": { memo: "", keywords: [] } }
+
+function loadPrinciple() {
+  try {
+    const d = localStorage.getItem(PRINCIPLE_KEY);
+    if (d) { const p = JSON.parse(d); principleText = p.text||''; practiceLog = p.practice||{}; }
+  } catch(e) {}
+}
+function savePrinciple() {
+  localStorage.setItem(PRINCIPLE_KEY, JSON.stringify({ text: principleText, practice: practiceLog }));
+}
+function loadRetro() {
+  try { const d = localStorage.getItem(RETRO_KEY); if (d) retroLog = JSON.parse(d); } catch(e) {}
+}
+function saveRetro() {
+  localStorage.setItem(RETRO_KEY, JSON.stringify(retroLog));
+}
+
+// ─── 원칙 탭 ──────────────────────────────────────────────
+let principleMonth = new Date();
+
+function changePrincipleMonth(d) {
+  principleMonth = new Date(principleMonth.getFullYear(), principleMonth.getMonth()+d, 1);
+  renderPrinciple();
+}
+
+function renderPrinciple() {
+  const mk = principleMonth.getFullYear()+'-'+String(principleMonth.getMonth()+1).padStart(2,'0');
+  const income = getMonthIncome(mk);
+  const spent  = entries.filter(e=>getMonthKey(e.date)===mk).reduce((s,e)=>s+e.amount,0);
+  const investable = income - spent;
+  const log = practiceLog[mk] || { eval: '', amount: 0 };
+
+  const investColor = investable > 0 ? 'var(--green)' : investable < 0 ? 'var(--red)' : 'var(--text)';
+
+  const el = document.getElementById('principle-content');
+  el.innerHTML = `
+    <div class="pr-month-nav">
+      <button onclick="changePrincipleMonth(-1)">&#8249;</button>
+      <span class="pr-month-title">${principleMonth.getFullYear()}년 ${principleMonth.getMonth()+1}월</span>
+      <button onclick="changePrincipleMonth(1)">&#8250;</button>
+    </div>
+
+    <!-- 투자 가능 금액 배너 -->
+    <div class="invest-banner">
+      <div class="invest-block">
+        <div class="lbl">이달 수입</div>
+        <div class="val" style="color:var(--green);">${income > 0 ? income.toLocaleString('ko-KR')+'원' : '미입력'}</div>
+      </div>
+      <div class="invest-block">
+        <div class="lbl">이달 지출</div>
+        <div class="val">${spent.toLocaleString('ko-KR')}원</div>
+      </div>
+      <div class="invest-block">
+        <div class="lbl">💰 투자 가능 금액</div>
+        <div class="val" style="color:${investColor};">${income > 0 ? (investable>=0?'':'') + investable.toLocaleString('ko-KR')+'원' : '-'}</div>
+      </div>
+    </div>
+
+    <!-- 이달 실천 카드 -->
+    <div class="practice-card">
+      <h3>이달 투자 실천</h3>
+      <div class="field mb1">
+        <label>실제 투자 금액</label>
+        <input type="number" id="inp-practice-amt" placeholder="0" min="0"
+          value="${log.amount||''}"
+          style="font-family:var(--sans);font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;color:var(--text);outline:none;width:100%;transition:border-color 0.2s;"
+          onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
+        />
+      </div>
+      <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;">이달 평가</div>
+      <div class="practice-eval">
+        <button class="eval-btn ${log.eval==='good'?'selected-good':''}" onclick="setEval('${mk}','good')">👍 잘했어요</button>
+        <button class="eval-btn ${log.eval==='mid'?'selected-mid':''}"  onclick="setEval('${mk}','mid')">😐 그럭저럭</button>
+        <button class="eval-btn ${log.eval==='bad'?'selected-bad':''}"  onclick="setEval('${mk}','bad')">😞 못했어요</button>
+      </div>
+      <button class="btn-primary" style="margin-top:1rem;" onclick="savePractice('${mk}')">저장</button>
+    </div>
+
+    <!-- 투자 원칙 -->
+    <div class="pr-card">
+      <h3>📌 나의 투자 원칙</h3>
+      <textarea class="principle-editor" id="principle-text" placeholder="예) 매달 수입의 10% 이상 투자한다. 시장이 흔들려도 팔지 않는다. 투자는 미래의 나를 위한 선물이다.">${principleText}</textarea>
+      <button class="btn-primary" style="margin-top:1rem;" onclick="savePrincipleText()">원칙 저장</button>
+    </div>
+
+    <!-- 실천 이력 -->
+    <div class="pr-card">
+      <h3>📅 실천 이력</h3>
+      ${renderPracticeHistory()}
+    </div>
+
+    <!-- 복리 시뮬레이터 -->
+    ${renderSimulator(investable, mk)}
+  `;
+}
+
+function renderPracticeHistory() {
+  const keys = Object.keys(practiceLog).sort((a,b)=>b.localeCompare(a)).slice(0,24);
+  if (!keys.length) return '<div style="font-size:13px;color:var(--text3);">아직 기록이 없어요.</div>';
+  const evalEmoji = { good:'👍', mid:'😐', bad:'😞', '':'○' };
+  const evalClass = { good:'good', mid:'mid', bad:'bad', '':'' };
+  return '<div class="principle-history">' + keys.map(mk => {
+    const log = practiceLog[mk];
+    const [y,m] = mk.split('-');
+    return `<div class="ph-item">
+      <div class="ph-dot ${evalClass[log.eval||'']}" title="${mk} · ${log.amount?log.amount.toLocaleString('ko-KR')+'원 투자':'투자금액 미입력'}">${evalEmoji[log.eval||'']}</div>
+      <div class="ph-lbl">${m}월</div>
+    </div>`;
+  }).join('') + '</div>';
+}
+
+function renderSimulator(investable, mk) {
+  const defaultAmt = investable > 0 ? Math.round(investable/10000)*10000 : 100000;
+  return `
+  <div class="sim-card">
+    <h3>📈 복리 시뮬레이터</h3>
+    <div class="sim-inputs">
+      <div class="field">
+        <label>월 투자 금액 (원)</label>
+        <input type="number" id="sim-monthly" value="${defaultAmt}" min="0" step="10000"
+          style="font-family:var(--sans);font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;color:var(--text);outline:none;width:100%;"
+          oninput="updateSimulator()" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
+        />
+      </div>
+      <div class="field">
+        <label>연 수익률 (%)</label>
+        <input type="number" id="sim-rate" value="7" min="0" max="50" step="0.5"
+          style="font-family:var(--sans);font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;color:var(--text);outline:none;width:100%;"
+          oninput="updateSimulator()" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
+        />
+      </div>
+      <div class="field">
+        <label>투자 기간 (년)</label>
+        <input type="number" id="sim-years" value="20" min="1" max="50"
+          style="font-family:var(--sans);font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;color:var(--text);outline:none;width:100%;"
+          oninput="updateSimulator()" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
+        />
+      </div>
+    </div>
+    <div id="sim-result"></div>
+    <div class="sim-chart-wrap"><canvas id="sim-chart" style="max-height:220px;"></canvas></div>
+  </div>`;
+}
+
+function updateSimulator() {
+  const monthly = parseFloat(document.getElementById('sim-monthly')?.value) || 0;
+  const rate    = parseFloat(document.getElementById('sim-rate')?.value) / 100 / 12 || 0;
+  const years   = parseInt(document.getElementById('sim-years')?.value) || 1;
+  const months  = years * 12;
+  const totalIn = monthly * months;
+
+  // 월복리 계산
+  let accum = 0;
+  const yearData = [];
+  for (let i = 1; i <= months; i++) {
+    accum = (accum + monthly) * (1 + rate);
+    if (i % 12 === 0) yearData.push(Math.round(accum));
+  }
+  const final = yearData[yearData.length-1] || 0;
+  const profit = final - totalIn;
+
+  const resultEl = document.getElementById('sim-result');
+  if (resultEl) {
+    resultEl.innerHTML = `
+      <div class="sim-result">
+        <div class="sr-main">${final.toLocaleString('ko-KR')}원</div>
+        <div class="sr-sub">
+          ${years}년 후 예상 자산 &nbsp;·&nbsp;
+          원금 ${totalIn.toLocaleString('ko-KR')}원 &nbsp;+&nbsp;
+          수익 <span style="color:var(--green);font-weight:500;">+${profit.toLocaleString('ko-KR')}원</span>
+          (${Math.round(profit/totalIn*100)}% 수익)
+        </div>
+      </div>`;
+  }
+
+  // 차트 업데이트
+  if (window._simChart) { window._simChart.destroy(); }
+  const ctx = document.getElementById('sim-chart');
+  if (!ctx) return;
+  const labels = yearData.map((_,i)=>(i+1)+'년');
+  const principalData = yearData.map((_,i)=>Math.round(monthly*12*(i+1)));
+  window._simChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: '원금', data: principalData, backgroundColor: '#D8D4C8', borderRadius: 3 },
+        { label: '수익', data: yearData.map((v,i)=>v-principalData[i]), backgroundColor: '#3D6B5A', borderRadius: 3 }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { font: { family: "'Noto Sans KR'" }, boxWidth: 12 } },
+        tooltip: { callbacks: {
+          label: c => ` ${c.dataset.label}: ${c.raw.toLocaleString('ko-KR')}원`
+        }}
+      },
+      scales: {
+        x: { stacked: true, grid: { display: false }, ticks: { font: { family: "'Noto Sans KR'", size: 11 } } },
+        y: { stacked: true, ticks: { font: { family: "'Noto Sans KR'", size: 11 }, callback: v => (v/10000).toFixed(0)+'만' } }
+      }
+    }
+  });
+}
+
+function setEval(mk, val) {
+  if (!practiceLog[mk]) practiceLog[mk] = { eval: '', amount: 0 };
+  practiceLog[mk].eval = val;
+  renderPrinciple();
+}
+
+function savePractice(mk) {
+  const amt = parseFloat(document.getElementById('inp-practice-amt')?.value) || 0;
+  if (!practiceLog[mk]) practiceLog[mk] = { eval: '', amount: 0 };
+  practiceLog[mk].amount = amt;
+  savePrinciple();
+  showToast('실천 기록이 저장되었어요!');
+  renderPrinciple();
+}
+
+function savePrincipleText() {
+  principleText = document.getElementById('principle-text')?.value || '';
+  savePrinciple();
+  showToast('원칙이 저장되었어요!');
+}
+
+// ─── 회고 탭 ──────────────────────────────────────────────
+let retroMonth = new Date();
+
+function changeRetroMonth(d) {
+  retroMonth = new Date(retroMonth.getFullYear(), retroMonth.getMonth()+d, 1);
+  renderRetro();
+}
+
+function extractKeywords(text) {
+  if (!text || text.length < 5) return [];
+  // 불용어 제거 후 2글자 이상 명사/형용사 추출 (간단 규칙 기반)
+  const stopWords = ['있어','없어','했어','했는데','것같','같아','그래','그리고','하지만','근데','그냥','정말','너무','되게','진짜','이번','지난','다음','오늘','어제','내일','이달','지출','소비','우리','남편','나는','내가','에서','으로','에게','한번','했다','이다','이고','이며','하고','하며','해서','해야','하면','하는','하지','하니','한다','한게','인데','이라','이런','저런','그런','이건','저건','그건','이게','저게','그게','있는','없는','같은','이상','이하','이번달','지난달'];
+  const words = text
+    .replace(/[^가-힣a-zA-Z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter(w => w.length >= 2)
+    .filter(w => !stopWords.some(s => w.includes(s)));
+
+  // 빈도 계산
+  const freq = {};
+  words.forEach(w => { freq[w] = (freq[w]||0) + 1; });
+  return Object.entries(freq)
+    .sort((a,b) => b[1]-a[1])
+    .slice(0, 8)
+    .map(e => e[0]);
+}
+
+function renderRetro() {
+  const mk = retroMonth.getFullYear()+'-'+String(retroMonth.getMonth()+1).padStart(2,'0');
+  const log = retroLog[mk] || { memo: '', keywords: [] };
+  const history = Object.keys(retroLog).sort((a,b)=>b.localeCompare(a)).filter(k=>k!==mk).slice(0,6);
+
+  const el = document.getElementById('retro-content');
+  el.innerHTML = `
+    <div class="pr-month-nav">
+      <button onclick="changeRetroMonth(-1)">&#8249;</button>
+      <span class="pr-month-title">${retroMonth.getFullYear()}년 ${retroMonth.getMonth()+1}월 회고</span>
+      <button onclick="changeRetroMonth(1)">&#8250;</button>
+    </div>
+
+    <div class="pr-card">
+      <h3>✍️ 이달의 회고</h3>
+      <textarea class="retro-memo" id="retro-memo-input" placeholder="이번 달 소비와 생활을 돌아보며 자유롭게 써보세요. 잘한 것, 아쉬운 것, 다음 달 다짐 등 무엇이든 좋아요." oninput="updateKeywords()">${log.memo||''}</textarea>
+      ${log.keywords && log.keywords.length ? `
+      <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.6px;margin-top:1rem;margin-bottom:6px;">핵심 키워드</div>
+      <div class="keyword-wrap" id="keyword-wrap">
+        ${log.keywords.map(k=>`<span class="keyword-tag">${k}</span>`).join('')}
+      </div>` : `
+      <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.6px;margin-top:1rem;margin-bottom:6px;">핵심 키워드</div>
+      <div class="keyword-wrap" id="keyword-wrap"></div>`}
+      <button class="btn-primary" style="margin-top:1.25rem;" onclick="saveRetroMemo('${mk}')">회고 저장</button>
+    </div>
+
+    ${history.length ? `
+    <div class="pr-card">
+      <h3>📖 지난 회고</h3>
+      <div class="retro-history">
+        ${history.map(k => {
+          const r = retroLog[k];
+          const [y,m] = k.split('-');
+          return `<div class="retro-history-item">
+            <div class="retro-history-month">${y}년 ${parseInt(m)}월</div>
+            ${r.keywords&&r.keywords.length?`<div class="retro-history-keywords">${r.keywords.map(kw=>`<span class="keyword-tag">${kw}</span>`).join('')}</div>`:''}
+            <div class="retro-history-memo">${r.memo ? (r.memo.length>120 ? r.memo.slice(0,120)+'...' : r.memo) : ''}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>` : ''}
+  `;
+
+  // 텍스트 있으면 키워드 바로 반영
+  if (log.memo) setTimeout(updateKeywords, 50);
+}
+
+function updateKeywords() {
+  const text = document.getElementById('retro-memo-input')?.value || '';
+  const keywords = extractKeywords(text);
+  const wrap = document.getElementById('keyword-wrap');
+  if (wrap) {
+    wrap.innerHTML = keywords.map(k=>`<span class="keyword-tag">${k}</span>`).join('');
+  }
+}
+
+function saveRetroMemo(mk) {
+  const memo = document.getElementById('retro-memo-input')?.value || '';
+  const keywords = extractKeywords(memo);
+  retroLog[mk] = { memo, keywords };
+  saveRetro();
+  showToast('회고가 저장되었어요!');
+  renderRetro();
+}
+
+
 // ─── 초기화 ──────────────────────────────────────────────────
 load();
+loadPrinciple();
+loadRetro();
 const now = new Date();
 document.getElementById('inp-date').value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
 document.getElementById('today-lbl').textContent = `${now.getFullYear()}.${now.getMonth()+1}.${now.getDate()}`;
@@ -1016,7 +1446,7 @@ if (window._incomes !== undefined) incomes = window._incomes;
 
 window._appReady = true;
 renderQuickSummary();
-renderMonthly();
+renderPrinciple();
 </script>
 </body>
 </html>
