@@ -133,6 +133,8 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
   .grid2 { grid-template-columns: 1fr; }
   .summary-strip { grid-template-columns: 1fr; }
   .cat-row-label { width: 90px; }
+  .pie-charts-grid { grid-template-columns: 1fr !important; }
+  .pie-charts-grid > div:last-child { border-left: none !important; padding-left: 0 !important; border-top: 1px solid var(--border); padding-top: 1.5rem; }
 }
 
 /* 수입 카드 */
@@ -152,29 +154,6 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
 .income-total { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text2); }
 .income-total strong { font-size: 15px; color: var(--green); }
 
-/* AI 인사이트 */
-.ai-insight { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-top: 1.5rem; }
-.ai-insight-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
-.ai-insight-title { font-size: 13px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
-.ai-insight-title span { font-size: 16px; }
-.btn-insight { font-size: 12px; font-family: var(--sans); padding: 5px 14px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); cursor: pointer; transition: background 0.2s; white-space: nowrap; }
-.btn-insight:hover { background: var(--accent2); }
-.btn-insight:disabled { opacity: 0.5; cursor: not-allowed; }
-.insight-loading { display: flex; align-items: center; gap: 10px; color: var(--text3); font-size: 13px; padding: 1rem 0; }
-.insight-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: blink 1.2s infinite; }
-.insight-dot:nth-child(2) { animation-delay: 0.2s; }
-.insight-dot:nth-child(3) { animation-delay: 0.4s; }
-@keyframes blink { 0%,80%,100%{opacity:0.2} 40%{opacity:1} }
-.insight-section { margin-bottom: 1.1rem; }
-.insight-section:last-child { margin-bottom: 0; }
-.insight-section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
-.insight-section-body { font-size: 13px; color: var(--text2); line-height: 1.75; }
-.insight-good  .insight-section-label { color: var(--green); }
-.insight-bad   .insight-section-label { color: var(--amber); }
-.insight-quote .insight-section-label { color: var(--accent); }
-.insight-quote .insight-section-body { font-style: italic; color: var(--text); font-size: 14px; border-left: 3px solid var(--accent-light); padding-left: 12px; }
-.insight-empty { font-size: 13px; color: var(--text3); padding: 0.5rem 0; }
-.insight-notice { font-size: 12px; color: var(--amber); background: #FDF5E8; border: 1px solid #F0DDB0; border-radius: var(--radius); padding: 8px 12px; margin-top: 10px; }
 
 /* 캘린더 */
 .cal-nav { display: flex; align-items: center; margin-bottom: 1.5rem; }
@@ -397,7 +376,7 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
   // entries 실시간 동기화
   onValue(ref(db, 'entries'), function(snap) {
     const val = snap.val();
-    window._entries = val ? Object.values(val).sort((a,b)=>b.date.localeCompare(a.date)) : [];
+    window._entries = val ? normalizeEntries(Object.values(val).sort((a,b)=>b.date.localeCompare(a.date))) : [];
     if (window._appReady) {
       entries = window._entries;
       renderQuickSummary();
@@ -467,8 +446,14 @@ let incomes = {};   // { "2026-05": [{id, desc, amount}], ... }
 let viewMonth = new Date();
 
 // ─── 저장/불러오기 ────────────────────────────────────────────
+function normalizeEntries(arr) {
+  return arr.map(e => ({
+    ...e,
+    cat2: e.cat2 ? e.cat2.replace(/.*식\/음료/, '🍔 식/음료') : e.cat2
+  }));
+}
 function load() {
-  try { const d = localStorage.getItem(STORAGE_KEY); if (d) entries = JSON.parse(d); } catch(e) { entries = []; }
+  try { const d = localStorage.getItem(STORAGE_KEY); if (d) entries = normalizeEntries(JSON.parse(d)); } catch(e) { entries = []; }
   try { const d = localStorage.getItem(INCOME_KEY);  if (d) incomes = JSON.parse(d); } catch(e) { incomes = {}; }
 }
 function save() {
@@ -744,10 +729,21 @@ function renderMonthly() {
       <div class="sum-block"><div class="lbl">건당 평균</div><div class="val">${avg.toLocaleString('ko-KR')}원</div></div>
     </div>
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin-bottom:2rem;">
-      <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);margin-bottom:1rem;">대분류별 지출 비중</div>
-      <div style="display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
-        <div style="width:180px;height:180px;flex-shrink:0;"><canvas id="pie-chart"></canvas></div>
-        <div id="pie-legend" style="flex:1;min-width:140px;display:flex;flex-direction:column;gap:12px;"></div>
+      <div class="pie-charts-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+        <div>
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);margin-bottom:1rem;">대분류별 지출 비중</div>
+          <div style="display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;">
+            <div style="width:150px;height:150px;flex-shrink:0;"><canvas id="pie-chart"></canvas></div>
+            <div id="pie-legend" style="flex:1;min-width:100px;display:flex;flex-direction:column;gap:10px;"></div>
+          </div>
+        </div>
+        <div style="border-left:1px solid var(--border);padding-left:1.5rem;">
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);margin-bottom:1rem;">소분류별 지출 비중</div>
+          <div style="display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;">
+            <div style="width:150px;height:150px;flex-shrink:0;"><canvas id="pie-chart-sub"></canvas></div>
+            <div id="pie-legend-sub" style="flex:1;min-width:100px;display:flex;flex-direction:column;gap:10px;"></div>
+          </div>
+        </div>
       </div>
     </div>
   `;
@@ -802,23 +798,11 @@ function renderMonthly() {
 
   document.getElementById('monthly-content').innerHTML = html;
 
-  // AI 인사이트 카드를 DOM에 직접 추가 (innerHTML 이후에 붙여야 id 참조 가능)
-  const insightCard = document.createElement('div');
-  insightCard.className = 'ai-insight';
-  insightCard.innerHTML = `
-    <div class="ai-insight-header">
-      <div class="ai-insight-title"><span>✦</span> 흐름 분석</div>
-      <button class="btn-insight" id="btn-insight">AI 분석 요청</button>
-    </div>
-    <div id="insight-body"><div class="insight-empty">버튼을 누르면 이번 달 소비 패턴을 분석해드려요.</div></div>
-    <div class="insight-notice">⚠️ 현재 AI 분석 기능을 준비 중이에요. 곧 사용 가능해질 예정이에요!</div>
-  `;
-  document.getElementById('monthly-content').appendChild(insightCard);
-  document.getElementById('btn-insight').addEventListener('click', () => requestInsight(mk));
 
-  // 파이 차트
+
+  // 대분류 파이 차트
   if (window._pieChart) { window._pieChart.destroy(); }
-  const catKeys   = ['고정비','변동비','투자'].filter(c=>byCat[c]);
+  const catKeys   = ['고정비','변동비','투자','홧김소비'].filter(c=>byCat[c]);
   const catAmts   = catKeys.map(c=>byCat[c].total);
   const catColors = catKeys.map(c=>catColor(c));
   const catLabels = catKeys.map(c=>catLabel(c));
@@ -837,104 +821,49 @@ function renderMonthly() {
     });
     const leg = document.getElementById('pie-legend');
     if (leg) leg.innerHTML = catKeys.map((c,i) => `
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div style="width:12px;height:12px;border-radius:50%;background:${catColors[i]};flex-shrink:0;"></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:${catColors[i]};flex-shrink:0;"></div>
         <div>
-          <div style="font-size:13px;font-weight:500;color:var(--text);">${catLabels[i]}</div>
-          <div style="font-size:12px;color:var(--text3);">${catAmts[i].toLocaleString('ko-KR')}원 · ${Math.round(catAmts[i]/total*100)}%</div>
+          <div style="font-size:12px;font-weight:500;color:var(--text);">${catLabels[i]}</div>
+          <div style="font-size:11px;color:var(--text3);">${catAmts[i].toLocaleString('ko-KR')}원 · ${Math.round(catAmts[i]/total*100)}%</div>
+        </div>
+      </div>`).join('');
+  }
+
+  // 소분류 파이 차트
+  if (window._pieChartSub) { window._pieChartSub.destroy(); }
+  const subAll = {};
+  data.forEach(e => { subAll[e.cat2] = (subAll[e.cat2]||0) + e.amount; });
+  const subEntries = Object.entries(subAll).sort((a,b)=>b[1]-a[1]);
+  const subLabels = subEntries.map(s=>s[0]);
+  const subAmts   = subEntries.map(s=>s[1]);
+  const subColors = subEntries.map(s=>SUB_COLOR[s[0]]||'#999');
+  const ctxSub = document.getElementById('pie-chart-sub');
+  if (ctxSub) {
+    window._pieChartSub = new Chart(ctxSub, {
+      type: 'doughnut',
+      data: { labels: subLabels, datasets: [{ data: subAmts, backgroundColor: subColors, borderWidth: 2, borderColor: '#FAFAF7', hoverOffset: 6 }] },
+      options: {
+        cutout: '58%',
+        plugins: { legend: { display: false },
+          tooltip: { callbacks: { label: c => ` ${c.label}: ${c.raw.toLocaleString('ko-KR')}원 (${Math.round(c.raw/total*100)}%)` } }
+        },
+        animation: { duration: 600, easing: 'easeInOutQuart' }
+      }
+    });
+    const legSub = document.getElementById('pie-legend-sub');
+    if (legSub) legSub.innerHTML = subEntries.map((s,i) => `
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:${subColors[i]};flex-shrink:0;"></div>
+        <div>
+          <div style="font-size:12px;font-weight:500;color:var(--text);">${s[0]}</div>
+          <div style="font-size:11px;color:var(--text3);">${s[1].toLocaleString('ko-KR')}원 · ${Math.round(s[1]/total*100)}%</div>
         </div>
       </div>`).join('');
   }
 }
 
 
-async function requestInsight(mk) {
-  const btn  = document.getElementById('btn-insight');
-  const body = document.getElementById('insight-body');
-  if (!btn || !body) return;
-
-  const data = entries.filter(function(e){ return getMonthKey(e.date) === mk; });
-  if (!data.length) return;
-
-  btn.disabled = true;
-  btn.textContent = '분석 중...';
-  body.innerHTML = '<div class="insight-loading"><div class="insight-dot"></div><div class="insight-dot"></div><div class="insight-dot"></div><span>소비 패턴을 분석하고 있어요</span></div>';
-
-  var total  = data.reduce(function(s,e){ return s+e.amount; }, 0);
-  var income = getMonthIncome(mk);
-  var vc     = data.filter(function(e){ return e.values; }).length;
-  var pct    = data.length ? Math.round(vc/data.length*100) : 0;
-
-  var byCat = {};
-  data.forEach(function(e) {
-    if (!byCat[e.cat1]) byCat[e.cat1] = { total:0, subs:{}, items:[] };
-    byCat[e.cat1].total += e.amount;
-    byCat[e.cat1].subs[e.cat2] = (byCat[e.cat1].subs[e.cat2]||0) + e.amount;
-    byCat[e.cat1].items.push({ desc:e.desc, amount:e.amount, values:e.values, memo:e.memo });
-  });
-
-  var catSummary = Object.entries(byCat).map(function(pair) {
-    var cat = pair[0]; var info = pair[1];
-    var subList = Object.entries(info.subs).map(function(p){ return p[0]+': '+p[1].toLocaleString()+'원'; }).join(', ');
-    return '['+catLabel(cat)+'] 합계 '+info.total.toLocaleString()+'원\n  소분류: '+subList;
-  }).join('\n');
-
-  var itemList = data.map(function(e) {
-    return '- '+e.date+' / '+catLabel(e.cat1)+' > '+e.cat2+' / '+e.desc+' / '+e.amount.toLocaleString()+'원 / 가치관부합:'+(e.values?'O':'X')+(e.memo?' / 메모:'+e.memo:'');
-  }).join('\n');
-
-  var incomeStr = income > 0
-    ? '- 월 수입: '+income.toLocaleString()+'원 / 잔액: '+(income-total).toLocaleString()+'원 (지출 '+Math.round(total/income*100)+'%)'
-    : '- 수입 미입력';
-
-  var prompt = '아래는 사용자의 '+mk+' 가계부 데이터입니다.\n\n'
-    + '【이달 요약】\n'
-    + '- 총 지출: '+total.toLocaleString()+'원 ('+data.length+'건)\n'
-    + incomeStr+'\n'
-    + '- 가치관 부합률: '+pct+'% ('+vc+'/'+data.length+'건)\n\n'
-    + '【대분류별 지출】\n'+catSummary+'\n\n'
-    + '【전체 내역】\n'+itemList+'\n\n'
-    + '---\n'
-    + '이 가계부의 목적은 소비를 줄이기 위함이 아닙니다.\n'
-    + '돈의 쓰임새와 흐름을 살펴보고, 본인의 가치관에 맞게 살고 있는지 점검하기 위함입니다.\n'
-    + '물건소비·경험소비는 인적투자, 저축은 금융투자로 분류합니다.\n\n'
-    + '아래 3가지 항목으로 분석해주세요. 반드시 JSON만 반환하고 다른 텍스트는 절대 포함하지 마세요.\n\n'
-    + '{"good":"잘하고 있는 점 (2~3가지, 구체적 수치 포함, 100자 내외)","improve":"개선이 필요한 점 (2~3가지, 구체적 근거 포함, 100자 내외)","quote":"이달 소비를 보고 느낀 한마디 (따뜻하고 솔직하게, 50자 내외)"}';
-
-  try {
-    var res = await fetch('https://cashbook-proxy.roldeng-454.workers.dev', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-    var result = await res.json();
-    var text = result.content.map(function(b){ return b.text||''; }).join('').replace(/```json|```/g,'').trim();
-    var parsed = JSON.parse(text);
-
-    body.innerHTML =
-      '<div class="insight-section insight-good">'
-      + '<div class="insight-section-label">✓ 잘하고 있는 점</div>'
-      + '<div class="insight-section-body">'+parsed.good+'</div>'
-      + '</div>'
-      + '<div class="insight-section insight-bad">'
-      + '<div class="insight-section-label">△ 개선이 필요한 점</div>'
-      + '<div class="insight-section-body">'+parsed.improve+'</div>'
-      + '</div>'
-      + '<div class="insight-section insight-quote">'
-      + '<div class="insight-section-label">✦ 한마디</div>'
-      + '<div class="insight-section-body">'+parsed.quote+'</div>'
-      + '</div>';
-  } catch(err) {
-    body.innerHTML = '<div class="insight-empty">분석 중 오류가 발생했어요. 다시 시도해주세요.</div>';
-    if (btn) { btn.disabled = false; btn.textContent = '다시 시도'; }
-    return;
-  }
-  if (btn) { btn.disabled = false; btn.textContent = '다시 분석'; }
-}
 
 
 
@@ -1004,7 +933,7 @@ function renderCalendar() {
       html += dotHtml;
       // 합계 금액
       var dayTotal = recs.reduce(function(s,r){ return s+r.amount; }, 0);
-      html += '<div class="cal-total">'+Math.round(dayTotal/1000)+'k</div>';
+      html += '<div class="cal-total">'+dayTotal.toLocaleString('ko-KR')+'원</div>';
     }
     html += '</div>';
   }
