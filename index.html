@@ -830,18 +830,18 @@ function renderMonthly() {
     </div>
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin-bottom:2rem;">
       <div class="pie-charts-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
-        <div>
+        <div style="min-width:0;">
           <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);margin-bottom:1rem;">대분류별 지출 비중</div>
-          <div style="display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;">
+          <div style="display:flex;align-items:flex-start;gap:1.25rem;">
             <div style="width:150px;height:150px;flex-shrink:0;"><canvas id="pie-chart"></canvas></div>
-            <div id="pie-legend" style="flex:1;min-width:100px;display:flex;flex-direction:column;gap:10px;"></div>
+            <div id="pie-legend" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;"></div>
           </div>
         </div>
-        <div style="border-left:1px solid var(--border);padding-left:1.5rem;">
+        <div style="border-left:1px solid var(--border);padding-left:1.5rem;min-width:0;">
           <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);margin-bottom:1rem;">소분류별 지출 비중</div>
-          <div style="display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;">
+          <div style="display:flex;align-items:flex-start;gap:1.25rem;">
             <div style="width:150px;height:150px;flex-shrink:0;"><canvas id="pie-chart-sub"></canvas></div>
-            <div id="pie-legend-sub" style="flex:1;min-width:100px;display:flex;flex-direction:column;gap:10px;"></div>
+            <div id="pie-legend-sub" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;"></div>
           </div>
         </div>
       </div>
@@ -952,15 +952,42 @@ function renderMonthly() {
       }
     });
     const legSub = document.getElementById('pie-legend-sub');
-    if (legSub) legSub.innerHTML = subEntries.map((s,i) => `
-      <div style="display:flex;align-items:center;gap:8px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:${subColors[i]};flex-shrink:0;"></div>
-        <div>
-          <div style="font-size:12px;font-weight:500;color:var(--text);">${s[0]}</div>
-          <div style="font-size:11px;color:var(--text3);">${s[1].toLocaleString('ko-KR')}원 · ${Math.round(s[1]/total*100)}%</div>
-        </div>
-      </div>`).join('');
+    if (legSub) {
+      const TOP = 5;
+      const makeItem = (s, i) => `
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:10px;height:10px;border-radius:50%;background:${subColors[i]};flex-shrink:0;"></div>
+          <div style="min-width:0;">
+            <div style="font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${s[0]}</div>
+            <div style="font-size:11px;color:var(--text3);">${s[1].toLocaleString('ko-KR')}원 · ${Math.round(s[1]/total*100)}%</div>
+          </div>
+        </div>`;
+      const topItems  = subEntries.slice(0, TOP).map((s,i) => makeItem(s,i)).join('');
+      const restItems = subEntries.slice(TOP).map((s,i) => makeItem(s, i+TOP)).join('');
+      const hasMore = subEntries.length > TOP;
+      legSub.innerHTML = topItems
+        + (hasMore ? `
+          <div id="sub-legend-more" style="display:none;display:flex;flex-direction:column;gap:10px;">${restItems}</div>
+          <button id="sub-legend-toggle" onclick="toggleSubLegend()"
+            style="margin-top:4px;background:none;border:none;cursor:pointer;font-size:11px;color:var(--accent);font-family:var(--sans);padding:0;text-align:left;">
+            + ${subEntries.length - TOP}개 더 보기 ▾
+          </button>` : '');
+      if (hasMore) document.getElementById('sub-legend-more').style.display = 'none';
+    }
   }
+}
+
+function toggleSubLegend() {
+  const more = document.getElementById('sub-legend-more');
+  const btn  = document.getElementById('sub-legend-toggle');
+  if (!more || !btn) return;
+  const isHidden = more.style.display === 'none';
+  more.style.display = isHidden ? 'flex' : 'none';
+  more.style.flexDirection = 'column';
+  more.style.gap = '10px';
+  btn.textContent = isHidden
+    ? '접기 ▴'
+    : '+ ' + more.children.length + '개 더 보기 ▾';
 }
 
 
