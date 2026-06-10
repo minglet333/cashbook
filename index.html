@@ -9,90 +9,74 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet" />
 <style>
 :root {
-  --bg: #F5F2EC;
-  --bg2: #EDEAE2;
-  --surface: #FAFAF7;
-  --border: #D8D4C8;
-  --border2: #C8C4B8;
-  --text: #1A1814;
-  --text2: #6B6760;
-  --text3: #9A9690;
-  --accent: #2D4A3E;
-  --accent2: #3D6B5A;
-  --accent-light: #E8F0EC;
-  --c-fixed: #7B9EC4;
-  --c-var: #C9906A;
-  --c-invest: #9B7DC4;
-  --c-anger: #D97B7B;
-  --green: #2D6A4F;
-  --amber: #B5621A;
-  --red: #B03030;
-  --sans: 'Noto Sans KR', sans-serif;
-  --radius: 4px;
-  --radius-lg: 8px;
+--bg: #F5F2EC;
+--bg2: #EDEAE2;
+--surface: #FAFAF7;
+--border: #D8D4C8;
+--border2: #C8C4B8;
+--text: #1A1814;
+--text2: #6B6760;
+--text3: #9A9690;
+--accent: #2D4A3E;
+--accent2: #3D6B5A;
+--accent-light: #E8F0EC;
+--c-fixed: #7B9EC4;
+--c-var: #C9906A;
+--c-invest: #9B7DC4;
+--c-anger: #D97B7B;
+--green: #2D6A4F;
+--amber: #B5621A;
+--red: #B03030;
+--sans: 'Noto Sans KR', sans-serif;
+--radius: 4px;
+--radius-lg: 8px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.6; }
 body { min-height: 100vh; }
-
 .wrapper { max-width: 780px; margin: 0 auto; padding: 0 1.5rem 4rem; }
 header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; display: flex; align-items: flex-end; justify-content: space-between; }
 .logo { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
 .logo span { color: var(--accent); }
 .today-lbl { font-size: 12px; color: var(--text3); }
-
 .tabs { display: flex; margin-bottom: 2rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
 .tab { padding: 10px 16px; font-family: var(--sans); font-size: 14px; cursor: pointer; border: none; background: none; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.2s; }
 .tab:hover { color: var(--text); }
-
-/* 탭별 컬러 */
-
-.tab[data-tab="monthly"]        { color: var(--text2); }
-.tab[data-tab="monthly"]:hover  { color: #16A34A; }
+.tab[data-tab="monthly"] { color: var(--text2); }
+.tab[data-tab="monthly"]:hover { color: #16A34A; }
 .tab[data-tab="monthly"].active { color: #16A34A; border-bottom-color: #16A34A; border-bottom-width: 3px; font-weight: 600; }
-
-.tab[data-tab="input"]        { color: var(--text2); }
-.tab[data-tab="input"]:hover  { color: #0284C7; }
+.tab[data-tab="input"] { color: var(--text2); }
+.tab[data-tab="input"]:hover { color: #0284C7; }
 .tab[data-tab="input"].active { color: #0284C7; border-bottom-color: #0284C7; border-bottom-width: 3px; font-weight: 600; }
-
-.tab[data-tab="list"]        { color: var(--text2); }
-.tab[data-tab="list"]:hover  { color: #D97706; }
+.tab[data-tab="list"] { color: var(--text2); }
+.tab[data-tab="list"]:hover { color: #D97706; }
 .tab[data-tab="list"].active { color: #D97706; border-bottom-color: #D97706; border-bottom-width: 3px; font-weight: 600; }
-
-.tab[data-tab="calendar"]        { color: var(--text2); }
-.tab[data-tab="calendar"]:hover  { color: #0891B2; }
+.tab[data-tab="calendar"] { color: var(--text2); }
+.tab[data-tab="calendar"]:hover { color: #0891B2; }
 .tab[data-tab="calendar"].active { color: #0891B2; border-bottom-color: #0891B2; border-bottom-width: 3px; font-weight: 600; }
-
-.tab[data-tab="retro"]        { color: var(--text2); }
-.tab[data-tab="retro"]:hover  { color: #E11D48; }
+.tab[data-tab="retro"] { color: var(--text2); }
+.tab[data-tab="retro"]:hover { color: #E11D48; }
 .tab[data-tab="retro"].active { color: #E11D48; border-bottom-color: #E11D48; border-bottom-width: 3px; font-weight: 600; }
-
 .section { display: none; }
 .section.active { display: block; }
-
-/* 카테고리 뱃지 (컬러 동그라미) */
 .cat-badge { display: inline-flex; align-items: center; gap: 6px; }
 .cat-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
 .cat-dot.fixed { background: var(--c-fixed); }
-.cat-dot.var   { background: var(--c-var); }
+.cat-dot.var { background: var(--c-var); }
 .cat-dot.invest{ background: var(--c-invest); }
-
-/* Summary strip */
 .summary-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 2rem; }
 .sum-block { background: var(--surface); padding: 14px 18px; }
 .sum-block .lbl { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
 .sum-block .val { font-size: 15px; font-weight: 500; color: var(--text); }
 .sum-block .sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
-
-/* Form */
 .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; }
 .form-card h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 1.25rem; }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
 .field { display: flex; flex-direction: column; gap: 5px; }
 .field label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.6px; }
 .field input, .field select, .field textarea {
-  font-family: var(--sans); font-size: 14px; background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 8px 10px; color: var(--text); outline: none; transition: border-color 0.2s;
+font-family: var(--sans); font-size: 14px; background: var(--bg); border: 1px solid var(--border);
+border-radius: var(--radius); padding: 8px 10px; color: var(--text); outline: none; transition: border-color 0.2s;
 }
 .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); }
 .field textarea { resize: none; height: 64px; line-height: 1.5; }
@@ -102,8 +86,6 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
 .values-row label { font-size: 13px; color: var(--accent); cursor: pointer; }
 .btn-primary { width: 100%; padding: 11px; font-family: var(--sans); font-size: 14px; font-weight: 500; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); cursor: pointer; transition: background 0.2s; }
 .btn-primary:hover { background: var(--accent2); }
-
-/* Entry list */
 .list-controls { display: flex; gap: 10px; align-items: center; margin-bottom: 1.25rem; justify-content: space-between; }
 .list-controls h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); }
 .filter-wrap { display: flex; gap: 8px; }
@@ -121,12 +103,10 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
 .btn-del { background: none; border: none; cursor: pointer; color: var(--text3); font-size: 18px; line-height: 1; padding: 0; margin-top: 2px; transition: color 0.2s; }
 .btn-del:hover { color: var(--red); }
 .empty { text-align: center; padding: 3rem 1rem; color: var(--text3); font-size: 14px; }
-
-/* Monthly */
 .month-nav { display: flex; align-items: center; margin-bottom: 2rem; }
 .month-nav button { background: var(--surface); border: 1px solid var(--border); padding: 7px 14px; cursor: pointer; font-size: 16px; color: var(--text2); transition: background 0.2s; }
 .month-nav button:first-child { border-radius: var(--radius) 0 0 var(--radius); border-right: none; }
-.month-nav button:last-child  { border-radius: 0 var(--radius) var(--radius) 0; border-left: none; }
+.month-nav button:last-child { border-radius: 0 var(--radius) var(--radius) 0; border-left: none; }
 .month-nav button:hover { background: var(--bg2); }
 .month-title { flex: 1; text-align: center; font-size: 17px; font-weight: 500; color: var(--text); border: 1px solid var(--border); padding: 7px 0; background: var(--surface); }
 .cat-section { margin-bottom: 1.75rem; }
@@ -144,21 +124,17 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
 .v-lbl { font-size: 10px; color: var(--text3); margin-top: 2px; }
 .v-text { font-size: 13px; color: var(--text2); line-height: 1.7; }
 .v-text strong { font-size: 14px; color: var(--text); font-weight: 500; display: block; margin-bottom: 4px; }
-
 .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #fff; padding: 9px 22px; border-radius: 99px; font-size: 13px; z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
 .toast.show { opacity: 1; }
 .export-btn { font-family: var(--sans); font-size: 13px; color: var(--text3); background: none; border: 1px solid var(--border); border-radius: var(--radius); padding: 5px 12px; cursor: pointer; transition: all 0.2s; }
 .export-btn:hover { background: var(--bg2); color: var(--text); }
-
 @media (max-width: 560px) {
-  .grid2 { grid-template-columns: 1fr; }
-  .summary-strip { grid-template-columns: 1fr; }
-  .cat-row-label { width: 90px; }
-  .pie-charts-grid { grid-template-columns: 1fr !important; }
-  .pie-charts-grid > div:last-child { border-left: none !important; padding-left: 0 !important; border-top: 1px solid var(--border); padding-top: 1.5rem; }
+.grid2 { grid-template-columns: 1fr; }
+.summary-strip { grid-template-columns: 1fr; }
+.cat-row-label { width: 90px; }
+.pie-charts-grid { grid-template-columns: 1fr !important; }
+.pie-charts-grid > div:last-child { border-left: none !important; padding-left: 0 !important; border-top: 1px solid var(--border); padding-top: 1.5rem; }
 }
-
-/* 수입 카드 */
 .income-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; }
 .income-card h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 1rem; }
 .income-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
@@ -169,24 +145,21 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
 .income-list { display: flex; flex-direction: column; gap: 5px; }
 .income-item { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; background: var(--bg); border-radius: var(--radius); font-size: 13px; }
 .income-item .i-desc { color: var(--text2); flex: 1; }
-.income-item .i-amt  { font-weight: 500; color: var(--green); margin-right: 10px; }
-.income-item .i-del  { background: none; border: none; cursor: pointer; color: var(--text3); font-size: 15px; transition: color 0.2s; }
+.income-item .i-amt { font-weight: 500; color: var(--green); margin-right: 10px; }
+.income-item .i-del { background: none; border: none; cursor: pointer; color: var(--text3); font-size: 15px; transition: color 0.2s; }
 .income-item .i-del:hover { color: var(--red); }
 .income-total { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text2); }
 .income-total strong { font-size: 15px; color: var(--green); }
-
-
-/* 캘린더 */
 .cal-nav { display: flex; align-items: center; margin-bottom: 1.5rem; }
 .cal-nav button { background: var(--surface); border: 1px solid var(--border); padding: 7px 14px; cursor: pointer; font-size: 16px; color: var(--text2); transition: background 0.2s; }
 .cal-nav button:first-child { border-radius: var(--radius) 0 0 var(--radius); border-right: none; }
-.cal-nav button:last-child  { border-radius: 0 var(--radius) var(--radius) 0; border-left: none; }
+.cal-nav button:last-child { border-radius: 0 var(--radius) var(--radius) 0; border-left: none; }
 .cal-nav button:hover { background: var(--bg2); }
 .cal-title { flex: 1; text-align: center; font-size: 17px; font-weight: 500; color: var(--text); border: 1px solid var(--border); padding: 7px 0; background: var(--surface); }
 .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
 .cal-weekday { text-align: center; font-size: 11px; font-weight: 600; color: var(--text3); padding: 4px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
 .cal-weekday:first-child { color: #C0625A; }
-.cal-weekday:last-child  { color: #5B7EC0; }
+.cal-weekday:last-child { color: #5B7EC0; }
 .cal-cell { aspect-ratio: 1; border-radius: var(--radius); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: default; position: relative; border: 1px solid transparent; transition: border-color 0.15s; }
 .cal-cell.has-record { background: var(--surface); border-color: var(--border); cursor: pointer; }
 .cal-cell.has-record:hover { border-color: var(--border2); }
@@ -201,11 +174,9 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
 .cal-legend { display: flex; gap: 16px; margin-top: 1.25rem; justify-content: center; }
 .cal-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text3); }
 .cal-dot { width: 8px; height: 8px; border-radius: 50%; }
-.cal-dot.has-entry  { background: var(--accent); }
-.cal-dot.no-entry   { background: var(--border); }
-.cal-dot.today-dot  { background: var(--accent); outline: 2px solid var(--accent-light); }
-
-/* 날짜 클릭 팝업 */
+.cal-dot.has-entry { background: var(--accent); }
+.cal-dot.no-entry { background: var(--border); }
+.cal-dot.today-dot { background: var(--accent); outline: 2px solid var(--accent-light); }
 .cal-popup { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-top: 1.25rem; }
 .cal-popup-date { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
 .cal-popup-close { background: none; border: none; cursor: pointer; color: var(--text3); font-size: 18px; line-height: 1; }
@@ -214,10 +185,8 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
 .cal-popup-stripe { width: 3px; height: 28px; border-radius: 2px; flex-shrink: 0; }
 .cal-popup-info { flex: 1; }
 .cal-popup-desc { font-size: 13px; font-weight: 500; color: var(--text); }
-.cal-popup-sub  { font-size: 11px; color: var(--text3); margin-top: 1px; }
-.cal-popup-amt  { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; }
-
-/* 수정 모달 */
+.cal-popup-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+.cal-popup-amt { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; }
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1000; align-items:center; justify-content:center; }
 .modal-overlay.open { display:flex; }
 .modal { background:var(--surface); border-radius:var(--radius-lg); padding:1.5rem; width:90%; max-width:500px; max-height:90vh; overflow-y:auto; }
@@ -228,62 +197,46 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
 .btn-save { flex:1; padding:10px; font-family:var(--sans); font-size:14px; font-weight:500; background:var(--accent); color:#fff; border:none; border-radius:var(--radius); cursor:pointer; }
 .btn-save:hover { background:var(--accent2); }
 .btn-cancel { padding:10px 18px; font-family:var(--sans); font-size:14px; background:none; color:var(--text2); border:1px solid var(--border); border-radius:var(--radius); cursor:pointer; }
-
-/* ── 원칙 / 회고 공통 ── */
 .pr-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; }
 .pr-card h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 1.25rem; }
 .pr-month-nav { display: flex; align-items: center; margin-bottom: 2rem; }
 .pr-month-nav button { background: var(--surface); border: 1px solid var(--border); padding: 7px 14px; cursor: pointer; font-size: 16px; color: var(--text2); transition: background 0.2s; }
 .pr-month-nav button:first-child { border-radius: var(--radius) 0 0 var(--radius); border-right: none; }
-.pr-month-nav button:last-child  { border-radius: 0 var(--radius) var(--radius) 0; border-left: none; }
+.pr-month-nav button:last-child { border-radius: 0 var(--radius) var(--radius) 0; border-left: none; }
 .pr-month-nav button:hover { background: var(--bg2); }
 .pr-month-title { flex: 1; text-align: center; font-size: 17px; font-weight: 500; color: var(--text); border: 1px solid var(--border); padding: 7px 0; background: var(--surface); }
-
-/* 투자 가능 금액 배너 */
 .invest-banner { display: flex; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 1.5rem; }
 .invest-block { background: var(--surface); padding: 14px 18px; flex: 1; }
 .invest-block .lbl { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
 .invest-block .val { font-size: 16px; font-weight: 600; }
-
-/* 실천 카드 */
 .practice-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; }
 .practice-card h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 1.25rem; }
 .practice-eval { display: flex; gap: 8px; margin-bottom: 1rem; }
 .eval-btn { flex: 1; padding: 10px; font-family: var(--sans); font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); cursor: pointer; transition: all 0.2s; color: var(--text2); }
 .eval-btn.selected-good { background: #E8F0EC; border-color: var(--green); color: var(--green); font-weight: 600; }
-.eval-btn.selected-bad  { background: #F5E8E8; border-color: var(--red);   color: var(--red);   font-weight: 600; }
-.eval-btn.selected-mid  { background: #F8F0E4; border-color: var(--amber); color: var(--amber); font-weight: 600; }
-
-/* 원칙 텍스트 에디터 */
+.eval-btn.selected-bad { background: #F5E8E8; border-color: var(--red); color: var(--red); font-weight: 600; }
+.eval-btn.selected-mid { background: #F8F0E4; border-color: var(--amber); color: var(--amber); font-weight: 600; }
 .principle-editor { width: 100%; font-family: var(--sans); font-size: 14px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; color: var(--text); outline: none; resize: none; min-height: 160px; line-height: 1.8; transition: border-color 0.2s; }
 .principle-editor:focus { border-color: var(--accent); }
-
-/* 원칙 이력 달력 */
 .principle-history { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
 .ph-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
 .ph-dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 1px solid var(--border); background: var(--bg); cursor: default; }
 .ph-dot.good { background: #E8F0EC; border-color: var(--green); }
-.ph-dot.bad  { background: #F5E8E8; border-color: var(--red); }
-.ph-dot.mid  { background: #F8F0E4; border-color: var(--amber); }
+.ph-dot.bad { background: #F5E8E8; border-color: var(--red); }
+.ph-dot.mid { background: #F8F0E4; border-color: var(--amber); }
 .ph-lbl { font-size: 10px; color: var(--text3); }
-
-/* 시뮬레이터 */
 .sim-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; }
 .sim-card h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 1.25rem; }
 .sim-inputs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.25rem; }
 .sim-result { background: var(--accent-light); border: 1px solid #C8DDD4; border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1rem; }
 .sim-result .sr-main { font-size: 22px; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
-.sim-result .sr-sub  { font-size: 12px; color: var(--text2); }
+.sim-result .sr-sub { font-size: 12px; color: var(--text2); }
 .sim-chart-wrap { overflow-x: auto; }
-
-/* 시나리오 버튼 */
 .scen-btn { flex:1; padding:12px 8px; font-family:var(--sans); font-size:13px; border:1.5px solid var(--border); border-radius:var(--radius-lg); background:var(--surface); cursor:pointer; transition:all 0.2s; color:var(--text3); text-align:center; line-height:1.6; }
 .scen-btn:hover { border-color: var(--border2); color: var(--text); background: var(--bg2); }
 .scen-btn.active-pessimistic { background:#FEF3F2; border-color:#F87171; color:#DC2626; font-weight:600; box-shadow:0 2px 8px #DC262620; }
-.scen-btn.active-neutral     { background:#F8FAFC; border-color:#CBD5E1; color:#94A3B8; font-weight:600; box-shadow:0 2px 8px #94A3B820; }
-.scen-btn.active-optimistic  { background:#F0FDF4; border-color:#4ADE80; color:#16A34A; font-weight:600; box-shadow:0 2px 8px #16A34A20; }
-
-/* 회고 */
+.scen-btn.active-neutral { background:#F8FAFC; border-color:#CBD5E1; color:#94A3B8; font-weight:600; box-shadow:0 2px 8px #94A3B820; }
+.scen-btn.active-optimistic { background:#F0FDF4; border-color:#4ADE80; color:#16A34A; font-weight:600; box-shadow:0 2px 8px #16A34A20; }
 .retro-memo { width: 100%; font-family: var(--sans); font-size: 14px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; color: var(--text); outline: none; resize: none; min-height: 140px; line-height: 1.8; transition: border-color 0.2s; }
 .retro-memo:focus { border-color: var(--accent); }
 .keyword-wrap { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; min-height: 28px; }
@@ -293,1234 +246,1070 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
 .retro-history-month { font-size: 12px; font-weight: 600; color: var(--accent); margin-bottom: 6px; }
 .retro-history-keywords { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
 .retro-history-memo { font-size: 13px; color: var(--text2); line-height: 1.7; white-space: pre-wrap; }
-
 @media (max-width: 560px) {
-  .sim-inputs { grid-template-columns: 1fr; }
-  .invest-banner { flex-direction: column; }
+.sim-inputs { grid-template-columns: 1fr; }
+.invest-banner { flex-direction: column; }
 }
-
 </style>
 </head>
 <body>
 <div class="wrapper">
-  <header>
-    <div>
-      <div class="logo">나만의 <span>가계부</span></div>
-      <div style="font-size:12px;color:var(--text3);margin-top:3px;">가치관과 돈의 흐름을 기록합니다</div>
-    </div>
-    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;"><div class="today-lbl" id="today-lbl"></div><div id="sync-status" style="font-size:11px;color:var(--text3);">⏳ 연결 중...</div></div>
-  </header>
+<header>
+<div>
+<div class="logo">나만의 <span>가계부</span></div>
+<div style="font-size:12px;color:var(--text3);margin-top:3px;">가치관과 돈의 흐름을 기록합니다</div>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;"><div class="today-lbl" id="today-lbl"></div><div id="sync-status" style="font-size:11px;color:var(--text3);">⏳ 연결 중...</div></div>
+</header>
 
-  <div class="tabs">
-    <button class="tab active" data-tab="monthly" onclick="switchTab('monthly')">월별 분석</button>
-    <button class="tab" data-tab="input" onclick="switchTab('input')">기록</button>
-    <button class="tab" data-tab="list" onclick="switchTab('list')">지출 내역</button>
-    <button class="tab" data-tab="calendar" onclick="switchTab('calendar')">캘린더</button>
-    <button class="tab" data-tab="retro" onclick="switchTab('retro')">시뮬레이션 &amp; 회고</button>
-  </div>
+<div class="tabs">
+<button class="tab active" data-tab="monthly" onclick="switchTab('monthly')">월별 분석</button>
+<button class="tab" data-tab="input" onclick="switchTab('input')">기록</button>
+<button class="tab" data-tab="list" onclick="switchTab('list')">지출 내역</button>
+<button class="tab" data-tab="calendar" onclick="switchTab('calendar')">캘린더</button>
+<button class="tab" data-tab="retro" onclick="switchTab('retro')">시뮬레이션 &amp; 회고</button>
+</div>
 
-  <!-- 월별 분석 -->
-  <div class="section active" id="sec-monthly">
-    <div class="month-nav">
-      <button onclick="changeMonth(-1)">&#8249;</button>
-      <span class="month-title" id="month-title"></span>
-      <button onclick="changeMonth(1)">&#8250;</button>
-    </div>
-    <div id="monthly-content"></div>
-  </div>
+<!-- 월별 분석 -->
+<div class="section active" id="sec-monthly">
+<div class="month-nav">
+<button onclick="changeMonth(-1)">&#8249;</button>
+<span class="month-title" id="month-title"></span>
+<button onclick="changeMonth(1)">&#8250;</button>
+</div>
+<div id="monthly-content"></div>
+</div>
 
-  <!-- 기록 -->
-  <div class="section" id="sec-input">
-    <div class="summary-strip" id="quick-summary" style="grid-template-columns:repeat(5,1fr);"></div>
-    <!-- 이번 달 수입 카드 -->
-    <div class="income-card">
-      <h3>💚 이번 달 수입</h3>
-      <div class="income-row">
-        <input type="text" id="inp-income-desc" placeholder="수입 항목 (예: 월급, 부업)" />
-        <input type="number" id="inp-income-amt" placeholder="금액" min="0" style="max-width:140px;" />
-        <button class="btn-add-income" onclick="addIncome()">+ 추가</button>
-      </div>
-      <div class="income-list" id="income-list"></div>
-      <div class="income-total" id="income-total" style="display:none;"></div>
-    </div>
-    <div class="form-card">
-      <h3>새 항목 추가</h3>
-      <div class="grid2">
-        <div class="field"><label>날짜</label><input type="date" id="inp-date" /></div>
-        <div class="field"><label>금액 (원)</label><input type="text" id="inp-amount-display" placeholder="0" oninput="formatAmountInput(this)" style="font-family:var(--sans);"/><input type="hidden" id="inp-amount" /></div>
-      </div>
-      <div class="grid2 mb1">
-        <div class="field">
-          <label>대분류</label>
-          <select id="inp-cat1" onchange="updateCat2()">
-            <option value="">선택하세요</option>
-            <option value="고정비">🔵 고정비</option>
-            <option value="변동비">🟠 변동비</option>
-            <option value="투자">🟣 투자</option>
-            <option value="홧김소비">🔴 홧김소비</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>소분류</label>
-          <select id="inp-cat2"><option value="">대분류 먼저 선택</option></select>
-        </div>
-      </div>
-      <div class="field mb1"><label>내용</label><input type="text" id="inp-desc" placeholder="무엇에 썼나요?" /></div>
-      <div class="field mb1"><label>메모 (선택)</label><textarea id="inp-memo" placeholder="왜 이 소비를 했나요? 어떤 의미가 있나요?"></textarea></div>
-      <div class="values-row">
-        <input type="checkbox" id="chk-values" />
-        <label for="chk-values">✓ 내 가치관에 부합하는 소비였다</label>
-      </div>
-      <button class="btn-primary" onclick="addEntry()">+ 기록 추가</button>
-    </div>
-  </div>
+<!-- 기록 -->
+<div class="section" id="sec-input">
+<div class="summary-strip" id="quick-summary" style="grid-template-columns:repeat(5,1fr);"></div>
+<div class="income-card">
+<h3>💚 이번 달 수입</h3>
+<div class="income-row">
+<input type="text" id="inp-income-desc" placeholder="수입 항목 (예: 월급, 부업)" />
+<input type="number" id="inp-income-amt" placeholder="금액" min="0" style="max-width:140px;" />
+<button class="btn-add-income" onclick="addIncome()">+ 추가</button>
+</div>
+<div class="income-list" id="income-list"></div>
+<div class="income-total" id="income-total" style="display:none;"></div>
+</div>
+<div class="form-card">
+<h3>새 항목 추가</h3>
+<div class="grid2">
+<div class="field"><label>날짜</label><input type="date" id="inp-date" /></div>
+<div class="field"><label>금액 (원)</label><input type="text" id="inp-amount-display" placeholder="0" oninput="formatAmountInput(this)" style="font-family:var(--sans);"/><input type="hidden" id="inp-amount" /></div>
+</div>
+<div class="grid2 mb1">
+<div class="field">
+<label>대분류</label>
+<select id="inp-cat1" onchange="updateCat2()">
+<option value="">선택하세요</option>
+<option value="고정비">🔵 고정비</option>
+<option value="변동비">🟠 변동비</option>
+<option value="투자">🟣 투자</option>
+<option value="홧김소비">🔴 홧김소비</option>
+</select>
+</div>
+<div class="field">
+<label>소분류</label>
+<select id="inp-cat2"><option value="">대분류 먼저 선택</option></select>
+</div>
+</div>
+<div class="field mb1"><label>내용</label><input type="text" id="inp-desc" placeholder="무엇에 썼나요?" /></div>
+<div class="field mb1"><label>메모 (선택)</label><textarea id="inp-memo" placeholder="왜 이 소비를 했나요? 어떤 의미가 있나요?"></textarea></div>
+<div class="values-row">
+<input type="checkbox" id="chk-values" />
+<label for="chk-values">✓ 내 가치관에 부합하는 소비였다</label>
+</div>
+<button class="btn-primary" onclick="addEntry()">+ 기록 추가</button>
+</div>
+</div>
 
-  <!-- 내역 -->
-  <div class="section" id="sec-list">
-    <div class="list-controls">
-      <h3>전체 내역</h3>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <div class="filter-wrap">
-          <select id="filter-month" onchange="renderList()"><option value="">전체 기간</option></select>
-          <select id="filter-cat" onchange="renderList()">
-            <option value="">전체</option>
-            <option value="고정비">🔵 고정비</option>
-            <option value="변동비">🟠 변동비</option>
-            <option value="투자">🟣 투자</option>
-            <option value="홧김소비">🔴 홧김소비</option>
-          </select>
-        </div>
-        <button class="export-btn" onclick="exportCSV()">CSV 내보내기</button>
-      </div>
-    </div>
-    <div id="entry-list"></div>
-  </div>
-  <!-- 캘린더 -->
-  <div class="section" id="sec-calendar">
-    <div class="cal-nav">
-      <button onclick="changeCalMonth(-1)">&#8249;</button>
-      <span class="cal-title" id="cal-title"></span>
-      <button onclick="changeCalMonth(1)">&#8250;</button>
-    </div>
-    <div id="cal-body"></div>
-    <div class="cal-legend">
-      <div class="cal-legend-item"><div class="cal-dot has-entry"></div><span>기록 있음</span></div>
-      <div class="cal-legend-item"><div class="cal-dot no-entry"></div><span>기록 없음</span></div>
-      <div class="cal-legend-item"><div class="cal-dot today-dot"></div><span>오늘</span></div>
-    </div>
-  </div>
+<!-- 내역 -->
+<div class="section" id="sec-list">
+<div class="list-controls">
+<h3>전체 내역</h3>
+<div style="display:flex;gap:8px;align-items:center;">
+<div class="filter-wrap">
+<select id="filter-month" onchange="renderList()"><option value="">전체 기간</option></select>
+<select id="filter-cat" onchange="renderList()">
+<option value="">전체</option>
+<option value="고정비">🔵 고정비</option>
+<option value="변동비">🟠 변동비</option>
+<option value="투자">🟣 투자</option>
+<option value="홧김소비">🔴 홧김소비</option>
+</select>
+</div>
+<button class="export-btn" onclick="exportCSV()">CSV 내보내기</button>
+</div>
+</div>
+<div id="entry-list"></div>
+</div>
 
+<!-- 캘린더 -->
+<div class="section" id="sec-calendar">
+<div class="cal-nav">
+<button onclick="changeCalMonth(-1)">&#8249;</button>
+<span class="cal-title" id="cal-title"></span>
+<button onclick="changeCalMonth(1)">&#8250;</button>
+</div>
+<div id="cal-body"></div>
+<div class="cal-legend">
+<div class="cal-legend-item"><div class="cal-dot has-entry"></div><span>기록 있음</span></div>
+<div class="cal-legend-item"><div class="cal-dot no-entry"></div><span>기록 없음</span></div>
+<div class="cal-legend-item"><div class="cal-dot today-dot"></div><span>오늘</span></div>
+</div>
+</div>
 
-  <!-- 회고 -->
-  <div class="section" id="sec-retro">
-    <div id="retro-content"></div>
-  </div>
+<!-- 회고 -->
+<div class="section" id="sec-retro">
+<div id="retro-content"></div>
+</div>
 </div>
 
 <div class="modal-overlay" id="edit-modal">
-  <div class="modal">
-    <div class="modal-header">
-      <h3>내역 수정</h3>
-      <button class="modal-close" onclick="closeEditModal()">×</button>
-    </div>
-    <div class="grid2">
-      <div class="field"><label>날짜</label><input type="date" id="edit-date" /></div>
-      <div class="field"><label>금액 (원)</label><input type="number" id="edit-amount" min="0" /></div>
-    </div>
-    <div class="grid2 mb1" style="margin-top:1rem;">
-      <div class="field">
-        <label>대분류</label>
-        <select id="edit-cat1" onchange="updateEditCat2()">
-          <option value="">선택하세요</option>
-          <option value="고정비">🔵 고정비</option>
-          <option value="변동비">🟠 변동비</option>
-          <option value="투자">🟣 투자</option>
-          <option value="홧김소비">🔴 홧김소비</option>
-        </select>
-      </div>
-      <div class="field"><label>소분류</label><select id="edit-cat2"></select></div>
-    </div>
-    <div class="field mb1"><label>내용</label><input type="text" id="edit-desc" /></div>
-    <div class="field mb1"><label>메모 (선택)</label><textarea id="edit-memo" style="resize:none;height:64px;"></textarea></div>
-    <div class="values-row">
-      <input type="checkbox" id="edit-values" />
-      <label for="edit-values">✓ 내 가치관에 부합하는 소비였다</label>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeEditModal()">취소</button>
-      <button class="btn-save" onclick="saveEdit()">저장</button>
-    </div>
-  </div>
+<div class="modal">
+<div class="modal-header">
+<h3>내역 수정</h3>
+<button class="modal-close" onclick="closeEditModal()">×</button>
+</div>
+<div class="grid2">
+<div class="field"><label>날짜</label><input type="date" id="edit-date" /></div>
+<div class="field"><label>금액 (원)</label><input type="number" id="edit-amount" min="0" /></div>
+</div>
+<div class="grid2 mb1" style="margin-top:1rem;">
+<div class="field">
+<label>대분류</label>
+<select id="edit-cat1" onchange="updateEditCat2()">
+<option value="">선택하세요</option>
+<option value="고정비">🔵 고정비</option>
+<option value="변동비">🟠 변동비</option>
+<option value="투자">🟣 투자</option>
+<option value="홧김소비">🔴 홧김소비</option>
+</select>
+</div>
+<div class="field"><label>소분류</label><select id="edit-cat2"></select></div>
+</div>
+<div class="field mb1"><label>내용</label><input type="text" id="edit-desc" /></div>
+<div class="field mb1"><label>메모 (선택)</label><textarea id="edit-memo" style="resize:none;height:64px;"></textarea></div>
+<div class="values-row">
+<input type="checkbox" id="edit-values" />
+<label for="edit-values">✓ 내 가치관에 부합하는 소비였다</label>
+</div>
+<div class="modal-footer">
+<button class="btn-cancel" onclick="closeEditModal()">취소</button>
+<button class="btn-save" onclick="saveEdit()">저장</button>
+</div>
+</div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDJYyb_qUbTiwznpxazy4IKE5FrgmUg7VI",
-    authDomain: "numi-dumi-cashbook.firebaseapp.com",
-    projectId: "numi-dumi-cashbook",
-    storageBucket: "numi-dumi-cashbook.firebasestorage.app",
-    messagingSenderId: "102621154749",
-    appId: "1:102621154749:web:5c433c45db54434b5a96d4",
-    databaseURL: "https://numi-dumi-cashbook-default-rtdb.asia-southeast1.firebasedatabase.app"
-  };
+const firebaseConfig = {
+apiKey: "AIzaSyDJYyb_qUbTiwznpxazy4IKE5FrgmUg7VI",
+authDomain: "numi-dumi-cashbook.firebaseapp.com",
+projectId: "numi-dumi-cashbook",
+storageBucket: "numi-dumi-cashbook.firebasestorage.app",
+messagingSenderId: "102621154749",
+appId: "1:102621154749:web:5c433c45db54434b5a96d4",
+databaseURL: "https://numi-dumi-cashbook-default-rtdb.asia-southeast1.firebasedatabase.app"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const db  = getDatabase(app);
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-  // entries 실시간 동기화
-  onValue(ref(db, 'entries'), function(snap) {
-    const val = snap.val();
-    window._entries = val ? normalizeEntries(Object.values(val).sort((a,b)=>b.date.localeCompare(a.date))) : [];
-    if (window._appReady) {
-      entries = window._entries;
-      renderQuickSummary();
-      const active = document.querySelector('.tab.active');
-      if (active) {
-        const t = active.getAttribute('onclick').match(/switchTab\('(\w+)'\)/);
-        if (t) {
-          if (t[1]==='list')     { populateMonthFilter(); renderList(); }
-          if (t[1]==='monthly')  renderMonthly();
-          if (t[1]==='calendar') renderCalendar();
-        }
-      }
-    }
-  });
+onValue(ref(db, 'entries'), function(snap) {
+const val = snap.val();
+window._entries = val ? normalizeEntries(Object.values(val).sort((a,b)=>b.date.localeCompare(a.date))) : [];
+if (window._appReady) {
+entries = window._entries;
+renderQuickSummary();
+const active = document.querySelector('.tab.active');
+if (active) {
+const t = active.getAttribute('onclick').match(/switchTab\('(\w+)'\)/);
+if (t) {
+if (t[1]==='list') { populateMonthFilter(); renderList(); }
+if (t[1]==='monthly') renderMonthly();
+if (t[1]==='calendar') renderCalendar();
+}
+}
+}
+});
 
-  // incomes 실시간 동기화
-  onValue(ref(db, 'incomes'), function(snap) {
-    const val = snap.val();
-    window._incomes = val || {};
-    if (window._appReady) {
-      incomes = window._incomes;
-      renderQuickSummary();
-    }
-  });
+onValue(ref(db, 'incomes'), function(snap) {
+const val = snap.val();
+window._incomes = val || {};
+if (window._appReady) {
+incomes = window._incomes;
+renderQuickSummary();
+}
+});
 
-  // 외부에서 호출할 수 있도록 window에 노출
-  window._fbSaveEntries = function(data) {
-    const obj = {};
-    data.forEach(function(e){ obj['e'+e.id] = e; });
-    set(ref(db, 'entries'), obj);
-  };
-  window._fbSaveIncomes = function(data) {
-    set(ref(db, 'incomes'), data);
-  };
+window._fbSaveEntries = function(data) {
+const obj = {};
+data.forEach(function(e){ obj['e'+e.id] = e; });
+set(ref(db, 'entries'), obj);
+};
 
-  window._fbReady = true;
-  console.log('Firebase 연결 완료');
+window._fbSaveIncomes = function(data) {
+set(ref(db, 'incomes'), data);
+};
+
+window._fbReady = true;
+console.log('Firebase 연결 완료');
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
-// ─── 데이터 정의 ────────────────────────────────────────────
+
+// ─── 데이터 정의 ─────────────────────────────────────────────
+// ✅ 변경: 변동비 소분류에 🏥 건강/의료, ✈️ 여행 추가
 const CAT_MAP = {
-  "고정비": ["🏡 주거","🚗 이동","📱 통신/구독","🏥 건강/보험"],
-  "변동비": ["🍔 식/음료","👶 육아","🎁 경조사","🎮 취미/여가"],
-  "투자":   ["🛍️ 물건소비 (인적투자)","✈️ 경험소비 (인적투자)","💰 투자/저축 (금융투자)"],
-  "홧김소비": ["🛒 충동구매","😤 감정소비","🤦 그냥 질러버림"]
+"고정비": ["🏡 주거","🚗 이동","📱 통신/구독","🏥 건강/보험"],
+"변동비": ["🍔 식/음료","👶 육아","🎁 경조사","🎮 취미/여가","🏥 건강/의료","✈️ 여행"],
+"투자": ["🛍️ 물건소비 (인적투자)","✈️ 경험소비 (인적투자)","💰 투자/저축 (금융투자)"],
+"홧김소비": ["🛒 충동구매","😤 감정소비","🤦 그냥 질러버림"]
 };
 
-// 대분류: 컬러 (동그라미용)
-const CAT_COLOR  = { "고정비": "#7B9EC4", "변동비": "#C9906A", "투자": "#9B7DC4", "홧김소비": "#D97B7B" };
-// 대분류: 표시 레이블 (동그라미 이모지 포함)
-const CAT_LABEL  = { "고정비": "🔵 고정비", "변동비": "🟠 변동비", "투자": "🟣 투자", "홧김소비": "🔴 홧김소비" };
-// 소분류: 컬러
+const CAT_COLOR = { "고정비": "#7B9EC4", "변동비": "#C9906A", "투자": "#9B7DC4", "홧김소비": "#D97B7B" };
+const CAT_LABEL = { "고정비": "🔵 고정비", "변동비": "🟠 변동비", "투자": "🟣 투자", "홧김소비": "🔴 홧김소비" };
+
+// ✅ 변경: 새로 추가된 소분류 색상 추가
 const SUB_COLOR = {
-  "🏡 주거":"#7B9EC4","🚗 이동":"#93B2D0","📱 통신/구독":"#AAC4DC","🏥 건강/보험":"#C2D6E8",
-  "🍔 식/음료":"#C9906A","👶 육아":"#D9A882","🎁 경조사":"#E8C0A0",
-  "🛍️ 물건소비 (인적투자)":"#9B7DC4","✈️ 경험소비 (인적투자)":"#B09CD4","💰 투자/저축 (금융투자)":"#7A5EAF",
-  "🎮 취미/여가":"#D9A882",
-  "🛒 충동구매":"#D97B7B","😤 감정소비":"#E09090","🤦 그냥 질러버림":"#E8A8A8"
+"🏡 주거":"#7B9EC4","🚗 이동":"#93B2D0","📱 통신/구독":"#AAC4DC","🏥 건강/보험":"#C2D6E8",
+"🍔 식/음료":"#C9906A","👶 육아":"#D9A882","🎁 경조사":"#E8C0A0",
+"🛍️ 물건소비 (인적투자)":"#9B7DC4","✈️ 경험소비 (인적투자)":"#B09CD4","💰 투자/저축 (금융투자)":"#7A5EAF",
+"🎮 취미/여가":"#D9A882",
+"🏥 건강/의료":"#84B8A4",
+"✈️ 여행":"#6FA8C9",
+"🛒 충동구매":"#D97B7B","😤 감정소비":"#E09090","🤦 그냥 질러버림":"#E8A8A8"
 };
 
 const STORAGE_KEY = "mycashbook_v3";
-const INCOME_KEY  = "mycashbook_income_v3";
+const INCOME_KEY = "mycashbook_income_v3";
 let entries = [];
-let incomes = {};   // { "2026-05": [{id, desc, amount}], ... }
+let incomes = {};
 let viewMonth = new Date();
 
-// ─── 저장/불러오기 ────────────────────────────────────────────
 function normalizeEntries(arr) {
-  return arr.map(e => ({
-    ...e,
-    cat2: e.cat2 ? e.cat2.replace(/.*식\/음료/, '🍔 식/음료') : e.cat2
-  }));
+return arr.map(e => ({
+...e,
+cat2: e.cat2 ? e.cat2.replace(/.*식\/음료/, '🍔 식/음료') : e.cat2
+}));
 }
+
 function load() {
-  try { const d = localStorage.getItem(STORAGE_KEY); if (d) entries = normalizeEntries(JSON.parse(d)); } catch(e) { entries = []; }
-  try { const d = localStorage.getItem(INCOME_KEY);  if (d) incomes = JSON.parse(d); } catch(e) { incomes = {}; }
+try { const d = localStorage.getItem(STORAGE_KEY); if (d) entries = normalizeEntries(JSON.parse(d)); } catch(e) { entries = []; }
+try { const d = localStorage.getItem(INCOME_KEY); if (d) incomes = JSON.parse(d); } catch(e) { incomes = {}; }
 }
+
 function save() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); } catch(e) {}
-  if (window._fbSaveEntries) window._fbSaveEntries(entries);
+try { localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); } catch(e) {}
+if (window._fbSaveEntries) window._fbSaveEntries(entries);
 }
+
 function saveIncomes() {
-  try { localStorage.setItem(INCOME_KEY, JSON.stringify(incomes)); } catch(e) {}
-  if (window._fbSaveIncomes) window._fbSaveIncomes(incomes);
+try { localStorage.setItem(INCOME_KEY, JSON.stringify(incomes)); } catch(e) {}
+if (window._fbSaveIncomes) window._fbSaveIncomes(incomes);
 }
+
 function getMonthIncome(mk) {
-  return (incomes[mk] || []).reduce((s,i) => s+i.amount, 0);
+return (incomes[mk] || []).reduce((s,i) => s+i.amount, 0);
 }
 
-// (더미데이터 제거됨)
-
-// ─── 유틸 ────────────────────────────────────────────────────
 function fmtMoney(n) { return Number(n).toLocaleString('ko-KR') + '원'; }
-function fmtOk(n) { return (n / 100000000).toFixed(2) + '억원'; }
+
 function getOrCreateTooltip(chart) {
-  let el = chart.canvas.parentNode.querySelector('.custom-pie-tooltip');
-  if (!el) {
-    el = document.createElement('div');
-    el.className = 'custom-pie-tooltip';
-    el.style.cssText = 'position:absolute;background:rgba(30,30,30,0.88);color:#fff;border-radius:6px;padding:8px 12px;font-size:12px;font-family:var(--sans);pointer-events:none;white-space:nowrap;opacity:0;transition:opacity 0.15s;z-index:999;';
-    chart.canvas.parentNode.appendChild(el);
-  }
-  return el;
+let el = chart.canvas.parentNode.querySelector('.custom-pie-tooltip');
+if (!el) {
+el = document.createElement('div');
+el.className = 'custom-pie-tooltip';
+el.style.cssText = 'position:absolute;background:rgba(30,30,30,0.88);color:#fff;border-radius:6px;padding:8px 12px;font-size:12px;font-family:var(--sans);pointer-events:none;white-space:nowrap;opacity:0;transition:opacity 0.15s;z-index:999;';
+chart.canvas.parentNode.appendChild(el);
+}
+return el;
 }
 
 function externalPieTooltip(context) {
-  const { chart, tooltip } = context;
-  const el = getOrCreateTooltip(chart);
-  if (tooltip.opacity === 0) { el.style.opacity = '0'; return; }
-  if (tooltip.body) {
-    el.innerHTML = tooltip.body.map(b => b.lines).flat().map(l => '<div>'+l.trim()+'</div>').join('');
-  }
-  el.style.opacity = '1';
-  // 위치 계산
-  const cRect = chart.canvas.getBoundingClientRect();
-  const pRect = chart.canvas.parentNode.getBoundingClientRect();
-  const ox = cRect.left - pRect.left;
-  const oy = cRect.top  - pRect.top;
-  const tw = el.offsetWidth;
-  const th = el.offsetHeight;
-  let x = ox + tooltip.caretX - tw / 2;
-  let y = oy + tooltip.caretY - th - 12;
-  if (x < 0) x = 0;
-  if (x + tw > pRect.width) x = pRect.width - tw;
-  if (y < 0) y = oy + tooltip.caretY + 12;
-  el.style.left = x + 'px';
-  el.style.top  = y + 'px';
+const { chart, tooltip } = context;
+const el = getOrCreateTooltip(chart);
+if (tooltip.opacity === 0) { el.style.opacity = '0'; return; }
+if (tooltip.body) {
+el.innerHTML = tooltip.body.map(b => b.lines).flat().map(l => '<div>'+l.trim()+'</div>').join('');
+}
+el.style.opacity = '1';
+const cRect = chart.canvas.getBoundingClientRect();
+const pRect = chart.canvas.parentNode.getBoundingClientRect();
+const ox = cRect.left - pRect.left;
+const oy = cRect.top - pRect.top;
+const tw = el.offsetWidth;
+const th = el.offsetHeight;
+let x = ox + tooltip.caretX - tw / 2;
+let y = oy + tooltip.caretY - th - 12;
+if (x < 0) x = 0;
+if (x + tw > pRect.width) x = pRect.width - tw;
+if (y < 0) y = oy + tooltip.caretY + 12;
+el.style.left = x + 'px';
+el.style.top = y + 'px';
 }
 
 function formatAmountInput(el) {
-  const raw = el.value.replace(/[^0-9]/g, '');
-  const num = parseInt(raw) || 0;
-  el.value = num ? num.toLocaleString('ko-KR') : '';
-  const hidden = document.getElementById('inp-amount');
-  if (hidden) hidden.value = num || '';
+const raw = el.value.replace(/[^0-9]/g, '');
+const num = parseInt(raw) || 0;
+el.value = num ? num.toLocaleString('ko-KR') : '';
+const hidden = document.getElementById('inp-amount');
+if (hidden) hidden.value = num || '';
 }
-function fmtDate(d) {
-  const dt = new Date(d + 'T00:00:00');
-  return `${dt.getFullYear()}.${String(dt.getMonth()+1).padStart(2,'0')}.${String(dt.getDate()).padStart(2,'0')}`;
-}
-function getMonthKey(d) { return d.slice(0,7); }
 
-// ─── 대분류 → 컬러/레이블 헬퍼 ─────────────────────────────
+function fmtDate(d) {
+const dt = new Date(d + 'T00:00:00');
+return `${dt.getFullYear()}.${String(dt.getMonth()+1).padStart(2,'0')}.${String(dt.getDate()).padStart(2,'0')}`;
+}
+
+function getMonthKey(d) { return d.slice(0,7); }
 function catColor(cat1) { return CAT_COLOR[cat1] || '#999'; }
 function catLabel(cat1) { return CAT_LABEL[cat1] || cat1; }
 
-// ─── UI ──────────────────────────────────────────────────────
 function updateCat2() {
-  const c1 = document.getElementById('inp-cat1').value;
-  const c2 = document.getElementById('inp-cat2');
-  c2.innerHTML = '';
-  if (!c1) { c2.innerHTML = '<option>대분류 먼저 선택</option>'; return; }
-  CAT_MAP[c1].forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; c2.appendChild(o); });
+const c1 = document.getElementById('inp-cat1').value;
+const c2 = document.getElementById('inp-cat2');
+c2.innerHTML = '';
+if (!c1) { c2.innerHTML = '<option>대분류 먼저 선택</option>'; return; }
+CAT_MAP[c1].forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; c2.appendChild(o); });
 }
 
 function switchTab(t) {
-  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelector('.tab[data-tab="'+t+'"]').classList.add('active');
-  document.getElementById('sec-'+t).classList.add('active');
-  if (t === 'list')      { populateMonthFilter(); renderList(); }
-  if (t === 'monthly')   renderMonthly();
-  if (t === 'calendar')  renderCalendar();
-
-  if (t === 'retro')     renderRetro();
+document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+document.querySelector('.tab[data-tab="'+t+'"]').classList.add('active');
+document.getElementById('sec-'+t).classList.add('active');
+if (t === 'list') { populateMonthFilter(); renderList(); }
+if (t === 'monthly') renderMonthly();
+if (t === 'calendar') renderCalendar();
+if (t === 'retro') renderRetro();
 }
 
 function addEntry() {
-  const date   = document.getElementById('inp-date').value;
-  const amount = parseFloat(document.getElementById('inp-amount').value);
-  const cat1   = document.getElementById('inp-cat1').value;
-  const cat2   = document.getElementById('inp-cat2').value;
-  const desc   = document.getElementById('inp-desc').value.trim();
-  const memo   = document.getElementById('inp-memo').value.trim();
-  const values = document.getElementById('chk-values').checked;
-  if (!date || !amount || !cat1 || !cat2 || !desc) { showToast('날짜, 금액, 분류, 내용을 모두 입력해주세요.'); return; }
-  entries.push({ id: Date.now(), date, amount, cat1, cat2, desc, memo, values });
-  entries.sort((a,b) => b.date.localeCompare(a.date));
-  save();
-  document.getElementById('inp-amount').value = '';
-  document.getElementById('inp-amount-display').value = '';
-  document.getElementById('inp-desc').value = '';
-  document.getElementById('inp-memo').value = '';
-  document.getElementById('chk-values').checked = false;
-  renderQuickSummary();
-  showToast('기록이 추가되었어요!');
+const date = document.getElementById('inp-date').value;
+const amount = parseFloat(document.getElementById('inp-amount').value);
+const cat1 = document.getElementById('inp-cat1').value;
+const cat2 = document.getElementById('inp-cat2').value;
+const desc = document.getElementById('inp-desc').value.trim();
+const memo = document.getElementById('inp-memo').value.trim();
+const values = document.getElementById('chk-values').checked;
+if (!date || !amount || !cat1 || !cat2 || !desc) { showToast('날짜, 금액, 분류, 내용을 모두 입력해주세요.'); return; }
+entries.push({ id: Date.now(), date, amount, cat1, cat2, desc, memo, values });
+entries.sort((a,b) => b.date.localeCompare(a.date));
+save();
+document.getElementById('inp-amount').value = '';
+document.getElementById('inp-amount-display').value = '';
+document.getElementById('inp-desc').value = '';
+document.getElementById('inp-memo').value = '';
+document.getElementById('chk-values').checked = false;
+renderQuickSummary();
+showToast('기록이 추가되었어요!');
 }
 
 function renderQuickSummary() {
-  const now = new Date();
-  const mk = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
-  const data = entries.filter(e => getMonthKey(e.date) === mk);
-  const total = data.reduce((s,e)=>s+e.amount,0);
-  const vc = data.filter(e=>e.values).length;
-  const pct = data.length ? Math.round(vc/data.length*100) : 0;
-  const cats = {};
-  data.forEach(e => { cats[e.cat2]=(cats[e.cat2]||0)+e.amount; });
-  const top = Object.entries(cats).sort((a,b)=>b[1]-a[1])[0];
-  const income = getMonthIncome(mk);
-  const balance = income - total;
-  const balColor = balance >= 0 ? 'var(--green)' : 'var(--red)';
-  const usedPct = income > 0 ? Math.round(total/income*100) : null;
-  document.getElementById('quick-summary').innerHTML = `
-    <div class="sum-block"><div class="lbl">이번 달 수입</div><div class="val" style="color:var(--green);">${income > 0 ? income.toLocaleString('ko-KR')+'원' : '-'}</div><div class="sub">&nbsp;</div></div>
-    <div class="sum-block"><div class="lbl">이번 달 지출</div><div class="val">${total.toLocaleString('ko-KR')}원</div><div class="sub">${data.length}건</div></div>
-    <div class="sum-block"><div class="lbl">잔액</div><div class="val" style="color:${balColor};">${income > 0 ? (balance>=0?'+':'')+balance.toLocaleString('ko-KR')+'원' : '-'}</div><div class="sub">${usedPct !== null ? '지출 '+usedPct+'%' : ''}</div></div>
-    <div class="sum-block"><div class="lbl">가치관 부합률</div><div class="val">${pct}%</div><div class="sub">${vc} / ${data.length}건</div></div>
-    <div class="sum-block"><div class="lbl">최다 지출</div><div class="val" style="font-size:14px;">${top ? catLabel(top[0]) : '-'}</div><div class="sub">${top ? top[1].toLocaleString('ko-KR')+'원' : ''}</div></div>
-  `;
-  renderIncomeList(mk);
+const now = new Date();
+const mk = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+const data = entries.filter(e => getMonthKey(e.date) === mk);
+const total = data.reduce((s,e)=>s+e.amount,0);
+const vc = data.filter(e=>e.values).length;
+const pct = data.length ? Math.round(vc/data.length*100) : 0;
+const cats = {};
+data.forEach(e => { cats[e.cat2]=(cats[e.cat2]||0)+e.amount; });
+const top = Object.entries(cats).sort((a,b)=>b[1]-a[1])[0];
+const income = getMonthIncome(mk);
+const balance = income - total;
+const balColor = balance >= 0 ? 'var(--green)' : 'var(--red)';
+const usedPct = income > 0 ? Math.round(total/income*100) : null;
+document.getElementById('quick-summary').innerHTML = `
+<div class="sum-block"><div class="lbl">이번 달 수입</div><div class="val" style="color:var(--green);">${income > 0 ? income.toLocaleString('ko-KR')+'원' : '-'}</div><div class="sub">&nbsp;</div></div>
+<div class="sum-block"><div class="lbl">이번 달 지출</div><div class="val">${total.toLocaleString('ko-KR')}원</div><div class="sub">${data.length}건</div></div>
+<div class="sum-block"><div class="lbl">잔액</div><div class="val" style="color:${balColor};">${income > 0 ? (balance>=0?'+':'')+balance.toLocaleString('ko-KR')+'원' : '-'}</div><div class="sub">${usedPct !== null ? '지출 '+usedPct+'%' : ''}</div></div>
+<div class="sum-block"><div class="lbl">가치관 부합률</div><div class="val">${pct}%</div><div class="sub">${vc} / ${data.length}건</div></div>
+<div class="sum-block"><div class="lbl">최다 지출</div><div class="val" style="font-size:14px;">${top ? catLabel(top[0]) : '-'}</div><div class="sub">${top ? top[1].toLocaleString('ko-KR')+'원' : ''}</div></div>
+`;
+renderIncomeList(mk);
 }
+
 function renderIncomeList(mk) {
-  const list = incomes[mk] || [];
-  const el = document.getElementById('income-list');
-  const tot = document.getElementById('income-total');
-  if (!el) return;
-  el.innerHTML = list.map(i => `
-    <div class="income-item">
-      <span class="i-desc">${i.desc}</span>
-      <span class="i-amt">+${i.amount.toLocaleString('ko-KR')}원</span>
-      <button class="i-del" onclick="deleteIncome('${mk}',${i.id})">×</button>
-    </div>`).join('');
-  const total = list.reduce((s,i)=>s+i.amount,0);
-  if (tot) {
-    if (list.length > 0) {
-      tot.style.display = 'flex';
-      tot.innerHTML = `<span>이번 달 수입 합계</span><strong>+${total.toLocaleString('ko-KR')}원</strong>`;
-    } else {
-      tot.style.display = 'none';
-    }
-  }
+const list = incomes[mk] || [];
+const el = document.getElementById('income-list');
+const tot = document.getElementById('income-total');
+if (!el) return;
+el.innerHTML = list.map(i => `
+<div class="income-item">
+<span class="i-desc">${i.desc}</span>
+<span class="i-amt">+${i.amount.toLocaleString('ko-KR')}원</span>
+<button class="i-del" onclick="deleteIncome('${mk}',${i.id})">×</button>
+</div>`).join('');
+const total = list.reduce((s,i)=>s+i.amount,0);
+if (tot) {
+if (list.length > 0) {
+tot.style.display = 'flex';
+tot.innerHTML = `<span>이번 달 수입 합계</span><strong>+${total.toLocaleString('ko-KR')}원</strong>`;
+} else {
+tot.style.display = 'none';
 }
+}
+}
+
 function addIncome() {
-  const desc = document.getElementById('inp-income-desc').value.trim();
-  const amount = parseFloat(document.getElementById('inp-income-amt').value);
-  if (!desc || !amount) { showToast('수입 항목과 금액을 입력해주세요.'); return; }
-  const now = new Date();
-  const mk = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
-  if (!incomes[mk]) incomes[mk] = [];
-  incomes[mk].push({ id: Date.now(), desc, amount });
-  saveIncomes();
-  document.getElementById('inp-income-desc').value = '';
-  document.getElementById('inp-income-amt').value = '';
-  renderQuickSummary();
-  showToast('수입이 추가되었어요!');
+const desc = document.getElementById('inp-income-desc').value.trim();
+const amount = parseFloat(document.getElementById('inp-income-amt').value);
+if (!desc || !amount) { showToast('수입 항목과 금액을 입력해주세요.'); return; }
+const now = new Date();
+const mk = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+if (!incomes[mk]) incomes[mk] = [];
+incomes[mk].push({ id: Date.now(), desc, amount });
+saveIncomes();
+document.getElementById('inp-income-desc').value = '';
+document.getElementById('inp-income-amt').value = '';
+renderQuickSummary();
+showToast('수입이 추가되었어요!');
 }
+
 function deleteIncome(mk, id) {
-  if (!incomes[mk]) return;
-  incomes[mk] = incomes[mk].filter(i=>i.id!==id);
-  saveIncomes();
-  renderQuickSummary();
+if (!incomes[mk]) return;
+incomes[mk] = incomes[mk].filter(i=>i.id!==id);
+saveIncomes();
+renderQuickSummary();
 }
 
 function populateMonthFilter() {
-  const months = [...new Set(entries.map(e=>getMonthKey(e.date)))].sort((a,b)=>b.localeCompare(a));
-  const sel = document.getElementById('filter-month');
-  const cur = sel.value;
-  sel.innerHTML = '<option value="">전체 기간</option>' +
-    months.map(m=>`<option value="${m}"${m===cur?' selected':''}>${m.replace('-','년 ')}월</option>`).join('');
+const months = [...new Set(entries.map(e=>getMonthKey(e.date)))].sort((a,b)=>b.localeCompare(a));
+const sel = document.getElementById('filter-month');
+const cur = sel.value;
+sel.innerHTML = '<option value="">전체 기간</option>' +
+months.map(m=>`<option value="${m}"${m===cur?' selected':''}>${m.replace('-','년 ')}월</option>`).join('');
 }
 
 function renderList() {
-  const fm = document.getElementById('filter-month').value;
-  const fc = document.getElementById('filter-cat').value;
-  let data = entries.filter(e => (!fm||getMonthKey(e.date)===fm) && (!fc||e.cat1===fc));
-  const el = document.getElementById('entry-list');
-  if (!data.length) { el.innerHTML = '<div class="empty">내역이 없습니다.</div>'; return; }
-  el.innerHTML = data.map(e => `
-    <div class="entry-item">
-      <div class="entry-stripe" style="background:${catColor(e.cat1)};"></div>
-      <div class="entry-body">
-        <div class="entry-desc">${e.desc}</div>
-        <div class="entry-sub">
-          <span>${fmtDate(e.date)}</span>
-          <span style="color:var(--border2);">|</span>
-          <span>${catLabel(e.cat1)} › ${e.cat2}</span>
-          ${e.values ? '<span class="badge-v">✓ 가치관 부합</span>' : ''}
-        </div>
-        ${e.memo ? `<div class="entry-memo">${e.memo}</div>` : ''}
-      </div>
-      <div class="entry-right">
-        <span class="entry-amount">${fmtMoney(e.amount)}</span>
-        <button class="btn-edit" onclick="openEditModal(${e.id})" title="수정" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px;margin-top:2px;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text3)'">✏️</button>
-        <button class="btn-del" onclick="deleteEntry(${e.id})" title="삭제">×</button>
-      </div>
-    </div>
-  `).join('');
+const fm = document.getElementById('filter-month').value;
+const fc = document.getElementById('filter-cat').value;
+let data = entries.filter(e => (!fm||getMonthKey(e.date)===fm) && (!fc||e.cat1===fc));
+const el = document.getElementById('entry-list');
+if (!data.length) { el.innerHTML = '<div class="empty">내역이 없습니다.</div>'; return; }
+el.innerHTML = data.map(e => `
+<div class="entry-item">
+<div class="entry-stripe" style="background:${catColor(e.cat1)};"></div>
+<div class="entry-body">
+<div class="entry-desc">${e.desc}</div>
+<div class="entry-sub">
+<span>${fmtDate(e.date)}</span>
+<span style="color:var(--border2);">|</span>
+<span>${catLabel(e.cat1)} › ${e.cat2}</span>
+${e.values ? '<span class="badge-v">✓ 가치관 부합</span>' : ''}
+</div>
+${e.memo ? `<div class="entry-memo">${e.memo}</div>` : ''}
+</div>
+<div class="entry-right">
+<span class="entry-amount">${fmtMoney(e.amount)}</span>
+<button class="btn-edit" onclick="openEditModal(${e.id})" title="수정" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px;margin-top:2px;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text3)'">✏️</button>
+<button class="btn-del" onclick="deleteEntry(${e.id})" title="삭제">×</button>
+</div>
+</div>
+`).join('');
 }
-
 
 let editingId = null;
 
 function openEditModal(id) {
-  const e = entries.find(function(e){ return e.id === id; });
-  if (!e) return;
-  editingId = id;
-  document.getElementById('edit-date').value   = e.date;
-  document.getElementById('edit-amount').value = e.amount;
-  document.getElementById('edit-cat1').value   = e.cat1;
-  updateEditCat2(e.cat2);
-  document.getElementById('edit-desc').value   = e.desc;
-  document.getElementById('edit-memo').value   = e.memo || '';
-  document.getElementById('edit-values').checked = e.values;
-  document.getElementById('edit-modal').classList.add('open');
+const e = entries.find(function(e){ return e.id === id; });
+if (!e) return;
+editingId = id;
+document.getElementById('edit-date').value = e.date;
+document.getElementById('edit-amount').value = e.amount;
+document.getElementById('edit-cat1').value = e.cat1;
+updateEditCat2(e.cat2);
+document.getElementById('edit-desc').value = e.desc;
+document.getElementById('edit-memo').value = e.memo || '';
+document.getElementById('edit-values').checked = e.values;
+document.getElementById('edit-modal').classList.add('open');
 }
 
 function closeEditModal() {
-  document.getElementById('edit-modal').classList.remove('open');
-  editingId = null;
+document.getElementById('edit-modal').classList.remove('open');
+editingId = null;
 }
 
 function updateEditCat2(selected) {
-  const c1 = document.getElementById('edit-cat1').value;
-  const c2 = document.getElementById('edit-cat2');
-  c2.innerHTML = '';
-  if (!c1) { c2.innerHTML = '<option>대분류 먼저 선택</option>'; return; }
-  CAT_MAP[c1].forEach(function(v) {
-    var o = document.createElement('option');
-    o.value = v; o.textContent = v;
-    if (v === selected) o.selected = true;
-    c2.appendChild(o);
-  });
+const c1 = document.getElementById('edit-cat1').value;
+const c2 = document.getElementById('edit-cat2');
+c2.innerHTML = '';
+if (!c1) { c2.innerHTML = '<option>대분류 먼저 선택</option>'; return; }
+CAT_MAP[c1].forEach(function(v) {
+var o = document.createElement('option');
+o.value = v; o.textContent = v;
+if (v === selected) o.selected = true;
+c2.appendChild(o);
+});
 }
 
 function saveEdit() {
-  if (!editingId) return;
-  const date   = document.getElementById('edit-date').value;
-  const amount = parseFloat(document.getElementById('edit-amount').value);
-  const cat1   = document.getElementById('edit-cat1').value;
-  const cat2   = document.getElementById('edit-cat2').value;
-  const desc   = document.getElementById('edit-desc').value.trim();
-  const memo   = document.getElementById('edit-memo').value.trim();
-  const values = document.getElementById('edit-values').checked;
-  if (!date || !amount || !cat1 || !cat2 || !desc) { showToast('모든 항목을 입력해주세요.'); return; }
-  const idx = entries.findIndex(function(e){ return e.id === editingId; });
-  if (idx === -1) return;
-  entries[idx] = { id: editingId, date, amount, cat1, cat2, desc, memo, values };
-  entries.sort(function(a,b){ return b.date.localeCompare(a.date); });
-  save();
-  closeEditModal();
-  renderList();
-  renderQuickSummary();
-  populateMonthFilter();
-  showToast('수정되었어요!');
+if (!editingId) return;
+const date = document.getElementById('edit-date').value;
+const amount = parseFloat(document.getElementById('edit-amount').value);
+const cat1 = document.getElementById('edit-cat1').value;
+const cat2 = document.getElementById('edit-cat2').value;
+const desc = document.getElementById('edit-desc').value.trim();
+const memo = document.getElementById('edit-memo').value.trim();
+const values = document.getElementById('edit-values').checked;
+if (!date || !amount || !cat1 || !cat2 || !desc) { showToast('모든 항목을 입력해주세요.'); return; }
+const idx = entries.findIndex(function(e){ return e.id === editingId; });
+if (idx === -1) return;
+entries[idx] = { id: editingId, date, amount, cat1, cat2, desc, memo, values };
+entries.sort(function(a,b){ return b.date.localeCompare(a.date); });
+save();
+closeEditModal();
+renderList();
+renderQuickSummary();
+populateMonthFilter();
+showToast('수정되었어요!');
 }
 
 function deleteEntry(id) {
-  if (!confirm('이 항목을 삭제할까요?')) return;
-  entries = entries.filter(e=>e.id!==id);
-  save();
-  renderList();
-  renderQuickSummary();
-  populateMonthFilter();
+if (!confirm('이 항목을 삭제할까요?')) return;
+entries = entries.filter(e=>e.id!==id);
+save();
+renderList();
+renderQuickSummary();
+populateMonthFilter();
 }
 
 function changeMonth(d) {
-  viewMonth = new Date(viewMonth.getFullYear(), viewMonth.getMonth()+d, 1);
-  renderMonthly();
+viewMonth = new Date(viewMonth.getFullYear(), viewMonth.getMonth()+d, 1);
+renderMonthly();
 }
 
 function renderMonthly() {
-  const mk = `${viewMonth.getFullYear()}-${String(viewMonth.getMonth()+1).padStart(2,'0')}`;
-  document.getElementById('month-title').textContent = `${viewMonth.getFullYear()}년 ${viewMonth.getMonth()+1}월`;
-  const data = entries.filter(e=>getMonthKey(e.date)===mk);
-  const total = data.reduce((s,e)=>s+e.amount,0);
-  const vc = data.filter(e=>e.values).length;
-  const pct = data.length ? Math.round(vc/data.length*100) : 0;
+const mk = `${viewMonth.getFullYear()}-${String(viewMonth.getMonth()+1).padStart(2,'0')}`;
+document.getElementById('month-title').textContent = `${viewMonth.getFullYear()}년 ${viewMonth.getMonth()+1}월`;
+const data = entries.filter(e=>getMonthKey(e.date)===mk);
+const total = data.reduce((s,e)=>s+e.amount,0);
+const vc = data.filter(e=>e.values).length;
+const pct = data.length ? Math.round(vc/data.length*100) : 0;
 
-  if (!data.length) {
-    document.getElementById('monthly-content').innerHTML = '<div class="empty">이 달의 내역이 없습니다.</div>';
-    if (window._pieChart) { window._pieChart.destroy(); window._pieChart = null; }
-    return;
-  }
-
-  const byCat = {};
-  data.forEach(e => {
-    if (!byCat[e.cat1]) byCat[e.cat1] = { total:0, subs:{} };
-    byCat[e.cat1].total += e.amount;
-    byCat[e.cat1].subs[e.cat2] = (byCat[e.cat1].subs[e.cat2]||0)+e.amount;
-  });
-  const maxAmt = Math.max(...Object.values(byCat).map(v=>v.total),1);
-  const avg = data.length ? Math.round(total/data.length) : 0;
-
-  const mIncome = getMonthIncome(mk);
-  const mBalance = mIncome - total;
-  const mUsedPct = mIncome > 0 ? Math.round(total/mIncome*100) : null;
-
-  let html = `
-    <div class="summary-strip" style="margin-bottom:2rem;grid-template-columns:repeat(4,1fr);">
-      <div class="sum-block"><div class="lbl">총 수입</div><div class="val" style="color:var(--green);">${mIncome > 0 ? mIncome.toLocaleString('ko-KR')+'원' : '-'}</div><div class="sub">&nbsp;</div></div>
-      <div class="sum-block"><div class="lbl">총 지출</div><div class="val">${total.toLocaleString('ko-KR')}원</div><div class="sub">${data.length}건${mUsedPct!==null?' · 수입의 '+mUsedPct+'%':''}</div></div>
-      <div class="sum-block"><div class="lbl">잔액</div><div class="val" style="color:${mBalance>=0?'var(--green)':'var(--red)'};">${mIncome > 0 ? (mBalance>=0?'+':'')+mBalance.toLocaleString('ko-KR')+'원' : '-'}</div><div class="sub">&nbsp;</div></div>
-      <div class="sum-block"><div class="lbl">건당 평균</div><div class="val">${avg.toLocaleString('ko-KR')}원</div></div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin-bottom:2rem;overflow:visible;">
-      <div class="pie-charts-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
-        <div style="min-width:0;">
-          <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);margin-bottom:1rem;">대분류별 지출 비중</div>
-          <div style="display:flex;align-items:flex-start;gap:1.25rem;overflow:visible;">
-            <div style="width:150px;height:150px;flex-shrink:0;position:relative;"><canvas id="pie-chart"></canvas></div>
-            <div id="pie-legend" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;"></div>
-          </div>
-        </div>
-        <div style="border-left:1px solid var(--border);padding-left:1.5rem;min-width:0;">
-          <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);margin-bottom:1rem;">소분류별 지출 비중</div>
-          <div style="display:flex;align-items:flex-start;gap:1.25rem;overflow:visible;">
-            <div style="width:150px;height:150px;flex-shrink:0;position:relative;"><canvas id="pie-chart-sub"></canvas></div>
-            <div id="pie-legend-sub" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  ['고정비','변동비','투자','홧김소비'].forEach(cat1 => {
-    if (!byCat[cat1]) return;
-    const info = byCat[cat1];
-    const pBar = Math.round(info.total/maxAmt*100);
-    const col = catColor(cat1);
-    html += `<div class="cat-section">
-      <div class="cat-head">
-        <span class="cat-head-name">
-          <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${col};flex-shrink:0;"></span>
-          ${catLabel(cat1)}
-        </span>
-        <span class="cat-head-amt">${info.total.toLocaleString('ko-KR')}원 (${Math.round(info.total/total*100)}%)</span>
-      </div>
-      <div class="cat-row" style="margin-bottom:10px;">
-        <div class="cat-row-label" style="font-weight:500;color:var(--text);">합계</div>
-        <div class="bar-bg"><div class="bar-fill" style="width:${pBar}%;background:${col};"></div></div>
-        <div class="cat-row-amt">${info.total.toLocaleString('ko-KR')}원</div>
-      </div>`;
-    Object.entries(info.subs).sort((a,b)=>b[1]-a[1]).forEach(([sub,amt])=>{
-      const sp = Math.round(amt/info.total*100);
-      html += `<div class="cat-row">
-        <div class="cat-row-label" title="${sub}">${sub}</div>
-        <div class="bar-bg"><div class="bar-fill" style="width:${sp}%;background:${SUB_COLOR[sub]||col};opacity:0.8;"></div></div>
-        <div class="cat-row-amt">${amt.toLocaleString('ko-KR')}원</div>
-      </div>`;
-    });
-    html += '</div>';
-  });
-
-  const vColor = pct>=70?'#2D6A4F':pct>=40?'#B5621A':'#B03030';
-  const vBg    = pct>=70?'#E8F0EC':pct>=40?'#F8F0E4':'#F5E8E8';
-  const vMsg   = pct>=70
-    ? '이번 달은 가치관에 잘 맞는 소비를 했어요. 돈의 흐름이 당신의 방향과 일치하고 있습니다.'
-    : pct>=40 ? '절반 정도는 가치관에 부합했어요. 다음 달엔 좀 더 의식적인 소비를 해볼 수 있을 것 같아요.'
-    : '이번 달 소비를 다시 돌아볼 필요가 있어요. 어떤 부분이 달랐는지 메모를 살펴보세요.';
-
-  html += `<div class="values-box">
-    <div class="v-circle" style="background:${vBg};">
-      <span class="v-pct" style="color:${vColor};">${pct}%</span>
-      <span class="v-lbl">부합도</span>
-    </div>
-    <div class="v-text">
-      <strong>가치관 부합도 ${pct}%</strong>
-      ${vMsg}<br>
-      <span style="font-size:11px;color:var(--text3);">${vc}건 / ${data.length}건 체크됨</span>
-    </div>
-  </div>`;
-
-  document.getElementById('monthly-content').innerHTML = html;
-
-
-
-  // 대분류 파이 차트
-  if (window._pieChart) { window._pieChart.destroy(); }
-  const catKeys   = ['고정비','변동비','투자','홧김소비'].filter(c=>byCat[c]);
-  const catAmts   = catKeys.map(c=>byCat[c].total);
-  const catColors = catKeys.map(c=>catColor(c));
-  const catLabels = catKeys.map(c=>catLabel(c));
-  const ctx = document.getElementById('pie-chart');
-  if (ctx) {
-    window._pieChart = new Chart(ctx, {
-      type: 'doughnut',
-      data: { labels: catLabels, datasets: [{ data: catAmts, backgroundColor: catColors, borderWidth: 2, borderColor: '#FAFAF7', hoverOffset: 6 }] },
-      options: {
-        cutout: '58%',
-        plugins: { legend: { display: false },
-          tooltip: {
-            enabled: false,
-            external: externalPieTooltip,
-            callbacks: { label: c => ` ${c.label}: ${c.raw.toLocaleString('ko-KR')}원 (${Math.round(c.raw/total*100)}%)` }
-          }
-        },
-        animation: { duration: 600, easing: 'easeInOutQuart' },
-        layout: { padding: 10 }
-      }
-    });
-    const leg = document.getElementById('pie-legend');
-    if (leg) leg.innerHTML = catKeys.map((c,i) => `
-      <div style="display:flex;align-items:center;gap:8px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:${catColors[i]};flex-shrink:0;"></div>
-        <div>
-          <div style="font-size:12px;font-weight:500;color:var(--text);">${catLabels[i]}</div>
-          <div style="font-size:11px;color:var(--text3);">${catAmts[i].toLocaleString('ko-KR')}원 · ${Math.round(catAmts[i]/total*100)}%</div>
-        </div>
-      </div>`).join('');
-  }
-
-  // 소분류 파이 차트
-  if (window._pieChartSub) { window._pieChartSub.destroy(); }
-  const subAll = {};
-  data.forEach(e => { subAll[e.cat2] = (subAll[e.cat2]||0) + e.amount; });
-  const subEntries = Object.entries(subAll).sort((a,b)=>b[1]-a[1]);
-  const subLabels = subEntries.map(s=>s[0]);
-  const subAmts   = subEntries.map(s=>s[1]);
-  const subColors = subEntries.map(s=>SUB_COLOR[s[0]]||'#999');
-  const ctxSub = document.getElementById('pie-chart-sub');
-  if (ctxSub) {
-    window._pieChartSub = new Chart(ctxSub, {
-      type: 'doughnut',
-      data: { labels: subLabels, datasets: [{ data: subAmts, backgroundColor: subColors, borderWidth: 2, borderColor: '#FAFAF7', hoverOffset: 6 }] },
-      options: {
-        cutout: '58%',
-        plugins: { legend: { display: false },
-          tooltip: {
-            enabled: false,
-            external: externalPieTooltip,
-            callbacks: { label: c => ` ${c.label}: ${c.raw.toLocaleString('ko-KR')}원 (${Math.round(c.raw/total*100)}%)` }
-          }
-        },
-        animation: { duration: 600, easing: 'easeInOutQuart' },
-        layout: { padding: 10 }
-      }
-    });
-    const legSub = document.getElementById('pie-legend-sub');
-    if (legSub) {
-      const TOP = 3;
-      const makeItem = (s, i) => `
-        <div style="display:flex;align-items:center;gap:8px;">
-          <div style="width:10px;height:10px;border-radius:50%;background:${subColors[i]};flex-shrink:0;"></div>
-          <div style="min-width:0;">
-            <div style="font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${s[0]}</div>
-            <div style="font-size:11px;color:var(--text3);">${s[1].toLocaleString('ko-KR')}원 · ${Math.round(s[1]/total*100)}%</div>
-          </div>
-        </div>`;
-      const topItems  = subEntries.slice(0, TOP).map((s,i) => makeItem(s,i)).join('');
-      const restItems = subEntries.slice(TOP).map((s,i) => makeItem(s, i+TOP)).join('');
-      const hasMore = subEntries.length > TOP;
-      legSub.innerHTML = topItems
-        + (hasMore ? `
-          <div id="sub-legend-more" style="display:none;display:flex;flex-direction:column;gap:10px;">${restItems}</div>
-          <button id="sub-legend-toggle" onclick="toggleSubLegend()"
-            style="margin-top:4px;background:none;border:none;cursor:pointer;font-size:11px;color:var(--accent);font-family:var(--sans);padding:0;text-align:left;">
-            + ${subEntries.length - TOP}개 더 보기 ▾
-          </button>` : '');
-      if (hasMore) document.getElementById('sub-legend-more').style.display = 'none';
-    }
-  }
+if (!data.length) {
+document.getElementById('monthly-content').innerHTML = '<div class="empty">이 달의 내역이 없습니다.</div>';
+if (window._pieChart) { window._pieChart.destroy(); window._pieChart = null; }
+return;
 }
 
-function toggleSubLegend() {
-  const more = document.getElementById('sub-legend-more');
-  const btn  = document.getElementById('sub-legend-toggle');
-  if (!more || !btn) return;
-  const isHidden = more.style.display === 'none';
-  more.style.display = isHidden ? 'flex' : 'none';
-  more.style.flexDirection = 'column';
-  more.style.gap = '10px';
-  btn.textContent = isHidden
-    ? '접기 ▴'
-    : '+ ' + more.children.length + '개 더 보기 ▾';
+const byCat = {};
+data.forEach(e => {
+if (!byCat[e.cat1]) byCat[e.cat1] = { total:0, subs:{} };
+byCat[e.cat1].total += e.amount;
+byCat[e.cat1].subs[e.cat2] = (byCat[e.cat1].subs[e.cat2]||0)+e.amount;
+});
+
+const maxAmt = Math.max(...Object.values(byCat).map(v=>v.total),1);
+const avg = data.length ? Math.round(total/data.length) : 0;
+const mIncome = getMonthIncome(mk);
+const mBalance = mIncome - total;
+const mUsedPct = mIncome > 0 ? Math.round(total/mIncome*100) : null;
+
+let html = `
+<div class="summary-strip" style="margin-bottom:2rem;grid-template-columns:repeat(4,1fr);">
+<div class="sum-block"><div class="lbl">총 수입</div><div class="val" style="color:var(--green);">${mIncome > 0 ? mIncome.toLocaleString('ko-KR')+'원' : '-'}</div><div class="sub">&nbsp;</div></div>
+<div class="sum-block"><div class="lbl">총 지출</div><div class="val">${total.toLocaleString('ko-KR')}원</div><div class="sub">${data.length}건${mUsedPct!==null?' · 수입의 '+mUsedPct+'%':''}</div></div>
+<div class="sum-block"><div class="lbl">잔액</div><div class="val" style="color:${mBalance>=0?'var(--green)':'var(--red)'};">${mIncome > 0 ? (mBalance>=0?'+':'')+mBalance.toLocaleString('ko-KR')+'원' : '-'}</div><div class="sub">&nbsp;</div></div>
+<div class="sum-block"><div class="lbl">건당 평균</div><div class="val">${avg.toLocaleString('ko-KR')}원</div></div>
+</div>
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin-bottom:2rem;overflow:visible;">
+<div class="pie-charts-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+<div style="min-width:0;">
+<div style="font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);margin-bottom:1rem;">대분류별 지출 비중</div>
+<div style="display:flex;align-items:flex-start;gap:1.25rem;overflow:visible;">
+<div style="width:150px;height:150px;flex-shrink:0;position:relative;"><canvas id="pie-chart"></canvas></div>
+<div id="pie-legend" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;"></div>
+</div>
+</div>
+<div style="border-left:1px solid var(--border);padding-left:1.5rem;min-width:0;">
+<div style="font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3);margin-bottom:1rem;">소분류별 지출 비중</div>
+<div style="display:flex;align-items:flex-start;gap:1.25rem;overflow:visible;">
+<div style="width:150px;height:150px;flex-shrink:0;position:relative;"><canvas id="pie-chart-sub"></canvas></div>
+<div id="pie-legend-sub" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;"></div>
+</div>
+</div>
+</div>
+</div>
+`;
+
+['고정비','변동비','투자','홧김소비'].forEach(cat1 => {
+if (!byCat[cat1]) return;
+const info = byCat[cat1];
+const pBar = Math.round(info.total/maxAmt*100);
+const col = catColor(cat1);
+html += `<div class="cat-section">
+<div class="cat-head">
+<span class="cat-head-name">
+<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${col};flex-shrink:0;"></span>
+${catLabel(cat1)}
+</span>
+<span class="cat-head-amt">${info.total.toLocaleString('ko-KR')}원 (${Math.round(info.total/total*100)}%)</span>
+</div>
+<div class="cat-row" style="margin-bottom:10px;">
+<div class="cat-row-label" style="font-weight:500;color:var(--text);">합계</div>
+<div class="bar-bg"><div class="bar-fill" style="width:${pBar}%;background:${col};"></div></div>
+<div class="cat-row-amt">${info.total.toLocaleString('ko-KR')}원</div>
+</div>`;
+Object.entries(info.subs).sort((a,b)=>b[1]-a[1]).forEach(([sub,amt])=>{
+const sp = Math.round(amt/info.total*100);
+html += `<div class="cat-row">
+<div class="cat-row-label" title="${sub}">${sub}</div>
+<div class="bar-bg"><div class="bar-fill" style="width:${sp}%;background:${SUB_COLOR[sub]||col};opacity:0.8;"></div></div>
+<div class="cat-row-amt">${amt.toLocaleString('ko-KR')}원</div>
+</div>`;
+});
+html += '</div>';
+});
+
+const vColor = pct>=70?'#2D6A4F':pct>=40?'#B5621A':'#B03030';
+const vBg = pct>=70?'#E8F0EC':pct>=40?'#F8F0E4':'#F5E8E8';
+const vMsg = pct>=70
+? '이번 달은 가치관에 잘 맞는 소비를 했어요. 돈의 흐름이 당신의 방향과 일치하고 있습니다.'
+: pct>=40 ? '절반 정도는 가치관에 부합했어요. 다음 달엔 좀 더 의식적인 소비를 해볼 수 있을 것 같아요.'
+: '이번 달 소비를 다시 돌아볼 필요가 있어요. 어떤 부분이 달랐는지 메모를 살펴보세요.';
+
+html += `<div class="values-box">
+<div class="v-circle" style="background:${vBg};">
+<span class="v-pct" style="color:${vColor};">${pct}%</span>
+<span class="v-lbl">부합도</span>
+</div>
+<div class="v-text">
+<strong>가치관 부합도 ${pct}%</strong>
+${vMsg}<br>
+<span style="font-size:11px;color:var(--text3);">${vc}건 / ${data.length}건 체크됨</span>
+</div>
+</div>`;
+
+document.getElementById('monthly-content').innerHTML = html;
+
+if (window._pieChart) { window._pieChart.destroy(); }
+const catKeys = ['고정비','변동비','투자','홧김소비'].filter(c=>byCat[c]);
+const catAmts = catKeys.map(c=>byCat[c].total);
+const catColors = catKeys.map(c=>catColor(c));
+const catLabels = catKeys.map(c=>catLabel(c));
+const ctx = document.getElementById('pie-chart');
+if (ctx) {
+window._pieChart = new Chart(ctx, {
+type: 'doughnut',
+data: { labels: catLabels, datasets: [{ data: catAmts, backgroundColor: catColors, borderWidth: 2, borderColor: '#FAFAF7', hoverOffset: 6 }] },
+options: {
+cutout: '58%',
+plugins: { legend: { display: false },
+tooltip: {
+enabled: false,
+external: externalPieTooltip,
+callbacks: { label: c => ` ${c.label}: ${c.raw.toLocaleString('ko-KR')}원 (${Math.round(c.raw/total*100)}%)` }
+}
+},
+animation: { duration: 600, easing: 'easeInOutQuart' },
+layout: { padding: 10 }
+}
+});
+const leg = document.getElementById('pie-legend');
+if (leg) leg.innerHTML = catKeys.map((c,i) => `
+<div style="display:flex;align-items:center;gap:8px;">
+<div style="width:10px;height:10px;border-radius:50%;background:${catColors[i]};flex-shrink:0;"></div>
+<div>
+<div style="font-size:12px;font-weight:500;color:var(--text);">${catLabels[i]}</div>
+<div style="font-size:11px;color:var(--text3);">${catAmts[i].toLocaleString('ko-KR')}원 · ${Math.round(catAmts[i]/total*100)}%</div>
+</div>
+</div>`).join('');
 }
 
-
-
-
+if (window._pieChartSub) { window._pieChartSub.destroy(); }
+const subAll = {};
+data.forEach(e => { subAll[e.cat2] = (subAll[e.cat2]||0) + e.amount; });
+const subEntries = Object.entries(subAll).sort((a,b)=>b[1]-a[1]);
+const subLabels = subEntries.map(s=>s[0]);
+const subAmts = subEntries.map(s=>s[1]);
+const subColors = subEntries.map(s=>SUB_COLOR[s[0]]||'#999');
+const ctxSub = document.getElementById('pie-chart-sub');
+if (ctxSub) {
+window._pieChartSub = new Chart(ctxSub, {
+type: 'doughnut',
+data: { labels: subLabels, datasets: [{ data: subAmts, backgroundColor: subColors, borderWidth: 2, borderColor: '#FAFAF7', hoverOffset: 6 }] },
+options: {
+cutout: '58%',
+plugins: { legend: { display: false },
+tooltip: {
+enabled: false,
+external: externalPieTooltip,
+callbacks: { label: c => ` ${c.label}: ${c.raw.toLocaleString('ko-KR')}원 (${Math.round(c.raw/total*100)}%)` }
+}
+},
+animation: { duration: 600, easing: 'easeInOutQuart' },
+layout: { padding: 10 }
+}
+});
+const legSub = document.getElementById('pie-legend-sub');
+if (legSub) legSub.innerHTML = subEntries.map((s,i) => `
+<div style="display:flex;align-items:center;gap:8px;">
+<div style="width:10px;height:10px;border-radius:50%;background:${subColors[i]};flex-shrink:0;"></div>
+<div>
+<div style="font-size:12px;font-weight:500;color:var(--text);">${subLabels[i]}</div>
+<div style="font-size:11px;color:var(--text3);">${subAmts[i].toLocaleString('ko-KR')}원 · ${Math.round(subAmts[i]/total*100)}%</div>
+</div>
+</div>`).join('');
+}
+}
 
 let calMonth = new Date();
 
 function changeCalMonth(d) {
-  calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth()+d, 1);
-  renderCalendar();
+calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth()+d, 1);
+renderCalendar();
 }
 
 function renderCalendar() {
-  const y = calMonth.getFullYear();
-  const m = calMonth.getMonth();
-  document.getElementById('cal-title').textContent = y+'년 '+(m+1)+'월';
-
-  // 날짜별 기록 집계
-  const mk = y+'-'+String(m+1).padStart(2,'0');
-  const dayMap = {};
-  entries.filter(function(e){ return getMonthKey(e.date)===mk; }).forEach(function(e) {
-    var d = e.date;
-    if (!dayMap[d]) dayMap[d] = [];
-    dayMap[d].push(e);
-  });
-
-  const today = new Date();
-  const todayStr = today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
-
-  // 달력 첫날 / 마지막날
-  const firstDay = new Date(y, m, 1);
-  const lastDay  = new Date(y, m+1, 0);
-  const startDow = firstDay.getDay(); // 0=일
-  const totalDays = lastDay.getDate();
-
-  const weekdays = ['일','월','화','수','목','금','토'];
-  let html = '<div class="cal-grid">';
-  weekdays.forEach(function(w){ html += '<div class="cal-weekday">'+w+'</div>'; });
-
-  // 앞 빈칸 (이전 달)
-  const prevLast = new Date(y, m, 0).getDate();
-  for (var i = startDow-1; i >= 0; i--) {
-    html += '<div class="cal-cell other-month"><div class="cal-date">'+(prevLast-i)+'</div></div>';
-  }
-
-  // 이번 달 날짜
-  for (var day = 1; day <= totalDays; day++) {
-    var dateStr = y+'-'+String(m+1).padStart(2,'0')+'-'+String(day).padStart(2,'0');
-    var dow = new Date(y, m, day).getDay();
-    var recs = dayMap[dateStr] || [];
-    var hasRec = recs.length > 0;
-    var isToday = dateStr === todayStr;
-    var dowClass = dow===0?' sun':dow===6?' sat':'';
-    var recClass = hasRec ? ' has-record' : '';
-    var todayClass = isToday ? ' is-today' : '';
-
-    html += '<div class="cal-cell'+dowClass+recClass+todayClass+'"'
-      + (hasRec ? ' onclick="showCalPopup(\''+dateStr+'\')" title="'+recs.length+'건 기록"' : '')
-      + '>';
-    html += '<div class="cal-date">'+day+'</div>';
-
-    if (hasRec) {
-      // 카테고리별 컬러 점
-      var dotHtml = '<div class="cal-dots">';
-      recs.forEach(function(r) {
-        dotHtml += '<div class="cal-dot-item" style="background:'+catColor(r.cat1)+';"></div>';
-      });
-      dotHtml += '</div>';
-      html += dotHtml;
-      // 합계 금액
-      var dayTotal = recs.reduce(function(s,r){ return s+r.amount; }, 0);
-      html += '<div class="cal-total">'+dayTotal.toLocaleString('ko-KR')+'원</div>';
-    }
-    html += '</div>';
-  }
-
-  // 뒷 빈칸
-  var remain = (7 - (startDow + totalDays) % 7) % 7;
-  for (var i = 1; i <= remain; i++) {
-    html += '<div class="cal-cell other-month"><div class="cal-date">'+i+'</div></div>';
-  }
-  html += '</div>';
-
-  var calBody = document.getElementById('cal-body');
-  calBody.innerHTML = html;
-
-  // 오늘 날짜(또는 이번 달 가장 최근 기록 날짜) 팝업 자동 표시
-  var autoDate = null;
-  if (getMonthKey(todayStr) === mk) {
-    // 이번 달이면 오늘 기준으로 가장 최근 기록 날짜
-    var datesThisMonth = Object.keys(dayMap).sort((a,b)=>b.localeCompare(a));
-    var todayOrBefore = datesThisMonth.filter(d => d <= todayStr);
-    autoDate = todayOrBefore[0] || null;
-  } else {
-    // 다른 달이면 해당 달 마지막 기록 날짜
-    var datesThisMonth = Object.keys(dayMap).sort((a,b)=>b.localeCompare(a));
-    autoDate = datesThisMonth[0] || null;
-  }
-  if (autoDate) showCalPopup(autoDate);
+const y = calMonth.getFullYear();
+const m = calMonth.getMonth();
+document.getElementById('cal-title').textContent = `${y}년 ${m+1}월`;
+const mk = `${y}-${String(m+1).padStart(2,'0')}`;
+const monthEntries = entries.filter(e => getMonthKey(e.date) === mk);
+const byDate = {};
+monthEntries.forEach(e => {
+if (!byDate[e.date]) byDate[e.date] = [];
+byDate[e.date].push(e);
+});
+const firstDay = new Date(y, m, 1).getDay();
+const lastDate = new Date(y, m+1, 0).getDate();
+const today = new Date();
+const todayStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+const weekdays = ['일','월','화','수','목','금','토'];
+let html = '<div class="cal-grid">';
+weekdays.forEach(w => { html += `<div class="cal-weekday">${w}</div>`; });
+const prevLastDate = new Date(y, m, 0).getDate();
+for (let i = 0; i < firstDay; i++) {
+const d = prevLastDate - firstDay + i + 1;
+html += `<div class="cal-cell other-month"><span class="cal-date">${d}</span></div>`;
+}
+for (let d = 1; d <= lastDate; d++) {
+const dateStr = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+const dayEntries = byDate[dateStr] || [];
+const dow = new Date(y, m, d).getDay();
+const isToday = dateStr === todayStr;
+const hasSun = dow === 0 ? 'sun' : '';
+const hasSat = dow === 6 ? 'sat' : '';
+const hasRec = dayEntries.length > 0 ? 'has-record' : '';
+const isTodayCls = isToday ? 'is-today' : '';
+const dayTotal = dayEntries.reduce((s,e)=>s+e.amount,0);
+const dots = dayEntries.slice(0,6).map(e=>`<div class="cal-dot-item" style="background:${catColor(e.cat1)};"></div>`).join('');
+html += `<div class="cal-cell ${hasSun} ${hasSat} ${hasRec} ${isTodayCls}" ${hasRec ? `onclick="showCalPopup('${dateStr}')"` : ''}>
+<span class="cal-date">${d}</span>
+${dayEntries.length ? `<div class="cal-dots">${dots}</div><div class="cal-total">${(dayTotal/10000).toFixed(0)}만</div>` : ''}
+</div>`;
+}
+const totalCells = firstDay + lastDate;
+const remaining = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+for (let i = 1; i <= remaining; i++) {
+html += `<div class="cal-cell other-month"><span class="cal-date">${i}</span></div>`;
+}
+html += '</div>';
+const existing = document.getElementById('cal-popup');
+if (existing) existing.remove();
+document.getElementById('cal-body').innerHTML = html;
 }
 
 function showCalPopup(dateStr) {
-  var old = document.getElementById('cal-popup');
-  if (old) old.remove();
-
-  var recs = entries.filter(function(e){ return e.date===dateStr; });
-  if (!recs.length) return;
-
-  var dt = new Date(dateStr+'T00:00:00');
-  var label = dt.getFullYear()+'.'+String(dt.getMonth()+1).padStart(2,'0')+'.'+String(dt.getDate()).padStart(2,'0');
-  var dayTotal = recs.reduce(function(s,r){ return s+r.amount; }, 0);
-
-  var inner = recs.map(function(r) {
-    return '<div class="cal-popup-item">'
-      + '<div class="cal-popup-stripe" style="background:'+catColor(r.cat1)+';"></div>'
-      + '<div class="cal-popup-info">'
-      + '<div class="cal-popup-desc">'+r.desc+'</div>'
-      + '<div class="cal-popup-sub">'+catLabel(r.cat1)+' › '+r.cat2+(r.values?' · ✓ 가치관 부합':'')+'</div>'
-      + '</div>'
-      + '<div class="cal-popup-amt">'+r.amount.toLocaleString('ko-KR')+'원</div>'
-      + '</div>';
-  }).join('');
-
-  var popup = document.createElement('div');
-  popup.id = 'cal-popup';
-  popup.className = 'cal-popup';
-  popup.innerHTML = '<div class="cal-popup-date"><span>'+label+' · '+recs.length+'건 · 합계 '+dayTotal.toLocaleString('ko-KR')+'원</span><button class="cal-popup-close" onclick="document.getElementById(\'cal-popup\').remove()">×</button></div>' + inner;
-  document.getElementById('cal-body').appendChild(popup);
+const dayEntries = entries.filter(e => e.date === dateStr);
+if (!dayEntries.length) return;
+const existing = document.getElementById('cal-popup');
+if (existing) existing.remove();
+const dt = new Date(dateStr + 'T00:00:00');
+const dayTotal = dayEntries.reduce((s,e)=>s+e.amount,0);
+let html = `<div class="cal-popup" id="cal-popup">
+<div class="cal-popup-date">
+<span>${dt.getMonth()+1}월 ${dt.getDate()}일 · 합계 ${dayTotal.toLocaleString('ko-KR')}원</span>
+<button class="cal-popup-close" onclick="document.getElementById('cal-popup').remove()">×</button>
+</div>`;
+dayEntries.forEach(e => {
+html += `<div class="cal-popup-item">
+<div class="cal-popup-stripe" style="background:${catColor(e.cat1)};"></div>
+<div class="cal-popup-info">
+<div class="cal-popup-desc">${e.desc}</div>
+<div class="cal-popup-sub">${catLabel(e.cat1)} › ${e.cat2}</div>
+</div>
+<div class="cal-popup-amt">${fmtMoney(e.amount)}</div>
+</div>`;
+});
+html += '</div>';
+document.getElementById('cal-body').insertAdjacentHTML('afterend', html);
 }
 
 function exportCSV() {
-  if (!entries.length) { showToast('내보낼 데이터가 없어요.'); return; }
-  const fm = document.getElementById('filter-month').value;
-  const fc = document.getElementById('filter-cat').value;
-  let data = entries.filter(e=>(!fm||getMonthKey(e.date)===fm)&&(!fc||e.cat1===fc));
-  const header = ['날짜','대분류','소분류','내용','금액','메모','가치관부합'];
-  const rows = data.map(e=>[e.date,e.cat1,e.cat2,`"${e.desc}"`,e.amount,`"${e.memo||''}"`,e.values?'O':'X']);
-  const csv = '\uFEFF' + [header,...rows].map(r=>r.join(',')).join('\n');
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
-  a.download = `가계부_${fm||'전체'}.csv`;
-  a.click();
-  showToast('CSV 파일이 다운로드됩니다.');
+if (!entries.length) { showToast('내보낼 데이터가 없어요.'); return; }
+const header = ['날짜','금액','대분류','소분류','내용','메모','가치관부합'];
+const rows = entries.map(e => [e.date, e.amount, e.cat1, e.cat2, e.desc, e.memo||'', e.values?'O':'X']);
+const csv = [header, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+const blob = new Blob(['\uFEFF'+csv], { type: 'text/csv;charset=utf-8;' });
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a'); a.href = url; a.download = '가계부.csv'; a.click();
+URL.revokeObjectURL(url);
 }
 
-let toastTimer;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
-}
-
-
-
-
-// ─── 복리 시뮬레이터 ──────────────────────────────────────
-let selectedScenario = 'neutral';
-
-function renderSimulator(investable, mk) {
-  const defaultAmt = investable > 0 ? Math.round(investable/10000)*10000 : 5000000;
-  const defaultFmt = defaultAmt.toLocaleString('ko-KR');
-  return `
-  <div class="sim-card">
-    <h3>📈 복리 시뮬레이터</h3>
-    <div class="sim-inputs">
-      <div class="field">
-        <label>월 투자 금액 (원)</label>
-        <input type="text" id="sim-monthly-display" value="${defaultFmt}"
-          style="font-family:var(--sans);font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;color:var(--text);outline:none;width:100%;"
-          onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
-          oninput="formatSimMonthly(this); updateSimulator()"
-        />
-        <input type="hidden" id="sim-monthly" value="${defaultAmt}" />
-      </div>
-      <div class="field">
-        <label>투자 기간 (년)</label>
-        <input type="number" id="sim-years" value="20" min="1" max="50"
-          style="font-family:var(--sans);font-size:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;color:var(--text);outline:none;width:100%;"
-          onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
-          onchange="updateSimulator()"
-        />
-      </div>
-    </div>
-    <div id="sim-result"></div>
-    <div class="sim-chart-wrap"><canvas id="sim-chart" style="max-height:240px;"></canvas></div>
-  </div>`;
-}
-
-function formatSimMonthly(el) {
-  const raw = el.value.replace(/[^0-9]/g, '');
-  const num = parseInt(raw) || 0;
-  el.value = num.toLocaleString('ko-KR');
-  const hidden = document.getElementById('sim-monthly');
-  if (hidden) hidden.value = num;
-}
-
-function selectScenario(s) {
-  selectedScenario = s;
-  const activeClass = { pessimistic:'active-pessimistic', neutral:'active-neutral', optimistic:'active-optimistic' };
-  ['pessimistic','neutral','optimistic'].forEach(k => {
-    const btn = document.getElementById('scen-'+k);
-    if (!btn) return;
-    btn.className = 'scen-btn' + (k===s ? ' '+activeClass[k] : '');
-  });
-  if (window._simChart) {
-    window._simChart.data.datasets.forEach((ds, i) => {
-      if (i === 0) return;
-      const key = ['pessimistic','neutral','optimistic'][i-1];
-      const isSel = key === s;
-      ds.borderWidth = isSel ? 3 : 1.5;
-      ds.pointRadius = isSel ? 3 : 1;
-      ds.borderDash  = isSel ? [] : [4, 3];
-    });
-    window._simChart.update();
-    const colorMap = { pessimistic:'#DC2626', neutral:'#94A3B8', optimistic:'#16A34A' };
-    ['pessimistic','neutral','optimistic'].forEach(k => {
-      const card = document.getElementById('result-card-'+k);
-      if (!card) return;
-      const isSel = k === s;
-      card.style.background = isSel ? colorMap[k]+'15' : 'var(--surface)';
-      card.style.border = isSel ? '2px solid '+colorMap[k] : '1.5px solid var(--border)';
-      card.style.boxShadow = isSel ? '0 2px 8px '+colorMap[k]+'25' : 'none';
-    });
-  }
-}
-
-function selectScenarioFromCard(s) {
-  selectedScenario = s;
-  selectScenario(s);
-}
-
-function updateSimulator() {
-  const monthly = parseFloat(document.getElementById('sim-monthly')?.value) || 0;
-  const years   = parseInt(document.getElementById('sim-years')?.value) || 1;
-  const months  = years * 12;
-  const totalIn = monthly * months;
-  const startYear = new Date().getFullYear();
-
-  const rateMap = { pessimistic: 4, neutral: 7, optimistic: 10 };
-  const scenarios = [
-    { key: 'pessimistic', label: '비관적(4%)',  rate: rateMap.pessimistic / 100 / 12, color: '#DC2626' },
-    { key: 'neutral',     label: '보통(7%)',    rate: rateMap.neutral     / 100 / 12, color: '#94A3B8' },
-    { key: 'optimistic',  label: '낙관적(10%)', rate: rateMap.optimistic  / 100 / 12, color: '#16A34A' },
-  ];
-
-  const scenarioData = scenarios.map(s => {
-    let accum = 0;
-    const yearly = [];
-    for (let i = 1; i <= months; i++) {
-      accum = (accum + monthly) * (1 + s.rate);
-      if (i % 12 === 0) yearly.push(Math.round(accum));
-    }
-    return { ...s, yearly };
-  });
-
-  const principalData = Array.from({length: years}, (_,i) => Math.round(monthly * 12 * (i+1)));
-  const labels = Array.from({length: years}, (_,i) => String(startYear + i + 1));
-
-  const resultEl = document.getElementById('sim-result');
-  if (resultEl) {
-    resultEl.innerHTML = `
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.25rem;">
-        ${scenarioData.map(s => {
-          const f = s.yearly[s.yearly.length-1]||0;
-          const p = f - totalIn;
-          const isSel = s.key === (selectedScenario||'neutral');
-          const emojiMap = { pessimistic:'😟', neutral:'😐', optimistic:'😊' };
-          const bgColor = isSel ? s.color+'15' : 'var(--surface)';
-          const borderStyle = isSel ? '2px solid '+s.color : '1.5px solid var(--border)';
-          const shadow = isSel ? '0 2px 8px '+s.color+'25' : 'none';
-          return `<div id="result-card-${s.key}" onclick="selectScenarioFromCard('${s.key}')"
-            style="background:${bgColor};padding:14px 12px;border:${borderStyle};border-radius:var(--radius-lg);cursor:pointer;transition:all 0.2s;box-shadow:${shadow};text-align:center;">
-            <div style="font-size:18px;margin-bottom:4px;">${emojiMap[s.key]}</div>
-            <div style="font-size:11px;color:${s.color};font-weight:600;margin-bottom:6px;">${s.label}</div>
-            <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:2px;">${fmtOk(f)}</div>
-            <div style="font-size:11px;color:var(--text3);">+${fmtOk(p)}</div>
-            <div style="font-size:11px;color:${s.color};font-weight:600;">${Math.round(p/totalIn*100)}% 수익</div>
-          </div>`;
-        }).join('')}
-      </div>`;
-  }
-
-  if (window._simChart) { window._simChart.destroy(); }
-  const ctx = document.getElementById('sim-chart');
-  if (!ctx) return;
-  window._simChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [
-        { label: '원금', data: principalData, backgroundColor: '#D8D4C8', borderRadius: 3, order: 2 },
-        ...scenarioData.map(s => {
-          const isSel = s.key === (selectedScenario||'neutral');
-          return {
-            label: s.label, data: s.yearly, type: 'line',
-            borderColor: s.color, backgroundColor: s.color+'22',
-            borderWidth: isSel ? 3 : 1.5,
-            pointRadius: isSel ? 3 : 1,
-            borderDash: isSel ? [] : [4, 3],
-            tension: 0.3, order: 1, fill: false
-          };
-        })
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { labels: { font: { family: "'Noto Sans KR'" }, boxWidth: 12 } },
-        tooltip: { callbacks: {
-          label: c => ` ${c.dataset.label}: ${Number(c.raw).toLocaleString('ko-KR')}원`
-        }}
-      },
-      scales: {
-        x: { grid: { display: false }, ticks: { font: { family: "'Noto Sans KR'", size: 11 } } },
-        y: { ticks: { font: { family: "'Noto Sans KR'", size: 11 }, callback: v => {
-          return (v/100000000).toFixed(1)+'억';
-        }}}
-      }
-    }
-  });
-}
-
-// ─── 회고 데이터 ───────────────────────────────────
-const RETRO_KEY = 'mycashbook_retro_v1';
-let retroLog = {};   // { "2026-05": { memo: "", keywords: [] } }
-
-function loadRetro() {
-  try { const d = localStorage.getItem(RETRO_KEY); if (d) retroLog = JSON.parse(d); } catch(e) {}
-}
-function saveRetro() {
-  localStorage.setItem(RETRO_KEY, JSON.stringify(retroLog));
-}
-
+// ─── 회고 & 시뮬레이션 ──────────────────────────────────────
 let retroMonth = new Date();
+const RETRO_KEY = 'mycashbook_retro_v1';
+const PRINCIPLE_KEY = 'mycashbook_principle_v1';
+const PRACTICE_KEY = 'mycashbook_practice_v1';
+
+function loadRetroData() {
+try { return JSON.parse(localStorage.getItem(RETRO_KEY)||'{}'); } catch(e) { return {}; }
+}
+function saveRetroData(data) { localStorage.setItem(RETRO_KEY, JSON.stringify(data)); }
+function loadPrinciple() { return localStorage.getItem(PRINCIPLE_KEY)||''; }
+function savePrinciple(t) { localStorage.setItem(PRINCIPLE_KEY, t); }
+function loadPractice() { try { return JSON.parse(localStorage.getItem(PRACTICE_KEY)||'{}'); } catch(e) { return {}; } }
+function savePractice(data) { localStorage.setItem(PRACTICE_KEY, JSON.stringify(data)); }
 
 function changeRetroMonth(d) {
-  retroMonth = new Date(retroMonth.getFullYear(), retroMonth.getMonth()+d, 1);
-  renderRetro();
-}
-
-function extractKeywords(text) {
-  if (!text || text.length < 5) return [];
-  // 불용어 제거 후 2글자 이상 명사/형용사 추출 (간단 규칙 기반)
-  const stopWords = ['있어','없어','했어','했는데','것같','같아','그래','그리고','하지만','근데','그냥','정말','너무','되게','진짜','이번','지난','다음','오늘','어제','내일','이달','지출','소비','우리','남편','나는','내가','에서','으로','에게','한번','했다','이다','이고','이며','하고','하며','해서','해야','하면','하는','하지','하니','한다','한게','인데','이라','이런','저런','그런','이건','저건','그건','이게','저게','그게','있는','없는','같은','이상','이하','이번달','지난달'];
-  const words = text
-    .replace(/[^가-힣a-zA-Z0-9\s]/g, ' ')
-    .split(/\s+/)
-    .filter(w => w.length >= 2)
-    .filter(w => !stopWords.some(s => w.includes(s)));
-
-  // 빈도 계산
-  const freq = {};
-  words.forEach(w => { freq[w] = (freq[w]||0) + 1; });
-  return Object.entries(freq)
-    .sort((a,b) => b[1]-a[1])
-    .slice(0, 8)
-    .map(e => e[0]);
+retroMonth = new Date(retroMonth.getFullYear(), retroMonth.getMonth()+d, 1);
+renderRetro();
 }
 
 function renderRetro() {
-  const mk = retroMonth.getFullYear()+'-'+String(retroMonth.getMonth()+1).padStart(2,'0');
-  const log = retroLog[mk] || { memo: '', keywords: [] };
-  const income = getMonthIncome(mk);
-  const spent  = entries.filter(e=>getMonthKey(e.date)===mk).reduce((s,e)=>s+e.amount,0);
-  const investable = income - spent;
+const mk = `${retroMonth.getFullYear()}-${String(retroMonth.getMonth()+1).padStart(2,'0')}`;
+const mIncome = getMonthIncome(mk);
+const mData = entries.filter(e=>getMonthKey(e.date)===mk);
+const mTotal = mData.reduce((s,e)=>s+e.amount,0);
+const mFixed = mData.filter(e=>e.cat1==='고정비').reduce((s,e)=>s+e.amount,0);
+const mInvest = mData.filter(e=>e.cat1==='투자').reduce((s,e)=>s+e.amount,0);
+const mBalance = mIncome - mTotal;
+const retroData = loadRetroData();
+const practiceData = loadPractice();
+const curRetro = retroData[mk] || { memo:'', keywords:[] };
+const curPractice = practiceData[mk] || { eval: null };
 
-  const el = document.getElementById('retro-content');
+// 시뮬레이터
+const allMonths = [...new Set(entries.map(e=>getMonthKey(e.date)))].sort();
+const avgExpense = allMonths.length > 0
+? Math.round(allMonths.reduce((s,m)=>{
+const md = entries.filter(e=>getMonthKey(e.date)===m);
+return s + md.reduce((ss,e)=>ss+e.amount,0);
+},0) / allMonths.length)
+: mTotal || 300000;
 
-  // 시뮬레이터 + 회고 입력 영역
-  el.innerHTML = `
-    ${renderSimulator(investable, mk)}
-    <div class="pr-card">
-      <h3>✍️ 이달의 회고 <span style="font-size:11px;color:var(--text3);font-weight:400;margin-left:4px;">${retroMonth.getFullYear()}년 ${retroMonth.getMonth()+1}월</span></h3>
-      <textarea class="retro-memo" id="retro-memo-input" placeholder="이번 달 소비와 생활을 돌아보며 자유롭게 써보세요. 잘한 것, 아쉬운 것, 다음 달 다짐 등 무엇이든 좋아요.">${log.memo||''}</textarea>
-      <button class="btn-primary" style="margin-top:1.25rem;" onclick="saveRetroMemo('${mk}')">회고 저장</button>
-    </div>
-    <div id="retro-history-wrap"></div>
-  `;
+let html = `
+<div class="pr-month-nav">
+<button onclick="changeRetroMonth(-1)">&#8249;</button>
+<span class="pr-month-title">${retroMonth.getFullYear()}년 ${retroMonth.getMonth()+1}월</span>
+<button onclick="changeRetroMonth(1)">&#8250;</button>
+</div>
 
-  // 회고 내역은 DOM으로 별도 구성 (템플릿 중첩 변수 충돌 방지)
-  const historyKeys = Object.keys(retroLog).sort((a,b)=>b.localeCompare(a));
-  const wrap = document.getElementById('retro-history-wrap');
-  if (historyKeys.length > 0) {
-    const card = document.createElement('div');
-    card.className = 'pr-card';
-    card.innerHTML = '<h3>📖 회고 내역</h3>';
-    const list = document.createElement('div');
-    list.className = 'retro-history';
+<div class="invest-banner">
+<div class="invest-block">
+<div class="lbl">수입</div>
+<div class="val" style="color:var(--green);">${mIncome > 0 ? mIncome.toLocaleString('ko-KR')+'원' : '-'}</div>
+</div>
+<div class="invest-block">
+<div class="lbl">지출</div>
+<div class="val">${mTotal.toLocaleString('ko-KR')}원</div>
+</div>
+<div class="invest-block">
+<div class="lbl">투자</div>
+<div class="val" style="color:var(--c-invest);">${mInvest.toLocaleString('ko-KR')}원</div>
+</div>
+<div class="invest-block">
+<div class="lbl">잔액</div>
+<div class="val" style="color:${mBalance>=0?'var(--green)':'var(--red)'};">${mIncome>0?(mBalance>=0?'+':'')+mBalance.toLocaleString('ko-KR')+'원':'-'}</div>
+</div>
+</div>
 
-    historyKeys.forEach(function(key) {
-      const r = retroLog[key];
-      const parts = key.split('-');
-      const y = parts[0], m = parts[1];
-      const isCurrent = key === mk;
+<div class="sim-card">
+<h3>💸 투자 시뮬레이터</h3>
+<div style="display:flex;gap:8px;margin-bottom:1.25rem;">
+<button class="scen-btn" id="scen-pessimistic" onclick="setScenario('pessimistic')">😰 보수적<br><span style="font-size:11px;">연 4% · 예적금</span></button>
+<button class="scen-btn" id="scen-neutral" onclick="setScenario('neutral')">😐 중립<br><span style="font-size:11px;">연 7% · 혼합</span></button>
+<button class="scen-btn active-optimistic" id="scen-optimistic" onclick="setScenario('optimistic')">😊 낙관적<br><span style="font-size:11px;">연 10% · 주식</span></button>
+</div>
+<div class="sim-inputs">
+<div class="field"><label>월 투자액 (원)</label><input type="number" id="sim-monthly" value="${Math.max(mInvest,100000)}" min="0" oninput="runSim()" /></div>
+<div class="field"><label>연 수익률 (%)</label><input type="number" id="sim-rate" value="10" min="0" max="100" step="0.1" oninput="runSim()" /></div>
+<div class="field"><label>투자 기간 (년)</label><input type="number" id="sim-years" value="10" min="1" max="50" oninput="runSim()" /></div>
+</div>
+<div class="sim-result" id="sim-result"></div>
+<div class="sim-chart-wrap"><canvas id="sim-chart" height="180"></canvas></div>
+</div>
 
-      const item = document.createElement('div');
-      item.className = 'retro-history-item';
-      if (isCurrent) { item.style.borderColor = 'var(--accent)'; item.style.background = 'var(--accent-light)'; }
+<div class="practice-card">
+<h3>🎯 이달의 실천 평가</h3>
+<div class="practice-eval">
+<button class="eval-btn ${curPractice.eval==='good'?'selected-good':''}" onclick="setPracticeEval('${mk}','good')">😊 잘 지켰어요</button>
+<button class="eval-btn ${curPractice.eval==='mid'?'selected-mid':''}" onclick="setPracticeEval('${mk}','mid')">😐 보통이에요</button>
+<button class="eval-btn ${curPractice.eval==='bad'?'selected-bad':''}" onclick="setPracticeEval('${mk}','bad')">😔 아쉬웠어요</button>
+</div>
+</div>
 
-      const header = document.createElement('div');
-      header.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;';
+<div class="pr-card">
+<h3>📝 이달의 소비 회고</h3>
+<textarea class="retro-memo" id="retro-memo-input" placeholder="이번 달 소비를 돌아보며 느낀 점을 자유롭게 적어보세요...">${curRetro.memo}</textarea>
+<div style="display:flex;justify-content:flex-end;margin-top:10px;">
+<button onclick="saveRetroMemo('${mk}')" style="font-family:var(--sans);font-size:13px;padding:7px 16px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);cursor:pointer;">저장</button>
+</div>
+<div class="keyword-wrap" id="keyword-wrap">
+${(curRetro.keywords||[]).map(k=>`<span class="keyword-tag">${k}</span>`).join('')}
+</div>
+</div>
 
-      const monthLabel = document.createElement('div');
-      monthLabel.className = 'retro-history-month';
-      monthLabel.style.marginBottom = '0';
-      monthLabel.innerHTML = y+'년 '+parseInt(m)+'월'
-        + (isCurrent ? ' <span style="font-size:10px;background:var(--accent);color:#fff;padding:1px 6px;border-radius:99px;margin-left:4px;">이번 달</span>' : '');
-
-      const delBtn = document.createElement('button');
-      delBtn.textContent = '×';
-      delBtn.title = '삭제';
-      delBtn.style.cssText = 'background:none;border:none;cursor:pointer;color:var(--text3);font-size:15px;line-height:1;padding:0;transition:color 0.2s;';
-      delBtn.onmouseover = function(){ this.style.color='var(--red)'; };
-      delBtn.onmouseout  = function(){ this.style.color='var(--text3)'; };
-      delBtn.onclick = function(){ deleteRetroMemo(key); };
-
-      header.appendChild(monthLabel);
-      header.appendChild(delBtn);
-
-      const memo = document.createElement('div');
-      memo.className = 'retro-history-memo';
-      memo.innerHTML = r.memo
-        ? r.memo
-        : '<span style="color:var(--text3);font-style:italic;">작성된 회고가 없어요.</span>';
-
-      item.appendChild(header);
-      item.appendChild(memo);
-      list.appendChild(item);
-    });
-
-    card.appendChild(list);
-    wrap.appendChild(card);
-  }
-
-  setTimeout(updateSimulator, 50);
+<div class="pr-card">
+<h3>💡 나의 소비 원칙</h3>
+<textarea class="principle-editor" id="principle-input" placeholder="나의 소비 원칙을 적어보세요...">${loadPrinciple()}</textarea>
+<div style="display:flex;justify-content:flex-end;margin-top:10px;">
+<button onclick="savePrincipleBtn()" style="font-family:var(--sans);font-size:13px;padding:7px 16px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);cursor:pointer;">저장</button>
+</div>
+</div>
+`;
+document.getElementById('retro-content').innerHTML = html;
+runSim();
 }
 
-function updateKeywords() {
-  const text = document.getElementById('retro-memo-input')?.value || '';
-  const keywords = extractKeywords(text);
-  const wrap = document.getElementById('keyword-wrap');
-  if (wrap) {
-    wrap.innerHTML = keywords.map(k=>`<span class="keyword-tag">${k}</span>`).join('');
-  }
+let simChart = null;
+let currentScenario = 'optimistic';
+
+function setScenario(s) {
+currentScenario = s;
+const rates = { pessimistic: 4, neutral: 7, optimistic: 10 };
+document.getElementById('sim-rate').value = rates[s];
+['pessimistic','neutral','optimistic'].forEach(sc => {
+const btn = document.getElementById('scen-'+sc);
+if (btn) btn.className = 'scen-btn' + (sc===s?' active-'+sc:'');
+});
+runSim();
+}
+
+function runSim() {
+const monthly = parseFloat(document.getElementById('sim-monthly')?.value) || 0;
+const rate = parseFloat(document.getElementById('sim-rate')?.value) || 0;
+const years = parseInt(document.getElementById('sim-years')?.value) || 10;
+const monthlyRate = rate / 100 / 12;
+const months = years * 12;
+let total = 0;
+const yearlyData = [0];
+for (let i = 1; i <= months; i++) {
+total = (total + monthly) * (1 + monthlyRate);
+if (i % 12 === 0) yearlyData.push(Math.round(total));
+}
+const invested = monthly * months;
+const profit = total - invested;
+const resultEl = document.getElementById('sim-result');
+if (resultEl) {
+resultEl.innerHTML = `
+<div class="sr-main">${Math.round(total).toLocaleString('ko-KR')}원</div>
+<div class="sr-sub">${years}년 후 예상 자산 · 원금 ${invested.toLocaleString('ko-KR')}원 + 수익 ${Math.round(profit).toLocaleString('ko-KR')}원</div>
+`;
+}
+const ctx = document.getElementById('sim-chart');
+if (!ctx) return;
+if (simChart) { simChart.destroy(); }
+simChart = new Chart(ctx, {
+type: 'bar',
+data: {
+labels: yearlyData.map((_,i) => i===0?'현재':`${i}년`),
+datasets: [
+{ label: '원금', data: yearlyData.map((_,i)=>Math.min(monthly*i*12,invested)), backgroundColor: '#C2D6E8' },
+{ label: '수익', data: yearlyData.map((v,i)=>Math.max(0,v-Math.min(monthly*i*12,invested))), backgroundColor: '#84B8A4' }
+]
+},
+options: {
+responsive: true,
+plugins: { legend: { labels: { font: { family: 'Noto Sans KR', size: 11 }, color: '#6B6760' } },
+tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${c.raw.toLocaleString('ko-KR')}원` } }
+},
+scales: {
+x: { stacked: true, ticks: { font: { family: 'Noto Sans KR', size: 11 }, color: '#9A9690' }, grid: { display: false } },
+y: { stacked: true, ticks: { font: { family: 'Noto Sans KR', size: 11 }, color: '#9A9690', callback: v => (v/10000).toFixed(0)+'만' }, grid: { color: '#EDEAE2' } }
+}
+}
+});
+}
+
+function setPracticeEval(mk, val) {
+const data = loadPractice();
+data[mk] = { eval: val };
+savePractice(data);
+renderRetro();
+showToast('평가가 저장되었어요!');
 }
 
 function saveRetroMemo(mk) {
-  const memo = document.getElementById('retro-memo-input')?.value || '';
-  const keywords = extractKeywords(memo);
-  retroLog[mk] = { memo, keywords };
-  saveRetro();
-  showToast('회고가 저장되었어요!');
-  renderRetro();
+const memo = document.getElementById('retro-memo-input')?.value || '';
+const data = loadRetroData();
+if (!data[mk]) data[mk] = { memo:'', keywords:[] };
+data[mk].memo = memo;
+data[mk].keywords = extractKeywords(memo);
+saveRetroData(data);
+const wrap = document.getElementById('keyword-wrap');
+if (wrap) wrap.innerHTML = data[mk].keywords.map(k=>`<span class="keyword-tag">${k}</span>`).join('');
+showToast('회고가 저장되었어요!');
 }
 
-function deleteRetroMemo(mk) {
-  if (!confirm('이 회고를 삭제할까요?')) return;
-  delete retroLog[mk];
-  saveRetro();
-  showToast('회고가 삭제되었어요.');
-  renderRetro();
+function savePrincipleBtn() {
+const t = document.getElementById('principle-input')?.value || '';
+savePrinciple(t);
+showToast('원칙이 저장되었어요!');
 }
 
+function extractKeywords(text) {
+const patterns = ['충동','절약','계획','후회','만족','감사','낭비','투자','목표','여행','건강','가족','외식','쇼핑'];
+return patterns.filter(p => text.includes(p));
+}
+
+function showToast(msg) {
+const t = document.getElementById('toast');
+t.textContent = msg;
+t.classList.add('show');
+setTimeout(() => t.classList.remove('show'), 2200);
+}
 
 // ─── 초기화 ──────────────────────────────────────────────────
-load();
-loadRetro();
-const now = new Date();
-document.getElementById('inp-date').value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
-document.getElementById('today-lbl').textContent = `${now.getFullYear()}.${now.getMonth()+1}.${now.getDate()}`;
-// Firebase 데이터 우선, 없으면 로컬 사용
-if (window._entries !== undefined) entries = window._entries;
-if (window._incomes !== undefined) incomes = window._incomes;
+(function init() {
+const today = new Date();
+document.getElementById('today-lbl').textContent =
+`${today.getFullYear()}.${String(today.getMonth()+1).padStart(2,'0')}.${String(today.getDate()).padStart(2,'0')}`;
+const dateInp = document.getElementById('inp-date');
+if (dateInp) dateInp.value = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
 
+load();
+
+// Firebase 로드 대기
+const waitForFb = setInterval(() => {
+if (window._fbReady) {
+clearInterval(waitForFb);
+document.getElementById('sync-status').textContent = '☁️ 동기화됨';
+// Firebase 데이터 우선 사용
+if (window._entries) entries = window._entries;
+if (window._incomes) incomes = window._incomes;
 window._appReady = true;
 renderQuickSummary();
 renderMonthly();
+} else {
+// Firebase 연결 전 로컬 데이터로 일단 렌더
+window._appReady = true;
+renderQuickSummary();
+renderMonthly();
+}
+}, 100);
+
+setTimeout(() => {
+if (!window._fbReady) {
+clearInterval(waitForFb);
+document.getElementById('sync-status').textContent = '⚠️ 오프라인';
+window._appReady = true;
+renderQuickSummary();
+renderMonthly();
+}
+}, 5000);
+})();
 </script>
 </body>
 </html>
