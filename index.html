@@ -67,6 +67,10 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
 .tab[data-tab="retro"]:hover  { color: #E11D48; }
 .tab[data-tab="retro"].active { color: #E11D48; border-bottom-color: #E11D48; border-bottom-width: 3px; font-weight: 600; }
 
+.tab[data-tab="ai"]        { color: var(--text2); }
+.tab[data-tab="ai"]:hover  { color: #7C3AED; }
+.tab[data-tab="ai"].active { color: #7C3AED; border-bottom-color: #7C3AED; border-bottom-width: 3px; font-weight: 600; }
+
 .section { display: none; }
 .section.active { display: block; }
 
@@ -299,6 +303,27 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
   .invest-banner { flex-direction: column; }
 }
 
+/* ── AI 분석 ── */
+.ai-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; }
+.ai-card h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 1rem; }
+.ai-intro { font-size: 13px; color: var(--text2); line-height: 1.7; margin-bottom: 1.25rem; }
+.ai-scope { display: flex; gap: 8px; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.ai-scope select { font-family: var(--sans); font-size: 13px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 10px; color: var(--text); outline: none; cursor: pointer; }
+.btn-ai { width: 100%; padding: 12px; font-family: var(--sans); font-size: 14px; font-weight: 600; background: #7C3AED; color: #fff; border: none; border-radius: var(--radius); cursor: pointer; transition: background 0.2s; }
+.btn-ai:hover { background: #6D28D9; }
+.btn-ai:disabled { background: var(--border2); cursor: not-allowed; }
+.ai-result { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; line-height: 1.8; font-size: 14px; color: var(--text); }
+.ai-result h2 { font-size: 16px; font-weight: 600; color: #5B21B6; margin: 1.25rem 0 0.6rem; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+.ai-result h2:first-child { margin-top: 0; }
+.ai-result h3 { font-size: 14px; font-weight: 600; color: var(--text); margin: 1rem 0 0.4rem; text-transform: none; letter-spacing: 0; }
+.ai-result strong { font-weight: 600; color: var(--text); }
+.ai-result ul { margin: 0.4rem 0 0.8rem; padding-left: 1.3rem; }
+.ai-result li { margin-bottom: 0.35rem; }
+.ai-result p { margin-bottom: 0.7rem; }
+.ai-cursor { display: inline-block; width: 7px; height: 15px; background: #7C3AED; margin-left: 2px; animation: ai-blink 1s steps(2) infinite; vertical-align: text-bottom; }
+@keyframes ai-blink { 0%,50% { opacity: 1; } 50.01%,100% { opacity: 0; } }
+.ai-error { background: #F5E8E8; border: 1px solid var(--red); border-radius: var(--radius); padding: 12px 14px; font-size: 13px; color: var(--red); margin-bottom: 1.5rem; line-height: 1.6; }
+
 </style>
 </head>
 <body>
@@ -317,6 +342,7 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
     <button class="tab" data-tab="list" onclick="switchTab('list')">지출 내역</button>
     <button class="tab" data-tab="calendar" onclick="switchTab('calendar')">캘린더</button>
     <button class="tab" data-tab="retro" onclick="switchTab('retro')">시뮬레이션 &amp; 회고</button>
+    <button class="tab" data-tab="ai" onclick="switchTab('ai')">✨ AI 분석</button>
   </div>
 
   <!-- 월별 분석 -->
@@ -414,6 +440,27 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
   <!-- 회고 -->
   <div class="section" id="sec-retro">
     <div id="retro-content"></div>
+  </div>
+
+  <!-- AI 분석 -->
+  <div class="section" id="sec-ai">
+    <div class="ai-card">
+      <h3>✨ AI 소비 분석</h3>
+      <div class="ai-intro">
+        기록된 지출·수입·가치관 데이터를 바탕으로 Claude AI가 소비 패턴을 분석하고
+        개선 방향을 제안합니다. 분석할 기간을 고르고 버튼을 눌러보세요.
+      </div>
+      <div class="ai-scope">
+        <select id="ai-scope-sel">
+          <option value="recent3">최근 3개월</option>
+          <option value="recent6">최근 6개월</option>
+          <option value="all">전체 기간</option>
+          <option value="thismonth">이번 달</option>
+        </select>
+      </div>
+      <button class="btn-ai" id="ai-run-btn" onclick="runAIAnalysis()">✨ AI 분석 실행</button>
+    </div>
+    <div id="ai-output"></div>
   </div>
 </div>
 
@@ -645,6 +692,7 @@ function switchTab(t) {
   if (t === 'calendar')  renderCalendar();
 
   if (t === 'retro')     renderRetro();
+  if (t === 'ai')        renderAI();
 }
 
 function addEntry() {
@@ -1507,6 +1555,243 @@ function deleteRetroMemo(mk) {
   saveRetro();
   showToast('회고가 삭제되었어요.');
   renderRetro();
+}
+
+
+// ─── AI 분석 ──────────────────────────────────────────────────
+// Cloudflare Worker 프록시 주소 (worker.js 배포 후 발급된 URL로 교체)
+// API 키는 Worker 서버에만 있고 여기엔 노출되지 않습니다.
+const AI_PROXY_URL = 'https://throbbing-hat-2126.whddnd90.workers.dev';
+
+function renderAI() { /* 키 입력 불필요 — Worker가 처리 */ }
+
+// 분석에 사용할 월 목록 결정
+function getScopeMonths(scope) {
+  const now = new Date();
+  const curMk = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  const monthSet = new Set(entries.map(e => getMonthKey(e.date)));
+  Object.keys(incomes || {}).forEach(m => monthSet.add(m));
+  const months = [...monthSet].sort((a,b) => b.localeCompare(a)); // 최신순
+  if (scope === 'thismonth') return [curMk];
+  if (scope === 'recent3')   return months.slice(0, 3);
+  if (scope === 'recent6')   return months.slice(0, 6);
+  return months; // all
+}
+
+// 데이터를 텍스트 요약으로 변환
+function buildAnalysisData(scope) {
+  const months = getScopeMonths(scope);
+  const lines = [];
+  let hasData = false;
+
+  months.sort((a,b) => a.localeCompare(b)); // 오래된 순으로 서술
+  months.forEach(mk => {
+    const data = entries.filter(e => getMonthKey(e.date) === mk);
+    const income = getMonthIncome(mk);
+    if (!data.length && !income) return;
+    hasData = true;
+
+    const expense = data.reduce((s,e) => s+e.amount, 0);
+    const balance = income - expense;
+    const vc = data.filter(e => e.values).length;
+    const pct = data.length ? Math.round(vc/data.length*100) : 0;
+
+    const byCat = {};
+    data.forEach(e => { byCat[e.cat1] = (byCat[e.cat1]||0) + e.amount; });
+
+    lines.push(`### ${mk}`);
+    lines.push(`- 수입: ${income.toLocaleString('ko-KR')}원 / 지출: ${expense.toLocaleString('ko-KR')}원 / 잔액: ${balance.toLocaleString('ko-KR')}원`);
+    lines.push(`- 가치관 부합: ${vc}/${data.length}건 (${pct}%)`);
+    const catLine = ['고정비','변동비','투자','홧김소비']
+      .filter(c => byCat[c])
+      .map(c => `${c} ${byCat[c].toLocaleString('ko-KR')}원`)
+      .join(', ');
+    if (catLine) lines.push(`- 대분류별: ${catLine}`);
+
+    // 소분류 상위 3
+    const bySub = {};
+    data.forEach(e => { bySub[e.cat2] = (bySub[e.cat2]||0) + e.amount; });
+    const topSubs = Object.entries(bySub).sort((a,b)=>b[1]-a[1]).slice(0,3)
+      .map(([s,a]) => `${s} ${a.toLocaleString('ko-KR')}원`).join(', ');
+    if (topSubs) lines.push(`- 지출 상위: ${topSubs}`);
+
+    // 홧김소비 상세 (메모 포함)
+    const anger = data.filter(e => e.cat1 === '홧김소비');
+    if (anger.length) {
+      const angerTotal = anger.reduce((s,e)=>s+e.amount,0);
+      lines.push(`- 홧김소비 ${anger.length}건 합계 ${angerTotal.toLocaleString('ko-KR')}원:`);
+      anger.forEach(e => {
+        lines.push(`  · ${e.desc} (${e.amount.toLocaleString('ko-KR')}원)${e.memo ? ' — 메모: '+e.memo : ''}`);
+      });
+    }
+
+    // 회고 메모
+    const retro = (typeof retroLog !== 'undefined' && retroLog[mk]) ? retroLog[mk].memo : '';
+    if (retro && retro.trim()) lines.push(`- 이달의 회고: ${retro.trim()}`);
+
+    lines.push('');
+  });
+
+  return { text: lines.join('\n'), hasData, monthCount: months.length };
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// 가벼운 마크다운 → HTML (제목/굵게/목록/문단)
+function renderMarkdown(md) {
+  const linesArr = md.split('\n');
+  let html = '';
+  let inList = false;
+  const closeList = () => { if (inList) { html += '</ul>'; inList = false; } };
+  const inline = (t) => escapeHtml(t).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+  linesArr.forEach(raw => {
+    const line = raw.trimEnd();
+    if (/^##\s+/.test(line))      { closeList(); html += '<h2>' + inline(line.replace(/^##\s+/,'')) + '</h2>'; }
+    else if (/^###\s+/.test(line)){ closeList(); html += '<h3>' + inline(line.replace(/^###\s+/,'')) + '</h3>'; }
+    else if (/^\s*[-*]\s+/.test(line)) {
+      if (!inList) { html += '<ul>'; inList = true; }
+      html += '<li>' + inline(line.replace(/^\s*[-*]\s+/,'')) + '</li>';
+    }
+    else if (line.trim() === '')  { closeList(); }
+    else                          { closeList(); html += '<p>' + inline(line) + '</p>'; }
+  });
+  closeList();
+  return html;
+}
+
+async function runAIAnalysis() {
+  const out = document.getElementById('ai-output');
+  const btn = document.getElementById('ai-run-btn');
+
+  if (!AI_PROXY_URL || AI_PROXY_URL.includes('YOUR-SUBDOMAIN')) {
+    out.innerHTML = '<div class="ai-error">AI 프록시(Worker) 주소가 설정되지 않았어요. worker.js 배포 후 index.html의 AI_PROXY_URL을 채워주세요.</div>';
+    return;
+  }
+
+  const scope = document.getElementById('ai-scope-sel')?.value || 'recent3';
+  const { text, hasData } = buildAnalysisData(scope);
+  if (!hasData) { out.innerHTML = '<div class="ai-error">선택한 기간에 분석할 데이터가 없어요.</div>'; return; }
+
+  const prompt =
+`당신은 따뜻하면서도 통찰력 있는 개인 재무 코치입니다. 아래는 사용자의 가계부 데이터입니다.
+이 앱은 소비를 고정비/변동비/투자/홧김소비로 나누고, 각 소비가 "내 가치관에 부합하는지" 체크하며,
+"투자"는 물건·경험에 대한 인적투자와 금융투자를 포함합니다.
+
+다음 데이터를 분석해주세요:
+
+${text}
+
+아래 형식의 한국어 마크다운으로 작성하세요. 사고 과정이나 서론 없이 바로 분석 결과만 작성합니다.
+구체적인 숫자를 인용하고, 따뜻하지만 솔직하게, 실천 가능한 조언을 주세요.
+
+## 한눈에 보기
+2~3문장 요약
+
+## 소비 패턴
+대분류·소분류 흐름에서 눈에 띄는 점
+
+## 홧김소비 진단
+홧김소비가 있으면 메모(이유)까지 살펴 패턴을 짚어주세요. 없으면 잘하고 있다고 칭찬해주세요.
+
+## 가치관 부합도
+가치관 부합률의 의미와 추이
+
+## 이렇게 해보세요
+- 구체적이고 실천 가능한 제안 3가지
+
+## 응원 한마디
+다음 달을 위한 따뜻한 격려`;
+
+  btn.disabled = true;
+  btn.textContent = '분석 중...';
+  out.innerHTML = '<div class="ai-result" id="ai-stream"><span class="ai-cursor"></span></div>';
+  const streamEl = document.getElementById('ai-stream');
+  let acc = '';
+
+  try {
+    const resp = await fetch(AI_PROXY_URL, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-opus-4-8',
+        max_tokens: 4000,
+        stream: true,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (!resp.ok) {
+      // 빈 응답일 수 있으니 text로 받아 안전하게 파싱
+      const raw = await resp.text().catch(() => '');
+      let msg = `요청 실패 (HTTP ${resp.status})`;
+      if (raw) {
+        try { const err = JSON.parse(raw); if (err?.error?.message) msg = err.error.message; }
+        catch (e) { msg = `요청 실패 (HTTP ${resp.status}): ${raw.slice(0, 200)}`; }
+      }
+      if (resp.status === 401) msg = '서버의 API 키가 올바르지 않습니다. Worker의 ANTHROPIC_API_KEY 시크릿을 확인해주세요.';
+      if (resp.status === 403) msg = '허용되지 않은 출처입니다. Worker의 ALLOWED_ORIGINS에 이 페이지 주소를 추가해주세요.';
+      if (resp.status === 429) msg = '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.';
+      if (resp.status === 404 || resp.status === 530) msg = 'Worker 주소(AI_PROXY_URL)를 찾을 수 없어요. 배포된 URL이 맞는지 확인해주세요.';
+      out.innerHTML = '<div class="ai-error">' + escapeHtml(msg) + '</div>';
+      return;
+    }
+
+    const ctype = resp.headers.get('content-type') || '';
+
+    // 스트림이 아니라 일반 JSON으로 응답이 온 경우(프록시가 stream 무시 등)도 처리
+    if (!resp.body || !ctype.includes('text/event-stream')) {
+      const raw = await resp.text().catch(() => '');
+      if (!raw) throw new Error('빈 응답을 받았어요. Worker 로그를 확인해주세요.');
+      let data;
+      try { data = JSON.parse(raw); }
+      catch (e) { throw new Error('응답을 해석할 수 없어요: ' + raw.slice(0, 200)); }
+      if (data?.error?.message) throw new Error(data.error.message);
+      const txt = Array.isArray(data?.content)
+        ? data.content.filter(b => b.type === 'text').map(b => b.text).join('')
+        : '';
+      streamEl.innerHTML = txt ? renderMarkdown(txt) : '<div class="ai-error">응답을 받지 못했어요. 다시 시도해주세요.</div>';
+      return;
+    }
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let streamErr = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const parts = buffer.split('\n');
+      buffer = parts.pop(); // 마지막 불완전 라인 보존
+      for (const line of parts) {
+        const trimmed = line.trim();
+        if (!trimmed.startsWith('data:')) continue;
+        const payload = trimmed.slice(5).trim();
+        if (!payload || payload === '[DONE]') continue;
+        let evt;
+        try { evt = JSON.parse(payload); }
+        catch (e) { continue; } // 부분/비정상 JSON 무시
+        if (evt.type === 'content_block_delta' && evt.delta?.type === 'text_delta') {
+          acc += evt.delta.text;
+          streamEl.innerHTML = renderMarkdown(acc) + '<span class="ai-cursor"></span>';
+        } else if (evt.type === 'error') {
+          streamErr = evt.error?.message || '스트리밍 오류';
+        }
+      }
+    }
+
+    if (streamErr && !acc) throw new Error(streamErr);
+    streamEl.innerHTML = acc ? renderMarkdown(acc) : '<div class="ai-error">응답을 받지 못했어요. 다시 시도해주세요.</div>';
+  } catch (e) {
+    out.innerHTML = '<div class="ai-error">분석 중 오류가 발생했어요: ' + escapeHtml(e.message || String(e)) + '</div>';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '✨ AI 분석 실행';
+  }
 }
 
 
