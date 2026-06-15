@@ -303,6 +303,33 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
   .invest-banner { flex-direction: column; }
 }
 
+/* 인증 오버레이 */
+.auth-overlay { position:fixed; inset:0; background:var(--bg); z-index:9000; display:flex; align-items:center; justify-content:center; }
+.auth-box { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); padding:2rem; width:90%; max-width:400px; }
+.auth-box h2 { font-size:20px; font-weight:600; margin-bottom:0.4rem; }
+.auth-box .auth-sub { font-size:13px; color:var(--text3); margin-bottom:1.5rem; }
+.auth-tabs { display:flex; margin-bottom:1.5rem; border-bottom:1px solid var(--border); }
+.auth-tab { flex:1; padding:9px; font-family:var(--sans); font-size:14px; cursor:pointer; border:none; background:none; color:var(--text2); border-bottom:2px solid transparent; margin-bottom:-1px; transition:color 0.2s; }
+.auth-tab.active { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+.auth-err { background:#F5E8E8; border:1px solid var(--red); border-radius:var(--radius); padding:10px 12px; font-size:13px; color:var(--red); margin-bottom:1rem; display:none; }
+/* 그룹 설정 오버레이 */
+.group-overlay { position:fixed; inset:0; background:var(--bg); z-index:8000; display:flex; align-items:center; justify-content:center; }
+.group-box { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); padding:2rem; width:90%; max-width:440px; }
+.group-box h2 { font-size:18px; font-weight:600; margin-bottom:0.4rem; }
+.group-box .group-sub { font-size:13px; color:var(--text3); margin-bottom:1.5rem; }
+.group-option { border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.25rem; margin-bottom:1rem; cursor:pointer; transition:all 0.2s; }
+.group-option:hover { border-color:var(--accent); background:var(--accent-light); }
+.group-option h3 { font-size:14px; font-weight:600; margin-bottom:4px; }
+.group-option p { font-size:12px; color:var(--text3); margin-bottom:0; }
+.invite-code-display { background:var(--accent-light); border:1px solid #C8DDD4; border-radius:var(--radius); padding:1.25rem; text-align:center; margin:1rem 0; }
+.invite-code-display .code { font-size:32px; font-weight:700; letter-spacing:8px; color:var(--accent); font-family:monospace; }
+.invite-code-display .code-hint { font-size:12px; color:var(--text2); margin-top:6px; }
+.btn-back { width:100%; margin-top:8px; padding:10px; font-family:var(--sans); font-size:14px; background:none; color:var(--text2); border:1px solid var(--border); border-radius:var(--radius); cursor:pointer; }
+.btn-back:hover { background:var(--bg2); }
+.user-bar { display:flex; align-items:center; gap:8px; }
+.btn-logout { font-family:var(--sans); font-size:11px; color:var(--text3); background:none; border:1px solid var(--border); border-radius:var(--radius); padding:3px 9px; cursor:pointer; transition:all 0.2s; }
+.btn-logout:hover { background:var(--bg2); color:var(--text); }
+
 /* ── AI 분석 ── */
 .ai-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; }
 .ai-card h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 1rem; }
@@ -337,7 +364,14 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
       <div class="logo">나만의 <span>가계부</span></div>
       <div style="font-size:12px;color:var(--text3);margin-top:3px;">가치관과 돈의 흐름을 기록합니다</div>
     </div>
-    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;"><div class="today-lbl" id="today-lbl"></div><div id="sync-status" style="font-size:11px;color:var(--text3);">⏳ 연결 중...</div></div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+      <div class="today-lbl" id="today-lbl"></div>
+      <div id="sync-status" style="font-size:11px;color:var(--text3);"></div>
+      <div id="user-info" class="user-bar" style="display:none;">
+        <span style="font-size:11px;color:var(--text3);" id="user-email"></span>
+        <button class="btn-logout" onclick="window._signOut()">로그아웃</button>
+      </div>
+    </div>
   </header>
 
   <div class="tabs">
@@ -505,84 +539,238 @@ header { padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--border); margin-
   </div>
 </div>
 
+<!-- 인증 오버레이 -->
+<div class="auth-overlay" id="auth-overlay">
+  <div class="auth-box">
+    <h2>나만의 가계부</h2>
+    <p class="auth-sub">가치관과 돈의 흐름을 기록합니다</p>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuthTab('login')">로그인</button>
+      <button class="auth-tab" onclick="switchAuthTab('signup')">회원가입</button>
+    </div>
+    <div id="auth-error" class="auth-err"></div>
+    <div class="field mb1"><label>이메일</label><input type="email" id="auth-email" placeholder="이메일 주소" /></div>
+    <div class="field" style="margin-bottom:1.25rem;"><label>비밀번호</label><input type="password" id="auth-password" placeholder="비밀번호 (6자 이상)" /></div>
+    <button class="btn-primary" id="auth-submit-btn" onclick="submitAuth()">로그인</button>
+  </div>
+</div>
+
+<!-- 그룹 설정 오버레이 -->
+<div class="group-overlay" id="group-overlay" style="display:none;">
+  <div class="group-box" id="group-box-content"></div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  import { getDatabase, ref, onValue, set, remove, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyDJYyb_qUbTiwznpxazy4IKE5FrgmUg7VI",
-    authDomain: "numi-dumi-cashbook.firebaseapp.com",
-    projectId: "numi-dumi-cashbook",
-    storageBucket: "numi-dumi-cashbook.firebasestorage.app",
-    messagingSenderId: "102621154749",
-    appId: "1:102621154749:web:5c433c45db54434b5a96d4",
-    databaseURL: "https://numi-dumi-cashbook-default-rtdb.asia-southeast1.firebasedatabase.app"
+    apiKey: "AIzaSyDwA5vknaDEG_7v2GszD1pgdDmZBlyJ8WE",
+    authDomain: "cashbook-ba878.firebaseapp.com",
+    databaseURL: "https://cashbook-ba878-default-rtdb.firebaseio.com",
+    projectId: "cashbook-ba878",
+    storageBucket: "cashbook-ba878.firebasestorage.app",
+    messagingSenderId: "714116505639",
+    appId: "1:714116505639:web:3ff8286e399d0c51f72e02"
   };
 
   const app = initializeApp(firebaseConfig);
   const db  = getDatabase(app);
+  const auth = getAuth(app);
 
-  // entries 실시간 동기화
-  onValue(ref(db, 'entries'), function(snap) {
-    const val = snap.val();
-    window._entries = val ? normalizeEntries(Object.values(val).sort((a,b)=>b.date.localeCompare(a.date))) : [];
-    if (window._appReady) {
-      entries = window._entries;
-      renderQuickSummary();
-      const active = document.querySelector('.tab.active');
-      if (active) {
-        const t = active.getAttribute('onclick').match(/switchTab\('(\w+)'\)/);
-        if (t) {
-          if (t[1]==='list')     { populateMonthFilter(); renderList(); }
-          if (t[1]==='monthly')  renderMonthly();
-          if (t[1]==='calendar') renderCalendar();
+  let currentGroupId = null;
+  let unsubEntries = null;
+  let unsubIncomes = null;
+  let unsubAI = null;
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      document.getElementById('auth-overlay').style.display = 'none';
+      const userSnap = await get(ref(db, `users/${user.uid}`));
+      const userData = userSnap.val();
+      if (userData && userData.groupId) {
+        currentGroupId = userData.groupId;
+        startApp(user);
+      } else {
+        showGroupSetup(user);
+      }
+    } else {
+      if (unsubEntries) { unsubEntries(); unsubEntries = null; }
+      if (unsubIncomes) { unsubIncomes(); unsubIncomes = null; }
+      if (unsubAI)      { unsubAI();      unsubAI = null; }
+      document.getElementById('auth-overlay').style.display = 'flex';
+      document.getElementById('group-overlay').style.display = 'none';
+      document.getElementById('user-info').style.display = 'none';
+      document.getElementById('sync-status').textContent = '';
+      window._fbReady = false;
+    }
+  });
+
+  function startApp(user) {
+    document.getElementById('group-overlay').style.display = 'none';
+    document.getElementById('user-info').style.display = 'flex';
+    document.getElementById('user-email').textContent = user.email;
+    document.getElementById('sync-status').textContent = '🟢 연결됨';
+
+    const gp = `groups/${currentGroupId}`;
+
+    unsubEntries = onValue(ref(db, `${gp}/entries`), function(snap) {
+      const val = snap.val();
+      window._entries = val ? normalizeEntries(Object.values(val).sort((a,b)=>b.date.localeCompare(a.date))) : [];
+      if (window._appReady) {
+        entries = window._entries;
+        renderQuickSummary();
+        const active = document.querySelector('.tab.active');
+        if (active) {
+          const m = active.getAttribute('onclick').match(/switchTab\('(\w+)'\)/);
+          if (m) {
+            if (m[1]==='list')     { populateMonthFilter(); renderList(); }
+            if (m[1]==='monthly')  renderMonthly();
+            if (m[1]==='calendar') renderCalendar();
+          }
         }
       }
-    }
-  });
+    });
 
-  // incomes 실시간 동기화
-  onValue(ref(db, 'incomes'), function(snap) {
-    const val = snap.val();
-    window._incomes = val || {};
-    if (window._appReady) {
-      incomes = window._incomes;
-      renderQuickSummary();
-    }
-  });
+    unsubIncomes = onValue(ref(db, `${gp}/incomes`), function(snap) {
+      window._incomes = snap.val() || {};
+      if (window._appReady) { incomes = window._incomes; renderQuickSummary(); }
+    });
 
-  // AI 분석 결과 실시간 동기화
-  onValue(ref(db, 'aiAnalyses'), function(snap) {
-    window._aiAnalyses = snap.val() || {};
-    if (window._appReady && typeof aiAnalyses !== 'undefined') {
-      aiAnalyses = window._aiAnalyses;
-      const active = document.querySelector('.tab.active');
-      if (active && /switchTab\('ai'\)/.test(active.getAttribute('onclick') || '') && typeof renderSavedAnalysis === 'function') {
-        renderSavedAnalysis();
+    unsubAI = onValue(ref(db, `${gp}/aiAnalyses`), function(snap) {
+      window._aiAnalyses = snap.val() || {};
+      if (window._appReady && typeof aiAnalyses !== 'undefined') {
+        aiAnalyses = window._aiAnalyses;
+        const active = document.querySelector('.tab.active');
+        if (active && /switchTab\('ai'\)/.test(active.getAttribute('onclick') || '') && typeof renderSavedAnalysis === 'function') {
+          renderSavedAnalysis();
+        }
       }
+    });
+
+    window._fbSaveEntries = function(data) {
+      const obj = {};
+      data.forEach(function(e){ obj['e'+e.id] = e; });
+      set(ref(db, `${gp}/entries`), obj);
+    };
+    window._fbSaveIncomes = function(data) { set(ref(db, `${gp}/incomes`), data); };
+    window._fbSaveAnalysis = function(scope, data) { set(ref(db, `${gp}/aiAnalyses/${scope}`), data); };
+    window._fbDeleteAnalysis = function(scope) { remove(ref(db, `${gp}/aiAnalyses/${scope}`)); };
+    window._fbReady = true;
+  }
+
+  function showGroupSetup(user) {
+    const box = document.getElementById('group-box-content');
+    const renderMain = () => {
+      box.innerHTML = `
+        <h2>가계부 그룹 설정</h2>
+        <p class="group-sub">새 가계부를 만들거나 기존 그룹에 참여하세요</p>
+        <div class="group-option" onclick="window._createGroup()">
+          <h3>➕ 새 그룹 만들기</h3>
+          <p>새 가계부 그룹을 만들고 초대코드를 가족과 공유하세요</p>
+        </div>
+        <div class="group-option" onclick="window._showJoinGroup()">
+          <h3>🔗 초대코드로 참여하기</h3>
+          <p>가족에게 받은 초대코드를 입력하세요</p>
+        </div>`;
+    };
+    renderMain();
+    document.getElementById('group-overlay').style.display = 'flex';
+
+    window._createGroup = async function() {
+      const groupId = 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+      const inviteCode = Math.random().toString(36).slice(2,8).toUpperCase();
+      await set(ref(db, `groups/${groupId}/meta`), { inviteCode, createdBy: user.uid, createdAt: Date.now() });
+      await set(ref(db, `inviteCodes/${inviteCode}`), groupId);
+      await set(ref(db, `users/${user.uid}`), { groupId, email: user.email });
+      currentGroupId = groupId;
+      box.innerHTML = `
+        <h2>그룹이 만들어졌어요!</h2>
+        <p class="group-sub">아래 초대코드를 가족에게 공유하세요</p>
+        <div class="invite-code-display">
+          <div class="code">${inviteCode}</div>
+          <div class="code-hint">이 코드를 가족에게 공유하세요</div>
+        </div>
+        <button class="btn-primary" onclick="window._startApp()">가계부 시작하기</button>`;
+    };
+
+    window._startApp = function() { startApp(user); };
+
+    window._showJoinGroup = function() {
+      box.innerHTML = `
+        <h2>초대코드 입력</h2>
+        <p class="group-sub">가족에게 받은 6자리 초대코드를 입력하세요</p>
+        <div class="field mb1">
+          <label>초대코드</label>
+          <input type="text" id="invite-code-input" placeholder="XXXXXX" maxlength="6"
+            style="text-transform:uppercase;letter-spacing:4px;font-size:20px;text-align:center;"
+            oninput="this.value=this.value.toUpperCase()" />
+        </div>
+        <div id="join-error" class="auth-err"></div>
+        <button class="btn-primary" onclick="window._joinGroup()">참여하기</button>
+        <button class="btn-back" onclick="window._showGroupMain()">← 뒤로</button>`;
+    };
+
+    window._showGroupMain = function() { renderMain(); };
+
+    window._joinGroup = async function() {
+      const code = (document.getElementById('invite-code-input')?.value || '').trim().toUpperCase();
+      const errEl = document.getElementById('join-error');
+      if (code.length !== 6) {
+        errEl.style.display = 'block'; errEl.textContent = '6자리 코드를 입력해주세요.'; return;
+      }
+      const snap = await get(ref(db, `inviteCodes/${code}`));
+      if (!snap.exists()) {
+        errEl.style.display = 'block'; errEl.textContent = '유효하지 않은 초대코드입니다.'; return;
+      }
+      currentGroupId = snap.val();
+      await set(ref(db, `users/${user.uid}`), { groupId: currentGroupId, email: user.email });
+      startApp(user);
+    };
+  }
+
+  window._authMode = 'login';
+  window.switchAuthTab = function(mode) {
+    window._authMode = mode;
+    document.querySelectorAll('.auth-tab').forEach(t => {
+      t.classList.toggle('active', t.getAttribute('onclick').includes(`'${mode}'`));
+    });
+    document.getElementById('auth-submit-btn').textContent = mode === 'login' ? '로그인' : '회원가입';
+    document.getElementById('auth-error').style.display = 'none';
+  };
+
+  window.submitAuth = async function() {
+    const email    = document.getElementById('auth-email').value.trim();
+    const password = document.getElementById('auth-password').value;
+    const errEl    = document.getElementById('auth-error');
+    errEl.style.display = 'none';
+    if (!email || !password) {
+      errEl.style.display = 'block'; errEl.textContent = '이메일과 비밀번호를 입력해주세요.'; return;
     }
-  });
+    try {
+      if (window._authMode === 'login') {
+        await signInWithEmailAndPassword(auth, email, password);
+      } else {
+        await createUserWithEmailAndPassword(auth, email, password);
+      }
+    } catch(e) {
+      errEl.style.display = 'block';
+      const msgs = {
+        'auth/user-not-found':       '등록되지 않은 이메일입니다.',
+        'auth/wrong-password':       '비밀번호가 올바르지 않습니다.',
+        'auth/email-already-in-use': '이미 사용 중인 이메일입니다.',
+        'auth/weak-password':        '비밀번호는 6자 이상이어야 합니다.',
+        'auth/invalid-email':        '이메일 형식이 올바르지 않습니다.',
+        'auth/invalid-credential':   '이메일 또는 비밀번호가 올바르지 않습니다.',
+      };
+      errEl.textContent = msgs[e.code] || '오류: ' + e.message;
+    }
+  };
 
-  // 외부에서 호출할 수 있도록 window에 노출
-  window._fbSaveEntries = function(data) {
-    const obj = {};
-    data.forEach(function(e){ obj['e'+e.id] = e; });
-    set(ref(db, 'entries'), obj);
-  };
-  window._fbSaveIncomes = function(data) {
-    set(ref(db, 'incomes'), data);
-  };
-  window._fbSaveAnalysis = function(scope, data) {
-    set(ref(db, 'aiAnalyses/' + scope), data);
-  };
-  window._fbDeleteAnalysis = function(scope) {
-    remove(ref(db, 'aiAnalyses/' + scope));
-  };
-
-  window._fbReady = true;
-  console.log('Firebase 연결 완료');
+  window._signOut = async function() { await signOut(auth); };
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
